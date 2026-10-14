@@ -1,0 +1,80 @@
+---
+import type { Locale, UIKey } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const email = t('contact.email.value');
+
+const enquiryKeys = [
+  'contact.enquiry.item1',
+  'contact.enquiry.item2',
+  'contact.enquiry.item3',
+  'contact.enquiry.item4',
+] as const satisfies readonly UIKey[];
+
+const detailKeys = [
+  { label: 'contact.details.legal.label', value: 'contact.details.legal.value' },
+  { label: 'contact.details.location.label', value: 'contact.details.location.value' },
+  { label: 'contact.details.languages.label', value: 'contact.details.languages.value' },
+] as const satisfies readonly { label: UIKey; value: UIKey }[];
+---
+
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">{t('contact.eyebrow')}</p>
+    <h1 class="page-head__title">{t('contact.title')}</h1>
+    <p class="page-head__lede">{t('contact.lede')}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap split">
+    <div class="contact-card">
+      <p class="contact-card__label">{t('contact.email.label')}</p>
+      <p class="contact-card__email">
+        <a href={`mailto:${email}`}>{email}</a>
+      </p>
+      <p>
+        <a class="btn btn--primary" href={`mailto:${email}`}>
+          {t('contact.email.action')}
+          <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+
+    <div>
+      <h2 class="section__title">{t('contact.enquiry.title')}</h2>
+      <ol class="checklist">
+        {enquiryKeys.map((key) => <li class="checklist__item">{t(key)}</li>)}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section section--ink reveal" aria-labelledby="promise-heading">
+  <div class="wrap split">
+    <div class="prose">
+      <h2 id="promise-heading">{t('contact.promise.title')}</h2>
+      <p>{t('contact.promise.body')}</p>
+    </div>
+    <div>
+      <h2 class="eyebrow">{t('contact.details.title')}</h2>
+      <dl class="facts facts--stacked">
+        {
+          detailKeys.map((detail) => (
+            <div class="facts__row">
+              <dt class="facts__key">{t(detail.label)}</dt>
+              <dd class="facts__value">{t(detail.value)}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>

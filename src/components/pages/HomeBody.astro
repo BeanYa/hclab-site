@@ -1,0 +1,156 @@
+---
+import type { Locale, UIKey } from '../../i18n/ui';
+import {
+  getServices,
+  localizePath,
+  processSteps,
+  reasonIndexes,
+  routes,
+  useTranslations,
+} from '../../i18n/utils';
+import CtaBand from '../CtaBand.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const services = getServices(locale);
+
+const heroPoints = ['home.point1', 'home.point2', 'home.point3'] as const;
+
+const facts = [
+  { label: 'home.facts.based.label', value: 'home.facts.based.value' },
+  { label: 'home.facts.focus.label', value: 'home.facts.focus.value' },
+  { label: 'home.facts.support.label', value: 'home.facts.support.value' },
+  { label: 'home.facts.languages.label', value: 'home.facts.languages.value' },
+] as const satisfies readonly { label: UIKey; value: UIKey }[];
+
+const reasons = reasonIndexes.map((index) => ({
+  title: t(`reasons.item${index}.title`),
+  body: t(`reasons.item${index}.body`),
+}));
+---
+
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <p class="eyebrow">{t('home.eyebrow')}</p>
+      <h1 class="hero__title">{t('home.title')}</h1>
+      <p class="hero__lede">{t('home.lede')}</p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href={localizePath(routes.contact, locale)}>
+          {t('home.action.primary')}
+          <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href={localizePath(routes.services, locale)}>
+          {t('home.action.secondary')}
+        </a>
+      </div>
+
+      <div class="hero__points">
+        {
+          heroPoints.map((key, index) => (
+            <p class="hero__point">
+              <span class="hero__point-index" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span>{t(key)}</span>
+            </p>
+          ))
+        }
+      </div>
+    </div>
+
+    <div>
+      <h2 class="eyebrow">{t('home.facts.title')}</h2>
+      <dl class="facts facts--stacked">
+        {
+          facts.map((fact) => (
+            <div class="facts__row">
+              <dt class="facts__key">{t(fact.label)}</dt>
+              <dd class="facts__value">{t(fact.value)}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" aria-labelledby="services-heading">
+  <div class="wrap">
+    <div class="section__head section__head--split">
+      <div>
+        <p class="eyebrow">{t('services.eyebrow')}</p>
+        <h2 class="section__title" id="services-heading">{t('services.title')}</h2>
+      </div>
+      <p class="section__lede">{t('services.lede')}</p>
+    </div>
+
+    <div class="service-list">
+      {
+        services.map((service, index) => (
+          <article class="service-item">
+            <p class="service-item__index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 class="service-item__title">{service.title}</h3>
+            <p class="service-item__summary">{service.summary}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" aria-labelledby="process-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{t('process.eyebrow')}</p>
+      <h2 class="section__title" id="process-heading">{t('process.title')}</h2>
+      <p class="section__lede">{t('process.lede')}</p>
+    </div>
+
+    <div class="steps">
+      {
+        processSteps.map((step) => (
+          <article class="step">
+            <p class="step__index" aria-hidden="true">
+              {String(step).padStart(2, '0')}
+            </p>
+            <h3 class="step__title">{t(`process.step${step}.title`)}</h3>
+            <p class="step__body">{t(`process.step${step}.body`)}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section--ink reveal" aria-labelledby="reasons-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{t('reasons.eyebrow')}</p>
+      <h2 class="section__title" id="reasons-heading">{t('reasons.title')}</h2>
+    </div>
+
+    <div class="reasons">
+      {
+        reasons.map((reason, index) => (
+          <article class="reason">
+            <p class="reason__index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 class="reason__title">{reason.title}</h3>
+            <p class="reason__body">{reason.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<CtaBand locale={locale} />

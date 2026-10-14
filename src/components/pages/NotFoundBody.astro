@@ -1,0 +1,27 @@
+---
+import type { Locale } from '../../i18n/ui';
+import { localizePath, routes, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="section">
+  <div class="wrap">
+    <div class="notfound">
+      <p class="notfound__code">404</p>
+      <h1 class="notfound__title">{t('notFound.title')}</h1>
+      <p class="section__lede">{t('notFound.body')}</p>
+      <p>
+        <a class="btn btn--primary" href={localizePath(routes.home, locale)}>
+          {t('notFound.action')}
+          <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</section>

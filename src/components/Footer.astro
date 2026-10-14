@@ -1,0 +1,55 @@
+---
+import { ui, type Locale } from '../i18n/ui';
+import { localizePath, routes, useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const year = new Date().getFullYear();
+const email = t('contact.email.value');
+const icp = t('footer.icp');
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__legal-name">{t('site.legalName')}</p>
+        <p class="footer__note">{t('footer.note')}</p>
+      </div>
+
+      <div>
+        <h2 class="footer__heading">{t('footer.company')}</h2>
+        <ul class="footer__list">
+          <li><a href={localizePath(routes.home, locale)}>{t('nav.home')}</a></li>
+          <li><a href={localizePath(routes.about, locale)}>{t('nav.about')}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__heading">{t('footer.explore')}</h2>
+        <ul class="footer__list">
+          <li><a href={localizePath(routes.services, locale)}>{t('nav.services')}</a></li>
+          <li><a href={localizePath(routes.contact, locale)}>{t('nav.contact')}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__heading">{t('footer.contact')}</h2>
+        <ul class="footer__list">
+          <li><a href={`mailto:${email}`}>{email}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} {t('site.legalName')} {t('footer.rights')}</p>
+      {icp && <p>{icp}</p>}
+      <p>{ui.en['site.location']} · {ui.zh['site.location']}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,102 @@
+---
+import { localeTags, ui, type Locale, type UIKey } from '../i18n/ui';
+import { absoluteUrl, alternatesFor, useTranslations } from '../i18n/utils';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  titleKey: UIKey;
+  descriptionKey: UIKey;
+  /** Overrides the canonical path derived from the route. Used by the 404 page. */
+  canonicalPath?: string;
+  noindex?: boolean;
+}
+
+const { locale, titleKey, descriptionKey, canonicalPath, noindex = false } = Astro.props;
+
+const t = useTranslations(locale);
+const site = Astro.site ?? new URL('https://hcentlab.com');
+
+const routePath = Astro.url.pathname;
+const pathname = canonicalPath ?? (routePath.endsWith('/') ? routePath : `${routePath}/`);
+
+const title = t(titleKey);
+const description = t(descriptionKey);
+const canonical = absoluteUrl(site, pathname);
+const alternates = alternatesFor(site, pathname);
+const ogImage = absoluteUrl(site, `/og/${locale}.png`);
+
+// Structured data. Legal names come from the copy dictionaries so the English
+// and Chinese names can never drift apart. No street address: the company has
+// not supplied one (see AGENTS.md §1.1).
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: ui.en['site.legalName'],
+  alternateName: ui.zh['site.legalName'],
+  url: absoluteUrl(site, '/'),
+  description: ui.en['site.tagline'],
+  email: ui.en['contact.email.value'],
+  knowsLanguage: ['en', 'zh-CN'],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Shenzhen',
+    addressRegion: 'Guangdong',
+    addressCountry: 'CN',
+  },
+};
+---
+
+<!doctype html>
+<html lang={localeTags[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {/* A noindex page (404) must not advertise a canonical URL or alternates. */}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex &&
+      alternates.map((alternate) => (
+        <link rel="alternate" hreflang={alternate.tag} href={alternate.href} />
+      ))}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0e1116" />
+    <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t('site.name')} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t('meta.ogAlt')} />
+    <meta property="og:locale" content={localeTags[locale]} />
+    {alternates
+      .filter((alternate) => alternate.tag !== 'x-default' && alternate.locale !== locale)
+      .map((alternate) => (
+        <meta property="og:locale:alternate" content={localeTags[alternate.locale]} />
+      ))}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(organization)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t('nav.skip')}</a>
+    <Header locale={locale} currentPath={pathname} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

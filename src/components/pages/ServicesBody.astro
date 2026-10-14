@@ -1,0 +1,60 @@
+---
+import type { Locale } from '../../i18n/ui';
+import { getServices, useTranslations } from '../../i18n/utils';
+import CtaBand from '../CtaBand.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const services = getServices(locale);
+---
+
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">{t('servicesPage.eyebrow')}</p>
+    <h1 class="page-head__title">{t('servicesPage.title')}</h1>
+    <p class="page-head__lede">{t('servicesPage.lede')}</p>
+  </div>
+</section>
+
+<section class="section" aria-label={t('servicesPage.title')}>
+  <div class="wrap">
+    <div class="service-list">
+      {
+        services.map((service, index) => (
+          <article class="service-detail">
+            <p class="service-detail__index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <div class="service-detail__body">
+              <h2 class="service-detail__title">{service.title}</h2>
+              <p class="service-detail__summary">{service.summary}</p>
+            </div>
+            <div>
+              <p class="service-detail__label">{t('servicesPage.deliverables')}</p>
+              <ul class="points">
+                {service.points.map((point) => (
+                  <li class="points__item">{point}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" aria-labelledby="engagement-heading">
+  <div class="wrap split">
+    <div class="prose">
+      <h2 id="engagement-heading">{t('servicesPage.engagement.title')}</h2>
+      <p>{t('servicesPage.engagement.body')}</p>
+    </div>
+  </div>
+</section>
+
+<CtaBand locale={locale} titleKey="servicesPage.cta.title" bodyKey="servicesPage.cta.body" />

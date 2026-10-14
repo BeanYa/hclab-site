@@ -1,0 +1,5 @@
+# https://hcentlab.com
+User-agent: *
+Allow: /
+
+Sitemap: https://hcentlab.com/sitemap-index.xml
