@@ -1,7 +1,12 @@
 ---
-import type { Locale, UIKey } from '../../i18n/ui';
-import { localizePath, principleIndexes, routes, useTranslations } from '../../i18n/utils';
-import CtaBand from '../CtaBand.astro';
+import type { Locale } from '../../i18n/ui';
+import ReachField from '../ReachField.astro';
+import ClipBand from '../sections/ClipBand.astro';
+import PhotoBand from '../sections/PhotoBand.astro';
+import { commitmentIndexes, useTranslations, type DetailRow } from '../../i18n/utils';
+import bridge from '../../assets/shenzhen-bay-bridge.jpg';
+import civic from '../../assets/shenzhen-civic-center.jpg';
+import panorama from '../../assets/shenzhen-panorama.jpg';
 
 interface Props {
   locale: Locale;
@@ -10,83 +15,65 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-interface Fact {
-  label: UIKey;
-  value: string;
-}
-
-const facts: readonly Fact[] = [
-  { label: 'about.facts.legal.label', value: t('about.facts.legal.value') },
-  { label: 'about.facts.business.label', value: t('about.facts.business.value') },
-  { label: 'about.facts.base.label', value: t('about.facts.base.value') },
-  { label: 'about.facts.languages.label', value: t('about.facts.languages.value') },
-  // Composed from the contact keys so the mailbox keeps a single source of truth.
-  {
-    label: 'about.facts.contact.label',
-    value: `${t('contact.person.value')} · ${t('contact.email.value')}`,
-  },
-];
-
-const principles = principleIndexes.map((index) => ({
+const principles = commitmentIndexes.map((index) => ({
   title: t(`about.principles.item${index}.title`),
   body: t(`about.principles.item${index}.body`),
 }));
+
+const record: readonly DetailRow[] = [
+  { label: 'about.record.legal.label', value: 'about.record.legal.value', secondary: 'about.record.legal.valueZh' },
+  { label: 'about.record.business.label', value: 'about.record.business.value' },
+  { label: 'about.record.base.label', value: 'about.record.base.value' },
+  { label: 'about.record.languages.label', value: 'about.record.languages.value' },
+];
+
+const duo = [
+  { src: bridge, alt: t('bridge.alt'), caption: t('bridge.caption'), credit: 'bridge' as const },
+  { src: civic, alt: t('civic.alt'), caption: t('civic.caption'), credit: 'civic' as const },
+];
+
+const single = [
+  {
+    src: panorama,
+    alt: t('band.panorama.alt'),
+    caption: t('band.panorama.caption'),
+    credit: 'panorama' as const,
+  },
+];
 ---
 
 <section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow">{t('about.eyebrow')}</p>
-    <h1 class="page-head__title">{t('about.title')}</h1>
+  <div class="wrap grid">
+    <h1 class="page-head__title rise">{t('about.title')}</h1>
     <p class="page-head__lede">{t('about.lede')}</p>
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap split">
-    <div class="prose">
-      <h2>{t('about.profile.title')}</h2>
+<section class="section" aria-labelledby="profile-heading">
+  <div class="wrap grid">
+    <div class="prose rise">
+      <h2 id="profile-heading">{t('about.profile.title')}</h2>
       <p>{t('about.profile.body1')}</p>
       <p>{t('about.profile.body2')}</p>
-      <p>
-        <a class="btn btn--ghost" href={localizePath(routes.services, locale)}>
-          {t('nav.services')}
-          <span class="btn__arrow" aria-hidden="true">→</span>
-        </a>
-      </p>
-    </div>
-
-    <div>
-      <h2 class="eyebrow">{t('about.facts.title')}</h2>
-      <dl class="facts facts--stacked">
-        {
-          facts.map((fact) => (
-            <div class="facts__row">
-              <dt class="facts__key">{t(fact.label)}</dt>
-              <dd class="facts__value">{fact.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
   </div>
 </section>
 
-<section class="section reveal" aria-labelledby="principles-heading">
-  <div class="wrap">
-    <div class="section__head">
-      <p class="eyebrow">{t('about.principles.eyebrow')}</p>
-      <h2 class="section__title" id="principles-heading">{t('about.principles.title')}</h2>
+<PhotoBand pictures={duo} locale={locale} />
+
+<section class="section field-tone" aria-labelledby="principles-heading">
+  <div class="wrap grid">
+    <div class="proof__head rise">
+      <h2 class="proof__heading" id="principles-heading">{t('about.principles.title')}</h2>
+      <p class="proof__lede">{t('about.principles.lede')}</p>
     </div>
 
-    <div class="principles">
+    <div class="commitments">
       {
-        principles.map((principle, index) => (
-          <article class="principle">
-            <p class="principle__index" aria-hidden="true">
-              {String(index + 1).padStart(2, '0')}
-            </p>
-            <h3 class="principle__title">{principle.title}</h3>
-            <p class="principle__body">{principle.body}</p>
+        principles.map((principle) => (
+          <article class="commitment rise">
+            <h3 class="commitment__title">{principle.title}</h3>
+            <p class="commitment__body">{principle.body}</p>
           </article>
         ))
       }
@@ -94,4 +81,39 @@ const principles = principleIndexes.map((index) => ({
   </div>
 </section>
 
-<CtaBand locale={locale} />
+<section class="section" aria-labelledby="record-heading">
+  <div class="wrap grid">
+    <div class="proof__tables rise">
+      <table class="ptable">
+        <caption id="record-heading">
+          {t('about.record.title')}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">{t('about.record.col1')}</th>
+            <th scope="col">{t('about.record.col2')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            record.map((row) => (
+              <tr>
+                <td>{t(row.label)}</td>
+                <td>
+                  {t(row.value)}
+                  {row.secondary && <span class="muted"> {t(row.secondary)}</span>}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<PhotoBand pictures={single} locale={locale} />
+
+<ClipBand locale={locale} />
+
+<ReachField locale={locale} />

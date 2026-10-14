@@ -1,0 +1,34 @@
+---
+import type { Locale } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const columns = [
+  { title: 'intro.work.title', body: 'intro.work.body' },
+  { title: 'intro.support.title', body: 'intro.support.body' },
+  { title: 'intro.languages.title', body: 'intro.languages.body' },
+  { title: 'intro.contact.title', body: 'intro.contact.body' },
+] as const;
+---
+
+<section class="section" aria-label={t('about.profile.title')}>
+  <div class="wrap grid">
+    <p class="intro__lead">{t('intro.lead')}</p>
+
+    <div class="intro__cols">
+      {
+        columns.map((column) => (
+          <p class="intro__col rise">
+            <strong>{t(column.title)}</strong> {t(column.body)}
+          </p>
+        ))
+      }
+    </div>
+  </div>
+</section>

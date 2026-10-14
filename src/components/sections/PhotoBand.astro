@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Locale, UIKey } from '../../i18n/ui';
+import { creditHrefs, useTranslations, type CreditId } from '../../i18n/utils';
+
+export interface BandPicture {
+  src: ImageMetadata;
+  alt: string;
+  caption: string;
+  credit: CreditId;
+}
+
+interface Props {
+  pictures: BandPicture[];
+  locale: Locale;
+}
+
+const { pictures, locale } = Astro.props;
+const t = useTranslations(locale);
+const twoUp = pictures.length > 1;
+---
+
+<figure class:list={['band', { 'band--duo': twoUp }]}>
+  {
+    pictures.map((picture) => (
+      <div class="band__cell rise">
+        <Image
+          class="band__img"
+          src={picture.src}
+          alt={picture.alt}
+          widths={twoUp ? [560, 900, 1400] : [720, 1200, 1800, 2400]}
+          sizes={twoUp ? '(min-width: 62rem) 50vw, 100vw' : '100vw'}
+        />
+        <figcaption class="caption band__caption">
+          {picture.caption}{' '}
+          <a href={creditHrefs[picture.credit]} rel="noreferrer">
+            {t(`credit.${picture.credit}` as UIKey)}
+          </a>
+        </figcaption>
+      </div>
+    ))
+  }
+</figure>

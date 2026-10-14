@@ -1,0 +1,33 @@
+---
+import type { Locale } from '../../i18n/ui';
+import { processLines, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="section" aria-labelledby="process-heading">
+  <div class="wrap grid">
+    {
+      processLines.map((n) =>
+        n === 1 ? (
+          <article class="process__step rise">
+            <h2 class="process__line" id="process-heading">
+              {t(`process.line${n}`)}
+            </h2>
+            <p class="process__note">{t(`process.line${n}.body`)}</p>
+          </article>
+        ) : (
+          <article class="process__step rise">
+            <h3 class="process__line">{t(`process.line${n}`)}</h3>
+            <p class="process__note">{t(`process.line${n}.body`)}</p>
+          </article>
+        ),
+      )
+    }
+  </div>
+</section>

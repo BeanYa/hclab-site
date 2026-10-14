@@ -1,6 +1,6 @@
 ---
-import { ui, type Locale } from '../i18n/ui';
-import { localizePath, routes, useTranslations } from '../i18n/utils';
+import { locales, type Locale } from '../i18n/ui';
+import { localizePath, photoCredits, routes, useTranslations } from '../i18n/utils';
 
 interface Props {
   locale: Locale;
@@ -12,44 +12,75 @@ const t = useTranslations(locale);
 const year = new Date().getFullYear();
 const email = t('contact.email.value');
 const icp = t('footer.icp');
+
+const pages = [routes.home, routes.about, routes.services, routes.contact].map((path) => ({
+  href: localizePath(path, locale),
+  label: t(
+    path === routes.home
+      ? 'nav.home'
+      : path === routes.about
+        ? 'nav.about'
+        : path === routes.services
+          ? 'nav.services'
+          : 'nav.contact',
+  ),
+}));
 ---
 
-<footer class="site-footer">
+<footer class="site-foot">
   <div class="wrap">
-    <div class="footer__grid">
-      <div>
-        <p class="footer__legal-name">{t('site.legalName')}</p>
-        <p class="footer__note">{t('footer.note')}</p>
+    <p class="site-foot__name">{t('footer.name')}</p>
+
+    <div class="grid site-foot__row">
+      <div class="site-foot__reach">
+        <p class="site-foot__city">{t('footer.reach')}</p>
+        <a class="site-foot__email" href={`mailto:${email}`}>{email}</a>
+        <p class="site-foot__city">{t('site.location')}</p>
       </div>
 
-      <div>
-        <h2 class="footer__heading">{t('footer.company')}</h2>
-        <ul class="footer__list">
-          <li><a href={localizePath(routes.home, locale)}>{t('nav.home')}</a></li>
-          <li><a href={localizePath(routes.about, locale)}>{t('nav.about')}</a></li>
-        </ul>
-      </div>
+      <div class="site-foot__links">
+        <div>
+          <h2>{t('footer.pages')}</h2>
+          <ul>
+            {pages.map((page) => <li><a class="link" href={page.href}>{page.label}</a></li>)}
+          </ul>
+        </div>
 
-      <div>
-        <h2 class="footer__heading">{t('footer.explore')}</h2>
-        <ul class="footer__list">
-          <li><a href={localizePath(routes.services, locale)}>{t('nav.services')}</a></li>
-          <li><a href={localizePath(routes.contact, locale)}>{t('nav.contact')}</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h2 class="footer__heading">{t('footer.contact')}</h2>
-        <ul class="footer__list">
-          <li><a href={`mailto:${email}`}>{email}</a></li>
-        </ul>
+        <div>
+          <h2>{t('footer.languages')}</h2>
+          <ul>
+            {
+              locales.map((candidate) => (
+                <li>
+                  <a class="link" href={localizePath(Astro.url.pathname, candidate)} hreflang={candidate}>
+                    {candidate === 'en' ? t('lang.short.en') : t('lang.short.zh')}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="footer__bottom">
+    <div class="site-foot__credits">
+      <p>{t('footer.credits.label')}</p>
+      <ul>
+        {
+          photoCredits.map((credit) => (
+            <li>
+              {t(credit.key)}{' '}
+              <a href={credit.href} rel="noreferrer">{t('footer.credits.source')}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="site-foot__legal">
       <p>© {year} {t('site.legalName')} {t('footer.rights')}</p>
+      <p class="site-foot__note">{t('footer.note')}</p>
       {icp && <p>{icp}</p>}
-      <p>{ui.en['site.location']} · {ui.zh['site.location']}</p>
     </div>
   </div>
 </footer>

@@ -42,8 +42,8 @@ async function expectOk(path, marker) {
 
 /* -- pages ----------------------------------------------------------------- */
 
-const home = await expectOk('/', 'Software products, built and supported end to end.');
-await expectOk('/zh/', '软件产品，从研发到长期支持。');
+const home = await expectOk('/', 'A software company in Shenzhen.');
+await expectOk('/zh/', '深圳的一家软件公司');
 await expectOk('/about/', 'A Shenzhen software team');
 await expectOk('/zh/about/', '一支扎根深圳');
 await expectOk('/services/', 'Software development and technical support');
@@ -54,6 +54,11 @@ await expectOk('/contact/', 'Ribin Ding');
 await expectOk('/zh/contact/', 'Ribin Ding');
 await expectOk('/about/', 'Ribin Ding');
 await expectOk('/zh/about/', 'Ribin Ding');
+
+// The design promises: no client JavaScript, found pictures credited on the page.
+check(!/<script(?![^>]*type="application\/ld\+json")/.test(home.body), 'homepage must ship no script other than the JSON-LD block');
+check(home.body.includes('/_astro/') && /<img[^>]+src="\/_astro\//.test(home.body), 'homepage must serve its photographs as built assets');
+check(home.body.includes('Wikimedia Commons'), 'homepage must credit the found pictures');
 
 check(home.response.headers.get('content-type')?.includes('text/html'), 'homepage must be served as text/html');
 check(home.body.includes('<html lang="en"'), 'English homepage must declare lang="en"');
@@ -73,7 +78,7 @@ await expectOk('/apple-touch-icon.png');
 try {
   const { response, body } = await get('/definitely-not-a-page/');
   check(response.status === 404, `English 404: expected 404, got ${response.status}`);
-  check(body.includes('This page does not exist.'), 'English 404: missing English 404 copy');
+  check(body.includes('This page does not exist'), 'English 404: missing English 404 copy');
 } catch (error) {
   failures.push(`English 404 request failed (${error.message})`);
 }
@@ -81,7 +86,7 @@ try {
 try {
   const { response, body } = await get('/zh/definitely-not-a-page/');
   check(response.status === 404, `Chinese 404: expected 404, got ${response.status}`);
-  check(body.includes('这个页面不存在。'), 'Chinese 404: expected the Chinese 404 page');
+  check(body.includes('这个页面不存在'), 'Chinese 404: expected the Chinese 404 page');
 } catch (error) {
   failures.push(`Chinese 404 request failed (${error.message})`);
 }

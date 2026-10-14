@@ -1,0 +1,62 @@
+---
+import type { Locale, UIKey } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+/**
+ * The local script leads: the Chinese name comes first on the Chinese page.
+ * Two Han glyphs carry far less mass than eight Latin letters, so whichever
+ * line shows 宅迅 is set larger and the two names read as equals.
+ */
+const localFirst = locale === 'zh';
+const hanIsFirst = localFirst;
+
+const facts = [
+  { label: 'hero.facts.work.label', value: 'hero.facts.work.value' },
+  { label: 'hero.facts.support.label', value: 'hero.facts.support.value' },
+  { label: 'hero.facts.based.label', value: 'hero.facts.based.value' },
+  { label: 'hero.facts.languages.label', value: 'hero.facts.languages.value' },
+] as const satisfies readonly { label: UIKey; value: UIKey }[];
+---
+
+<section class="hero">
+  <div class="hero__field hero__field--paper">
+    <div class="wrap hero__inner">
+      <h1 class:list={['hero__name', 'hero__name--a', { 'hero__name--han': hanIsFirst }]}>
+        {t('hero.nameA')}<span class="visually-hidden"> {t('hero.nameB')}</span>
+      </h1>
+    </div>
+  </div>
+
+  <div class="hero__field hero__field--ink">
+    <div class="wrap hero__inner hero__inner--ink">
+      <p
+        class:list={['hero__name', 'hero__name--b', { 'hero__name--han': !hanIsFirst }]}
+        aria-hidden="true"
+      >
+        {t('hero.nameB')}
+      </p>
+
+      <div class="hero__foot">
+        <p class="hero__support">{t('hero.support')}</p>
+
+        <dl class="hero__facts">
+          {
+            facts.map((fact) => (
+              <div>
+                <dt>{t(fact.label)}</dt>
+                <dd>{t(fact.value)}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

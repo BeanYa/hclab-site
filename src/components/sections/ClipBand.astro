@@ -1,0 +1,43 @@
+---
+import type { Locale } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const source = 'https://commons.wikimedia.org/wiki/File:Nanshantechdistrictshenzhen2018.webm';
+---
+
+<figure class="clip rise">
+  <video
+    class="clip__video"
+    src="/media/nanshan-tech-district.webm"
+    poster="/media/nanshan-tech-district-poster.jpg"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    aria-hidden="true"
+    tabindex="-1"
+  ></video>
+
+  <img
+    class="clip__still"
+    src="/media/nanshan-tech-district-poster.jpg"
+    alt={t('clip.alt')}
+    width="1200"
+    height="676"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <figcaption class="caption clip__caption">
+    {t('clip.caption')}{' '}
+    <a href={source} rel="noreferrer">{t('credit.clip')}</a>
+  </figcaption>
+</figure>

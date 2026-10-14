@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import futian from '../../assets/shenzhen-futian.jpg';
+import type { Locale, UIKey } from '../../i18n/ui';
+import { numberedRows, siteFactIndexes, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const commitmentRows = numberedRows('proof.commit', [1, 2, 3, 4]);
+const siteRows = numberedRows('proof.site', siteFactIndexes);
+
+const source = 'https://commons.wikimedia.org/wiki/File:Commercial_area_of_futian_to_east2020.jpg';
+
+const columns = ['col1', 'col2', 'col3'] as const;
+---
+
+<section class="section" aria-labelledby="proof-heading">
+  <div class="wrap grid">
+    <div class="proof__head">
+      <h2 class="proof__heading" id="proof-heading">
+        <span>{t('proof.heading.a')}</span>
+        <span>{t('proof.heading.b')}</span>
+      </h2>
+      <p class="proof__lede">{t('proof.lede')}</p>
+    </div>
+
+    <div class="proof__tables">
+      <table class="ptable">
+        <caption>
+          {t('proof.commit.group')}
+        </caption>
+        <thead>
+          <tr>
+            {columns.map((column) => <th scope="col">{t(`proof.commit.${column}` as UIKey)}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            commitmentRows.map((row) => (
+              <tr>
+                <td>{t(row.title)}</td>
+                <td>{t(row.what)}</td>
+                <td>{t(row.check)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <table class="ptable">
+        <caption>
+          {t('proof.site.group')}
+        </caption>
+        <thead>
+          <tr>
+            {columns.map((column) => <th scope="col">{t(`proof.site.${column}` as UIKey)}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            siteRows.map((row) => (
+              <tr>
+                <td>{t(row.title)}</td>
+                <td>{t(row.what)}</td>
+                <td>{t(row.check)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="proof__figure">
+      <Image
+        src={futian}
+        alt={t('proof.picture.alt')}
+        widths={[420, 700, 1100]}
+        sizes="(min-width: 62rem) 30vw, 100vw"
+      />
+      <figcaption class="caption">
+        {t('proof.picture.caption')}{' '}
+        <a href={source} rel="noreferrer">{t('credit.futian')}</a>
+      </figcaption>
+    </figure>
+  </div>
+</section>

@@ -1,7 +1,13 @@
 ---
+import { Image } from 'astro:assets';
 import type { Locale } from '../../i18n/ui';
-import { getServices, useTranslations } from '../../i18n/utils';
-import CtaBand from '../CtaBand.astro';
+import ReachField from '../ReachField.astro';
+import ClipBand from '../sections/ClipBand.astro';
+import PhotoBand from '../sections/PhotoBand.astro';
+import { creditHrefs, getServices, useTranslations } from '../../i18n/utils';
+import civic from '../../assets/shenzhen-civic-center.jpg';
+import futian from '../../assets/shenzhen-futian.jpg';
+import market from '../../assets/huaqiangbei-electronics-market.jpg';
 
 interface Props {
   locale: Locale;
@@ -10,51 +16,73 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const services = getServices(locale);
+
+const duo = [
+  { src: market, alt: t('live.picture.alt'), caption: t('live.picture.caption'), credit: 'market' as const },
+  { src: civic, alt: t('civic.alt'), caption: t('civic.caption'), credit: 'civic' as const },
+];
 ---
 
 <section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow">{t('servicesPage.eyebrow')}</p>
-    <h1 class="page-head__title">{t('servicesPage.title')}</h1>
+  <div class="wrap grid">
+    <h1 class="page-head__title rise">{t('servicesPage.title')}</h1>
     <p class="page-head__lede">{t('servicesPage.lede')}</p>
   </div>
 </section>
 
 <section class="section" aria-label={t('servicesPage.title')}>
   <div class="wrap">
-    <div class="service-list">
-      {
-        services.map((service, index) => (
-          <article class="service-detail">
-            <p class="service-detail__index" aria-hidden="true">
-              {String(index + 1).padStart(2, '0')}
-            </p>
-            <div class="service-detail__body">
-              <h2 class="service-detail__title">{service.title}</h2>
-              <p class="service-detail__summary">{service.summary}</p>
-            </div>
-            <div>
-              <p class="service-detail__label">{t('servicesPage.deliverables')}</p>
-              <ul class="points">
-                {service.points.map((point) => (
-                  <li class="points__item">{point}</li>
-                ))}
-              </ul>
-            </div>
-          </article>
-        ))
-      }
-    </div>
+    {
+      services.map((service) => (
+        <article class="svc rise">
+          <div class="svc__row">
+            <h2 class="svc__title">{service.title}</h2>
+            <p class="svc__summary">{service.summary}</p>
+            <ul class="svc__terms">
+              {service.points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))
+    }
   </div>
 </section>
 
-<section class="section reveal" aria-labelledby="engagement-heading">
-  <div class="wrap split">
-    <div class="prose">
+<section class="section" aria-labelledby="engagement-heading">
+  <div class="wrap grid">
+    <div class="prose prose--left rise">
       <h2 id="engagement-heading">{t('servicesPage.engagement.title')}</h2>
       <p>{t('servicesPage.engagement.body')}</p>
     </div>
+
+    <figure class="proof__figure rise">
+      <Image
+        src={futian}
+        alt={t('proof.picture.alt')}
+        widths={[420, 700, 1100]}
+        sizes="(min-width: 62rem) 32vw, 100vw"
+      />
+      <figcaption class="caption">
+        {t('proof.picture.caption')}{' '}
+        <a href={creditHrefs.futian} rel="noreferrer">{t('credit.futian')}</a>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-<CtaBand locale={locale} titleKey="servicesPage.cta.title" bodyKey="servicesPage.cta.body" />
+<PhotoBand pictures={duo} locale={locale} />
+
+<section class="section" aria-labelledby="services-cta-heading">
+  <div class="wrap grid">
+    <div class="proof__head rise">
+      <h2 class="proof__heading" id="services-cta-heading">{t('servicesPage.cta.title')}</h2>
+      <p class="proof__lede">{t('servicesPage.cta.body')}</p>
+    </div>
+  </div>
+</section>
+
+<ClipBand locale={locale} />
+
+<ReachField locale={locale} />

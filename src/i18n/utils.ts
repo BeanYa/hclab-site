@@ -1,11 +1,4 @@
-import {
-  defaultLocale,
-  localeTags,
-  locales,
-  ui,
-  type Locale,
-  type UIKey,
-} from './ui';
+import { defaultLocale, localeTags, locales, ui, type Locale, type UIKey } from './ui';
 
 /* ------------------------------------------------------------------ locales */
 
@@ -88,7 +81,6 @@ export interface NavItem {
 }
 
 export const navItems: readonly NavItem[] = [
-  { key: 'nav.home', path: routes.home },
   { key: 'nav.about', path: routes.about },
   { key: 'nav.services', path: routes.services },
   { key: 'nav.contact', path: routes.contact },
@@ -126,11 +118,78 @@ export function getServices(locale: Locale): Service[] {
   }));
 }
 
-/** The four delivery stages, shared by the home page. */
-export const processSteps = [1, 2, 3, 4] as const;
+/* -------------------------------------------------------- page content sets */
 
-/** The four commitments on the company page. */
-export const principleIndexes = [1, 2, 3, 4] as const;
+/** The four delivery stages of the process section, in order. */
+export const processLines = [1, 2, 3, 4] as const;
 
-/** The four differentiators on the home page. */
-export const reasonIndexes = [1, 2, 3, 4] as const;
+/** The three situations of the enquiry chooser, in order. */
+export const liveOptions = [1, 2, 3] as const;
+
+/** The four commitments, shared by the home page and the company page. */
+export const commitmentIndexes = [1, 2, 3, 4] as const;
+
+/** The five verifiable facts about this website, shown in the proof table. */
+export const siteFactIndexes = [1, 2, 3, 4, 5] as const;
+
+export interface RowKeys {
+  title: UIKey;
+  what: UIKey;
+  check: UIKey;
+}
+
+/** A label/value row of a record table, with an optional second spelling. */
+export interface DetailRow {
+  label: UIKey;
+  value: UIKey;
+  secondary?: UIKey;
+}
+
+/** Builds `prefix.<n>.{title,what,check}` rows for a proof table group. */
+export function numberedRows(prefix: string, indexes: readonly number[]): RowKeys[] {
+  return indexes.map((index) => ({
+    title: `${prefix}.${index}.title` as UIKey,
+    what: `${prefix}.${index}.what` as UIKey,
+    check: `${prefix}.${index}.check` as UIKey,
+  }));
+}
+
+/* ---------------------------------------------------------------- pictures */
+
+export interface PhotoCredit {
+  key: UIKey;
+  href: string;
+}
+
+/**
+ * Every found picture used on the site: the credit text lives in `ui.ts` (it is
+ * user-visible copy), the source page it came from lives here.
+ */
+export const creditHrefs = {
+  panorama: 'https://commons.wikimedia.org/wiki/File:The_west_panorama_of_Shenzhen2021.jpg',
+  futian: 'https://commons.wikimedia.org/wiki/File:Commercial_area_of_futian_to_east2020.jpg',
+  market: 'https://commons.wikimedia.org/wiki/File:%E5%8D%8E%E5%BC%BA%E7%94%B5%E5%AD%90%E4%B8%96%E7%95%8C_1.jpg',
+  bridge: 'https://commons.wikimedia.org/wiki/File:Shenzhen_Bay_Bridge_aerial_view.jpg',
+  civic: 'https://commons.wikimedia.org/wiki/File:CIVIC_CENTER,_SHENZHEN_(3).jpg',
+  clip: 'https://commons.wikimedia.org/wiki/File:Nanshantechdistrictshenzhen2018.webm',
+} as const;
+
+export type CreditId = keyof typeof creditHrefs;
+
+export const photoCredits: readonly PhotoCredit[] = (Object.keys(creditHrefs) as CreditId[]).map(
+  (id) => ({ key: `credit.${id}` as UIKey, href: creditHrefs[id] }),
+);
+
+/* ------------------------------------------------------------------ mailto */
+
+/**
+ * Builds a mailto: URL with a written subject and body, so the enquiry arrives
+ * with the visitor's situation already stated. Used by the chooser and by every
+ * "send an email" action on the site.
+ */
+export function mailto(email: string, subject: string, body?: string): string {
+  const query = body
+    ? `subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    : `subject=${encodeURIComponent(subject)}`;
+  return `mailto:${email}?${query}`;
+}

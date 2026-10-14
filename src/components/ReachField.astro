@@ -1,0 +1,33 @@
+---
+import type { Locale } from '../i18n/ui';
+import { localizePath, mailto, routes, useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const email = t('contact.email.value');
+---
+
+<section class="reach" aria-labelledby="reach-heading">
+  <div class="wrap reach__inner">
+    <h2 class="reach__lede" id="reach-heading">{t('contact.lede')}</h2>
+
+    <p class="reach__address">
+      <a href={mailto(email, t('contact.email.subject'))}>{email}</a>
+    </p>
+
+    <div class="reach__foot">
+      <p>
+        {t('site.legalName')}<br />
+        {t('site.location')}
+      </p>
+      <p class="reach__links">
+        <a class="link" href={localizePath(routes.about, locale)}>{t('nav.about')}</a>
+        <a class="link" href={localizePath(routes.services, locale)}>{t('nav.services')}</a>
+      </p>
+    </div>
+  </div>
+</section>

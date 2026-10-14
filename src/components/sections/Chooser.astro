@@ -1,0 +1,82 @@
+---
+import { Image } from 'astro:assets';
+import market from '../../assets/huaqiangbei-electronics-market.jpg';
+import type { Locale } from '../../i18n/ui';
+import { liveOptions, mailto, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const email = t('contact.email.value');
+
+const options = liveOptions.map((n) => ({
+  id: `situation-${n}`,
+  title: t(`live.option${n}.title`),
+  first: t(`live.option${n}.first`),
+  need: t(`live.option${n}.need`),
+  action: t(`live.option${n}.action`),
+  href: mailto(email, t(`live.option${n}.subject`), t(`live.option${n}.body`)),
+}));
+
+const source = 'https://commons.wikimedia.org/wiki/File:%E5%8D%8E%E5%BC%BA%E7%94%B5%E5%AD%90%E4%B8%96%E7%95%8C_1.jpg';
+---
+
+<section class="section live" aria-labelledby="live-heading">
+  <div class="wrap grid live__grid">
+    <div class="live__head rise">
+      <h2 class="live__heading" id="live-heading">{t('live.heading')}</h2>
+      <p class="lede">{t('live.lede')}</p>
+    </div>
+
+    <figure class="live__figure">
+      <Image
+        src={market}
+        alt={t('live.picture.alt')}
+        widths={[560, 900, 1400]}
+        sizes="(min-width: 62rem) 45vw, 100vw"
+      />
+      <figcaption class="caption">
+        {t('live.picture.caption')}{' '}
+        <a href={source} rel="noreferrer">{t('credit.market')}</a>
+      </figcaption>
+    </figure>
+
+    <form class="live__form">
+      <fieldset class="live__options">
+        <legend class="live__legend">{t('live.hint')}</legend>
+
+        {
+          options.map((option, index) => (
+            <div class="live__option rise">
+              <input
+                class="live__radio"
+                type="radio"
+                name="situation"
+                id={option.id}
+                checked={index === 0}
+              />
+              <label class="live__tab" for={option.id}>
+                {option.title}
+              </label>
+
+              <div class="live__panel">
+                <p class="live__answer">
+                  <b>{t('live.first.label')}</b> {option.first}
+                </p>
+                <p class="live__answer">
+                  <b>{t('live.need.label')}</b> {option.need}
+                </p>
+                <a class="btn live__action" href={option.href}>
+                  {option.action}
+                </a>
+              </div>
+            </div>
+          ))
+        }
+      </fieldset>
+    </form>
+  </div>
+</section>

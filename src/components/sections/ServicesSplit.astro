@@ -1,0 +1,43 @@
+---
+import type { Locale } from '../../i18n/ui';
+import { getServices, localizePath, routes, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const services = getServices(locale);
+const separator = t('services.terms.separator');
+---
+
+<section class="services" aria-labelledby="services-heading">
+  <div class="services__cell">
+    <div class="wrap grid">
+      <h2 class="services__heading" id="services-heading">
+        <span>{t('services.heading.a')}</span>
+        <span>{t('services.heading.b')}</span>
+      </h2>
+
+      <div class="services__aside">
+        <p class="lede">{t('services.lede')}</p>
+        <p><a class="link" href={localizePath(routes.services, locale)}>{t('services.link')}</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="services__rows">
+    {
+      services.map((service) => (
+        <article class="services__row rise">
+          <div class="wrap grid services__row-inner">
+            <h3 class="services__row-title">{service.title}</h3>
+            <p class="services__row-summary">{service.summary}</p>
+            <p class="services__row-terms">{service.points.join(separator)}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
