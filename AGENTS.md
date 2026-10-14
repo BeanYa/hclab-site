@@ -105,6 +105,7 @@ Revisit only with a written reason.
 ├── astro.config.mjs       # site URL, i18n routing, sitemap
 ├── wrangler.jsonc         # Cloudflare Worker + static assets config
 ├── public/                # copied verbatim to the site root (robots, icons, OG cards)
+│   └── media/             # the one clip used on the site (webm + poster frame)
 ├── scripts/
 │   ├── postbuild.mjs      # materialises dist/zh/404.html for Cloudflare's nearest-404 rule
 │   ├── csp-hashes.mjs     # hashes inline scripts -> worker/csp-hashes.json
@@ -116,12 +117,16 @@ Revisit only with a written reason.
 │   ├── redirect.ts        # pure redirect rules
 │   └── redirect.test.mjs  # unit tests for those rules (npm test)
 └── src/
+    ├── i18n/locales.mjs   # locale registry — plain JS so astro.config.mjs can read it (see §7)
     ├── i18n/ui.ts         # EN + ZH copy dictionaries (source of truth for text)
-    ├── i18n/utils.ts      # locale helpers: t(), alternates, path translation
+    ├── i18n/utils.ts      # locale helpers: t(), alternates, paths, mailto, picture credits
+    ├── assets/            # the found photographs (+ credits.json recording licence and source)
     ├── layouts/BaseLayout.astro   # <head>, SEO, hreflang, JSON-LD
-    ├── components/        # Header, Footer, CtaBand
+    ├── components/Header.astro, Footer.astro, ReachField.astro
+    ├── components/sections/       # Hero, Intro, ServicesSplit, Chooser, Process, Proof,
+    │                              # PhotoBand, ClipBand — composed by the page bodies
     ├── components/pages/  # one <Name>Body.astro per page, shared by both locales
-    ├── styles/global.css  # design tokens + base styles
+    ├── styles/global.css  # design tokens, layouts, sections, motion (see §6)
     └── pages/             # routes; zh/ mirrors the English tree
 ```
 
@@ -134,16 +139,40 @@ Generated and git-ignored (recreated by `npm run build` and `npm run check`):
 
 - **Reading:** trust-first B2B corporate site for enterprise software buyers.
 - **Dials:** design variance ≈ 5/10, motion ≈ 3/10, density ≈ 4/10. Restrained, technical, editorial.
-- **Palette:** ink + paper + a single jade accent, defined as tokens in `global.css`.
-  Never introduce new raw hex values in components — add or reuse a token.
-- **Type:** system font stacks only (fast, zero layout shift, renders CJK well). Display sizes use tight
-  tracking; labels and numerals use the monospace stack.
-- **Surfaces:** hairline rules and spacing instead of drop shadows; avoid large radii and glassmorphism.
+- **Direction:** *type and nothing else* (tasteskill v2, seed 358432087). The page is words, colour and
+  space; photographs arrive later, large and few. The idea is the company's own: **the name in its two
+  working scripts is the hero** — `Homecent` on paper above the seam, `宅迅` on ink below it (mirrored on
+  the Chinese page), and every claim on the page is paired with something a visitor can check.
+- **The live thing:** the "Where are you now?" chooser (`components/sections/Chooser.astro`) — three
+  situations, each revealing what happens first, what we need from the visitor, and a real `mailto:` with
+  that situation's subject and body written in. Radios + `:has()`, no JavaScript; with `:has()`
+  unsupported every panel stays open, which is the plain fallback.
+- **Palette:** paper `#f1f2ef` (bone, deliberately low-chroma so it is not a yellow cream), one tone step
+  `#e3e7e2`, ink `#101418` with two dark steps, on-ink `#eef0ec`, accent jade `#0f6b52` on paper and
+  `#86d6b4` on ink. All are tokens in `global.css`; never introduce a raw hex below the token block.
+- **Type:** one face — the system sans stack (fast, zero layout shift, renders CJK well). Seven steps:
+  14 / 16 / 20 / clamp(28→48) / clamp(36→76) / clamp(60→168) / clamp(28→92). No monospace anywhere
+  outside a real `<code>`/`<pre>`, no uppercase micro-labels, no index numbers.
+- **Surfaces:** flat fields and space, never lines. Sections are separated by a full-bleed change of tone
+  (`--paper-deep`, `--ink`, `--ink-2`), by scale, or by a photograph. No borders as dividers, no shadows
+  at rest, no gradients (a neutral scrim under text on a photograph is the only exception), no glass.
+- **Layout:** one pair of margins (16–32px) and one 12-column grid for the whole page; two anchor lines
+  (left, and the right half from column 6). Section padding is `--band` (80–152px) so the gap between
+  sections is always larger than any gap inside one.
+- **Pictures:** five photographs and one clip, all found in the open collections (Wikimedia Commons),
+  downloaded into `src/assets/` and `public/media/`, credited in place under each picture and listed in
+  the footer with a link to the source. Never present a found picture as the client's own product, room,
+  person or team. `src/assets/credits.json` records title, creator, licence and source page.
 - **Banned defaults:** purple/indigo AI gradients, dark mesh hero, three identical feature cards,
-  infinite decorative animation, emoji as icons.
-- **Motion:** opt-in, once-only scroll reveals; everything must respect `prefers-reduced-motion`.
-- **Accessibility floor:** semantic landmarks, visible focus rings, ≥ 4.5:1 body contrast,
-  keyboard-operable nav and language switcher, `lang` attribute correct per locale.
+  eyebrow labels above headings, monospace labels, 01/02/03 numbering, hairline rules, drop shadows,
+  glassmorphism, infinite decorative animation, emoji as icons.
+- **Motion:** opt-in and once-only. A load choreography on the hero (the ink field rises to the seam),
+  a staggered entrance for the parts of every section (`animation-timeline: view()`, transform and
+  opacity only), feedback on every control, and one moving picture (the clip, replaced by its poster
+  frame under `prefers-reduced-motion`). All content is visible with every animation switched off.
+- **Accessibility floor:** semantic landmarks, visible focus rings, ≥ 4.5:1 body contrast (running text in
+  the full ink), keyboard-operable nav, chooser and language switcher, `lang` attribute correct per
+  locale, and nothing over 13px that is meant to be read.
 
 ---
 
@@ -182,8 +211,21 @@ Run, in this order, and report the results:
 - **CSP has no `unsafe-inline`.** The inline JSON-LD block is allowed by hash only, and the hashes
   are generated from the built HTML. Adding any inline script or style would be blocked — `npm run
   verify` catches the script case.
-- **No client-side JavaScript ships.** The mobile menu is a `<details>` element; the scroll reveal
-  is a CSS view-timeline animation that degrades to static content.
+- **No client-side JavaScript ships.** The mobile menu is a `<details>` element; the chooser is radios
+  plus `:has()`; the section entrances are CSS view-timeline animations. Everything degrades to static,
+  readable content.
+- **`astro.config.mjs` must not import a `.ts` file.** Vite bundles the config, and a TypeScript import
+  there pulls Astro's own tooling (magicast, postcss, css-tree) into the config graph as inlined
+  CommonJS, which fails on Node 26 with `require is not defined` before the build starts. The locale
+  registry therefore lives in plain-JS `src/i18n/locales.mjs`, which `ui.ts` re-exports.
+- **Never let the minifier merge `animation-timeline` into the `animation` shorthand.** Lightning CSS
+  rewrites `.rise { animation: rise linear both; animation-timeline: view() }` into
+  `animation: linear both rise view()`, which Chrome rejects — the whole declaration is dropped and the
+  page goes still with no error anywhere. The timeline is passed through the `--timeline-view` custom
+  property in `global.css` to keep the minifier out of it. Do not "tidy" that up.
+- **The first screen's two fields must be ancestors of the text on them.** Contrast and the hit-testing
+  the inspector uses are decided by what really paints behind a word: a name placed over an absolutely
+  positioned colour field reads as 1:1 contrast. Each hero field is a real element wrapping its own name.
 
 ## 8. Deployment
 
@@ -225,6 +267,9 @@ npm run deploy              # build + deploy
 - [x] Bilingual site (EN default / ZH) implemented — 4 pages per locale + 404s
 - [x] Cloudflare Worker + static assets configuration authored and validated
       (`build`, `verify`, `test`, `smoke` and `deploy:dry` all pass)
+- [x] Front-end design rebuilt (2026-10): the tasteskill "type and nothing else" direction, the two-script
+      hero, the no-JavaScript enquiry chooser, five credited photographs and one clip, a CSS-only motion
+      layer. Gate: `inspect.mjs` reports 0 FAIL / 0 WARN on all eight content pages, `lint.mjs` 0 FAIL.
 - [ ] Cloudflare authentication and first production deploy — **blocked on account credentials**
 - [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
 - [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com
