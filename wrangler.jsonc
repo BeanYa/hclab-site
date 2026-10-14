@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hcentlab-homecent",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-14",
+  "upload_source_maps": true,
+  "workers_dev": true,
+
+  // Static site output. The Worker script runs first (see assets.run_worker_first)
+  // so it can enforce the canonical host and attach security headers.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
+  },
+
+  // Custom domains. These require the zone hcentlab.com to live in the same
+  // Cloudflare account. Comment this block out for a workers.dev-only deploy.
+  "routes": [
+    { "pattern": "hcentlab.com", "custom_domain": true },
+    { "pattern": "www.hcentlab.com", "custom_domain": true }
+  ],
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
