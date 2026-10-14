@@ -1,0 +1,34 @@
+{
+  "name": "hclab-site",
+  "version": "0.1.0",
+  "description": "Corporate website for Shenzhen Homecent Trading Co., Ltd. (hcentlab.com)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test \"worker/**/*.test.mjs\"",
+    "dev": "astro dev",
+    "build": "astro build && node scripts/postbuild.mjs && node scripts/csp-hashes.mjs",
+    "preview": "astro preview",
+    "check": "wrangler types && node scripts/csp-hashes.mjs && astro check",
+    "cf:dev": "npm run build && wrangler dev",
+    "cf:types": "wrangler types",
+    "csp": "node scripts/csp-hashes.mjs",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:dry": "npm run build && wrangler deploy --dry-run",
+    "verify": "node scripts/verify-build.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.151.0"
+  },
+  "private": "true"
+}

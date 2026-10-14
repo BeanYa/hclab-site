@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Astro / build output
+dist/
+.astro/
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+.dev.vars.*
+worker-configuration.d.ts
+
+# Generated: CSP hashes for inline scripts, written by scripts/csp-hashes.mjs
+worker/csp-hashes.json
+
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+secrets.json
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+*.log
+npm-debug.log*
