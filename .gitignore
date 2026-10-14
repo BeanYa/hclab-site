@@ -31,3 +31,7 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Local agent-skill installs (tooling, not part of the website)
+.agents/
+skills-lock.json
