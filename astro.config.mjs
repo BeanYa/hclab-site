@@ -2,7 +2,11 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-import { defaultLocale, locales } from './src/i18n/ui';
+// Imported from a plain .mjs module: a TypeScript import here would make Vite
+// bundle Astro's own tooling into the config graph, which fails to load on
+// Node 26 + Vite 8 ("require is not defined"). src/i18n/ui.ts re-exports the
+// same values, so this stays a single source of truth.
+import { defaultLocale, locales } from './src/i18n/locales.mjs';
 
 /**
  * https://astro.build/config
