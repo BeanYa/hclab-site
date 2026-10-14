@@ -18,6 +18,7 @@ If reality and this file disagree, fix this file in the same change.
 | Core business (EN) | Software product development and technical support |
 | 主营业务 (ZH) | 软件产品开发与技术支持 |
 | Base of operations | Shenzhen, Guangdong, China |
+| Company contact (负责人) | **Ribin Ding** — ribin.ding@hcentlab.com |
 | Site languages | English (default) + Simplified Chinese |
 
 ### 1.1 Facts that are NOT yet confirmed — do not invent them
@@ -26,7 +27,6 @@ These are outstanding questions for the client. Until answered, the site must no
 
 - **Registered address** — not supplied. Do not fabricate a street address.
 - **Phone / WeChat** — not supplied. Do not fabricate a phone number.
-- **Contact mailbox** — the placeholder `contact@hcentlab.com` is used site-wide. Confirm it exists before launch.
 - **ICP filing (备案号)** — not supplied. Cloudflare's edge is outside mainland China, so no ICP filing is
   strictly required for this deployment; one *is* required if the site is ever served from a mainland CDN.
   Leave the footer ICP slot empty, do not invent a number.
@@ -37,6 +37,11 @@ These are outstanding questions for the client. Until answered, the site must no
 
 > Rule: **marketing copy may be written, but no verifiable claim (number, logo, certification, address,
 > phone, registration) may be invented.** When in doubt, write qualitatively and leave a TODO comment.
+
+Confirmed since first draft: the company contact is **Ribin Ding** and the public mailbox is
+**ribin.ding@hcentlab.com**. Both live in `src/i18n/ui.ts` (`contact.person.value`,
+`contact.email.value`) and must be edited there only — the footer, the contact card, the company
+record on `/about/` and the JSON-LD `ContactPoint` all read from those two keys.
 
 ---
 
@@ -221,7 +226,8 @@ npm run deploy              # build + deploy
 - [x] Cloudflare Worker + static assets configuration authored and validated
       (`build`, `verify`, `test`, `smoke` and `deploy:dry` all pass)
 - [ ] Cloudflare authentication and first production deploy — **blocked on account credentials**
-- [ ] Confirm §1.1 open facts (address, phone, mailbox, ICP, legal-name punctuation)
+- [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
+- [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com
 - [ ] Optional follow-ups: full favicon set, analytics decision, contact form (needs a backend)
 
 > Update the checkboxes above in the same commit that changes the underlying state.

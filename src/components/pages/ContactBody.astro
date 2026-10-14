@@ -36,16 +36,23 @@ const detailKeys = [
 <section class="section">
   <div class="wrap split">
     <div class="contact-card">
-      <p class="contact-card__label">{t('contact.email.label')}</p>
-      <p class="contact-card__email">
-        <a href={`mailto:${email}`}>{email}</a>
-      </p>
-      <p>
-        <a class="btn btn--primary" href={`mailto:${email}`}>
-          {t('contact.email.action')}
-          <span class="btn__arrow" aria-hidden="true">→</span>
-        </a>
-      </p>
+      <div class="contact-card__group">
+        <p class="contact-card__label">{t('contact.person.label')}</p>
+        <p class="contact-card__value">{t('contact.person.value')}</p>
+      </div>
+
+      <div class="contact-card__group">
+        <p class="contact-card__label">{t('contact.email.label')}</p>
+        <p class="contact-card__email">
+          <a href={`mailto:${email}`}>{email}</a>
+        </p>
+        <p>
+          <a class="btn btn--primary" href={`mailto:${email}`}>
+            {t('contact.email.action')}
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+        </p>
+      </div>
     </div>
 
     <div>

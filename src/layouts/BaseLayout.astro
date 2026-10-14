@@ -40,6 +40,15 @@ const organization = {
   description: ui.en['site.tagline'],
   email: ui.en['contact.email.value'],
   knowsLanguage: ['en', 'zh-CN'],
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      name: ui.en['contact.person.value'],
+      email: ui.en['contact.email.value'],
+      contactType: 'customer service',
+      availableLanguage: ['en', 'zh-CN'],
+    },
+  ],
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Shenzhen',

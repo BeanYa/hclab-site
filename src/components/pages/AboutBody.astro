@@ -10,12 +10,22 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-const facts = [
-  { label: 'about.facts.legal.label', value: 'about.facts.legal.value' },
-  { label: 'about.facts.business.label', value: 'about.facts.business.value' },
-  { label: 'about.facts.base.label', value: 'about.facts.base.value' },
-  { label: 'about.facts.languages.label', value: 'about.facts.languages.value' },
-] as const satisfies readonly { label: UIKey; value: UIKey }[];
+interface Fact {
+  label: UIKey;
+  value: string;
+}
+
+const facts: readonly Fact[] = [
+  { label: 'about.facts.legal.label', value: t('about.facts.legal.value') },
+  { label: 'about.facts.business.label', value: t('about.facts.business.value') },
+  { label: 'about.facts.base.label', value: t('about.facts.base.value') },
+  { label: 'about.facts.languages.label', value: t('about.facts.languages.value') },
+  // Composed from the contact keys so the mailbox keeps a single source of truth.
+  {
+    label: 'about.facts.contact.label',
+    value: `${t('contact.person.value')} · ${t('contact.email.value')}`,
+  },
+];
 
 const principles = principleIndexes.map((index) => ({
   title: t(`about.principles.item${index}.title`),
@@ -52,7 +62,7 @@ const principles = principleIndexes.map((index) => ({
           facts.map((fact) => (
             <div class="facts__row">
               <dt class="facts__key">{t(fact.label)}</dt>
-              <dd class="facts__value">{t(fact.value)}</dd>
+              <dd class="facts__value">{fact.value}</dd>
             </div>
           ))
         }

@@ -48,8 +48,12 @@ await expectOk('/about/', 'A Shenzhen software team');
 await expectOk('/zh/about/', '一支扎根深圳');
 await expectOk('/services/', 'Software development and technical support');
 await expectOk('/zh/services/', '软件开发与技术支持');
-await expectOk('/contact/', 'contact@hcentlab.com');
-await expectOk('/zh/contact/', 'contact@hcentlab.com');
+await expectOk('/contact/', 'ribin.ding@hcentlab.com');
+await expectOk('/zh/contact/', 'ribin.ding@hcentlab.com');
+await expectOk('/contact/', 'Ribin Ding');
+await expectOk('/zh/contact/', 'Ribin Ding');
+await expectOk('/about/', 'Ribin Ding');
+await expectOk('/zh/about/', 'Ribin Ding');
 
 check(home.response.headers.get('content-type')?.includes('text/html'), 'homepage must be served as text/html');
 check(home.body.includes('<html lang="en"'), 'English homepage must declare lang="en"');

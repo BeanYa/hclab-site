@@ -924,6 +924,21 @@ summary {
   color: var(--ink-muted);
 }
 
+.contact-card__group {
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.contact-card__group + .contact-card__group {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--space-sm);
+}
+
+.contact-card__value {
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
 .contact-card__email {
   font-size: var(--step-1);
   font-weight: 500;
