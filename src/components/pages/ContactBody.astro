@@ -25,7 +25,7 @@ const enquiryKeys = [
 ] as const satisfies readonly UIKey[];
 
 const details: readonly DetailRow[] = [
-  { label: 'contact.details.legal.label', value: 'contact.details.legal.value', secondary: 'contact.details.legal.valueZh' },
+  { label: 'contact.details.legal.label', value: 'contact.details.legal.value' },
   { label: 'contact.details.location.label', value: 'contact.details.location.value' },
   { label: 'contact.details.languages.label', value: 'contact.details.languages.value' },
   { label: 'contact.details.person.label', value: 'contact.person.value' },
@@ -89,10 +89,7 @@ const duo = [
             details.map((row) => (
               <tr>
                 <td>{t(row.label)}</td>
-                <td>
-                  {t(row.value)}
-                  {row.secondary && <span class="muted"> {t(row.secondary)}</span>}
-                </td>
+                <td>{t(row.value)}</td>
               </tr>
             ))
           }

@@ -138,11 +138,10 @@ export interface RowKeys {
   check: UIKey;
 }
 
-/** A label/value row of a record table, with an optional second spelling. */
+/** A label/value row of a record table. */
 export interface DetailRow {
   label: UIKey;
   value: UIKey;
-  secondary?: UIKey;
 }
 
 /** Builds `prefix.<n>.{title,what,check}` rows for a proof table group. */

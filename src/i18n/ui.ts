@@ -6,6 +6,11 @@
  *  - `zh` is typed as `Record<UIKey, string>`, so a missing or stray Chinese
  *    string is a TypeScript error and fails the build. Never loosen this type.
  *  - Components and pages must never contain hard-coded user-visible copy.
+ *  - One language per locale: a page reads entirely in its own language. The
+ *    only deliberate exceptions are the two-script hero mark, the other
+ *    language's own name in the switcher, and proper nouns (people, works,
+ *    licences, commands). Everything else — including how a work title is
+ *    rendered in a credit line — follows the reading language.
  *
  * The strings here are also the page's argument (see the design direction in
  * AGENTS.md §6): every claim on the page is paired with something a visitor can
@@ -28,6 +33,13 @@ const en = {
   'site.location': 'Shenzhen, Guangdong, China',
   'meta.ogAlt': 'Homecent — software product development and technical support',
 
+  // Join between a label and the sentence after it, and between a caption and
+  // its credit link. English sets a space; Chinese full-width punctuation
+  // already carries its own trailing space, so none is inserted between two
+  // Han runs (a half-width space there is the one format a Chinese page must
+  // never show).
+  'sep.inline': ' ',
+
   // -------------------------------------------------------------------- nav
   'nav.primary': 'Primary',
   'nav.home': 'Home',
@@ -43,7 +55,7 @@ const en = {
   'lang.switchTo': 'Switch language',
   'lang.current': 'Current language',
   'lang.short.en': 'English',
-  'lang.short.zh': '中文',
+  'lang.short.zh': '简体中文',
 
   // ------------------------------------------------------------------- hero
   'home.meta.title': 'Homecent — software product development and technical support, Shenzhen',
@@ -253,7 +265,6 @@ const en = {
   'contact.details.title': 'Company details',
   'contact.details.legal.label': 'Legal name',
   'contact.details.legal.value': 'Shenzhen Homecent Trading Co., Ltd.',
-  'contact.details.legal.valueZh': '深圳市宅迅贸易有限公司',
   'contact.details.location.label': 'Location',
   'contact.details.location.value': 'Shenzhen, Guangdong, China',
   'contact.details.languages.label': 'Languages',
@@ -280,7 +291,6 @@ const en = {
   'about.record.col2': 'Detail',
   'about.record.legal.label': 'Legal name',
   'about.record.legal.value': 'Shenzhen Homecent Trading Co., Ltd.',
-  'about.record.legal.valueZh': '深圳市宅迅贸易有限公司',
   'about.record.business.label': 'Core business',
   'about.record.business.value': 'Software product development and technical support',
   'about.record.base.label': 'Base of operations',
@@ -332,9 +342,13 @@ const en = {
   'footer.note': 'Software product development and technical support.',
   'footer.credits.label': 'Photographs and footage',
   'footer.credits.source': 'Source',
+  // Work titles are rendered in the reading language so a page never mixes
+  // scripts in its running text; the exact original titles, creators, licences
+  // and source pages stay in src/assets/credits.json and behind each Source
+  // link.
   'credit.panorama': '“The west panorama of Shenzhen2021” by Charlie fong, CC BY-SA 4.0, via Wikimedia Commons (cropped)',
   'credit.futian': '“Commercial area of Futian to east2020” by Charlie fong, CC BY-SA 4.0, via Wikimedia Commons (cropped)',
-  'credit.market': '“华强电子世界 1” by Mx. Granger, CC0, via Wikimedia Commons (cropped)',
+  'credit.market': '“Huaqiang Electronics World 1” by Mx. Granger, CC0, via Wikimedia Commons (cropped)',
   'credit.bridge': '“Shenzhen Bay Bridge aerial view” by Windmemories, CC BY-SA 4.0, via Wikimedia Commons (cropped)',
   'credit.civic': '“CIVIC CENTER, SHENZHEN (3)” by Dinkun Chen, CC BY-SA 4.0, via Wikimedia Commons (cropped)',
   'credit.clip': '“Nanshantechdistrictshenzhen2018” by Charlie fong, CC BY-SA 4.0, via Wikimedia Commons (re-encoded)',
@@ -352,6 +366,7 @@ const zh: Record<UIKey, string> = {
   'site.tagline': '软件产品，从研发到长期支持。',
   'site.location': '中国广东省深圳市',
   'meta.ogAlt': '宅迅 — 软件产品开发与技术支持',
+  'sep.inline': '',
 
   // -------------------------------------------------------------------- nav
   'nav.primary': '主导航',
@@ -368,10 +383,10 @@ const zh: Record<UIKey, string> = {
   'lang.switchTo': '切换语言',
   'lang.current': '当前语言',
   'lang.short.en': 'English',
-  'lang.short.zh': '中文',
+  'lang.short.zh': '简体中文',
 
   // ------------------------------------------------------------------- hero
-  'home.meta.title': '宅迅 Homecent — 深圳的软件产品开发与技术支持',
+  'home.meta.title': '宅迅 — 深圳的软件产品开发与技术支持',
   'home.meta.description':
     '宅迅是一家位于深圳的软件公司。我们为客户开发软件产品，并在上线后持续运行与维护，工作语言为中文与英文。',
   'hero.nameA': '宅迅',
@@ -539,7 +554,7 @@ const zh: Record<UIKey, string> = {
   'clip.caption': '深圳南山。无声循环；在减弱动态效果下显示静态封面。',
 
   // --------------------------------------------------------------- contact
-  'contact.meta.title': '联系我们 — 宅迅 Homecent',
+  'contact.meta.title': '联系我们 — 宅迅',
   'contact.meta.description':
     '就软件开发或技术支持事宜联系深圳市宅迅贸易有限公司。每一封来信都由我们自己阅读并回复。',
   'contact.heading': '告诉我们你要做什么，或者哪里出了问题。',
@@ -557,7 +572,6 @@ const zh: Record<UIKey, string> = {
   'contact.details.title': '公司信息',
   'contact.details.legal.label': '公司全称',
   'contact.details.legal.value': '深圳市宅迅贸易有限公司',
-  'contact.details.legal.valueZh': 'Shenzhen Homecent Trading Co., Ltd.',
   'contact.details.location.label': '所在地',
   'contact.details.location.value': '中国广东省深圳市',
   'contact.details.languages.label': '语言',
@@ -575,7 +589,7 @@ const zh: Record<UIKey, string> = {
   'about.lede': '深圳市宅迅贸易有限公司为客户开发软件产品并提供技术支持，服务范围覆盖国内与海外。',
   'about.profile.title': '我们做什么',
   'about.profile.body1':
-    '公司对外品牌为 Homecent。我们做的是软件：把一个产品想法或一套既有系统，从研发、上线一路负责到之后的长期维护。',
+    '公司对外以「宅迅」为品牌。我们做的是软件：把一个产品想法或一套既有系统，从研发、上线一路负责到之后的长期维护。',
   'about.profile.body2':
     '我们以小团队方式协作，让客户直接对接负责交付的工程师；所有承诺都以书面形式确认。',
   'about.record.title': '公司信息',
@@ -583,7 +597,6 @@ const zh: Record<UIKey, string> = {
   'about.record.col2': '内容',
   'about.record.legal.label': '公司全称',
   'about.record.legal.value': '深圳市宅迅贸易有限公司',
-  'about.record.legal.valueZh': 'Shenzhen Homecent Trading Co., Ltd.',
   'about.record.business.label': '主营业务',
   'about.record.business.value': '软件产品开发与技术支持',
   'about.record.base.label': '所在地',
@@ -617,7 +630,7 @@ const zh: Record<UIKey, string> = {
   'servicesPage.cta.body': '直接描述问题，而不是解决方案。判断合适的范围本身就是我们的工作。',
 
   // ------------------------------------------------------------------- 404
-  'notFound.meta.title': '页面不存在 — 宅迅 Homecent',
+  'notFound.meta.title': '页面不存在 — 宅迅',
   'notFound.meta.description': '你访问的页面不存在。',
   'notFound.title': '这个页面不存在',
   'notFound.body': '链接可能已过期，或者页面已被移动或删除。',
@@ -632,12 +645,12 @@ const zh: Record<UIKey, string> = {
   'footer.note': '软件产品开发与技术支持。',
   'footer.credits.label': '图片与视频来源',
   'footer.credits.source': '来源',
-  'credit.panorama': '“The west panorama of Shenzhen2021”，摄影 Charlie fong，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
-  'credit.futian': '“Commercial area of Futian to east2020”，摄影 Charlie fong，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
-  'credit.market': '“华强电子世界 1”，摄影 Mx. Granger，CC0，来自 Wikimedia Commons（已裁剪）',
-  'credit.bridge': '“Shenzhen Bay Bridge aerial view”，摄影 Windmemories，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
-  'credit.civic': '“CIVIC CENTER, SHENZHEN (3)”，摄影 Dinkun Chen，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
-  'credit.clip': '“Nanshantechdistrictshenzhen2018”，摄影 Charlie fong，CC BY-SA 4.0，来自 Wikimedia Commons（已重新编码）',
+  'credit.panorama': '《深圳西望全景2021》，摄影 Charlie fong，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
+  'credit.futian': '《福田商业区东望2020》，摄影 Charlie fong，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
+  'credit.market': '《华强电子世界 1》，摄影 Mx. Granger，CC0，来自 Wikimedia Commons（已裁剪）',
+  'credit.bridge': '《深圳湾大桥航拍》，摄影 Windmemories，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
+  'credit.civic': '《深圳市民中心（3）》，摄影 Dinkun Chen，CC BY-SA 4.0，来自 Wikimedia Commons（已裁剪）',
+  'credit.clip': '《深圳南山科技园2018》，摄影 Charlie fong，CC BY-SA 4.0，来自 Wikimedia Commons（已重新编码）',
   'footer.icp': '',
 };
 

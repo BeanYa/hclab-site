@@ -369,14 +369,6 @@ fieldset {
   display: none;
 }
 
-.site-head__panel .site-head__menu-close {
-  align-self: flex-start;
-  cursor: pointer;
-  list-style: none;
-  font-size: var(--t-sm);
-  padding: 0.5rem 0;
-}
-
 .site-head__panel-list {
   display: grid;
   gap: 0.6rem;
@@ -472,10 +464,12 @@ fieldset {
   padding-top: 0.26em;
 }
 
-/* Two Han glyphs against eight Latin letters: same optical mass, more size. */
+/* Two Han glyphs against eight Latin letters: same optical mass, more size.
+   The tracking opens back up — Han glyphs fill their em box edge to edge, and
+   Latin display tightening would sit the two characters on each other. */
 .hero__name--han {
   font-size: calc(var(--t-hero) * 1.4);
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .hero__foot {
@@ -874,7 +868,9 @@ fieldset {
   display: grid;
   gap: 0.85rem;
   margin-top: 0.85rem;
-}/* Without :has() support every panel stays open — the plain fallback. */
+}
+
+/* Without :has() support every panel stays open — the plain fallback. */
 .live__option:has(input:not(:checked)) .live__panel {
   display: none;
 }
@@ -1153,10 +1149,6 @@ fieldset {
   margin-top: 2rem;
 }
 
-.muted {
-  color: color-mix(in srgb, var(--ink) 62%, transparent);
-}
-
 /* A list of things to send us: plain lines, a filled marker, generous air. */
 .enquiry {
   display: grid;
@@ -1431,6 +1423,72 @@ html[lang='zh-CN'] .site-foot__name {
   font-size: clamp(1.75rem, 1.1rem + 3.6vw, 4.25rem);
   line-height: 1;
   letter-spacing: -0.03em;
+}
+
+/* ==========================================================================
+   Simplified Chinese — Han type adjustments (html[lang='zh-CN'])
+   ---------------------------------------------------------------------------
+   The negative tracking and the tight display leading above are Latin
+   idioms: they close the white metal around lowercase. On the Chinese page
+   the tracking opens back up, running text gets a taller line, and the
+   display lines that can wrap keep their strokes from stacking. Scoped to
+   the classes that carry that type; the two-script hero keeps its own
+   metrics in both languages.
+   ========================================================================== */
+
+html[lang='zh-CN'] body {
+  line-height: 1.7;
+}
+
+html[lang='zh-CN'] .site-head__brand,
+html[lang='zh-CN'] .services__heading,
+html[lang='zh-CN'] .services__row-title,
+html[lang='zh-CN'] .live__heading,
+html[lang='zh-CN'] .live__tab,
+html[lang='zh-CN'] .process__line,
+html[lang='zh-CN'] .proof__heading,
+html[lang='zh-CN'] .page-head__title,
+html[lang='zh-CN'] .notfound__title,
+html[lang='zh-CN'] .prose h2,
+html[lang='zh-CN'] .svc__title,
+html[lang='zh-CN'] .commitment__title,
+html[lang='zh-CN'] .ptable caption {
+  letter-spacing: 0;
+}
+
+html[lang='zh-CN'] .services__heading,
+html[lang='zh-CN'] .proof__heading {
+  line-height: 1.12;
+}
+
+html[lang='zh-CN'] .live__heading,
+html[lang='zh-CN'] .process__line,
+html[lang='zh-CN'] .page-head__title,
+html[lang='zh-CN'] .notfound__title {
+  line-height: 1.15;
+}
+
+html[lang='zh-CN'] .lede,
+html[lang='zh-CN'] .intro__lead,
+html[lang='zh-CN'] .intro__col,
+html[lang='zh-CN'] .proof__lede,
+html[lang='zh-CN'] .prose,
+html[lang='zh-CN'] .live__answer,
+html[lang='zh-CN'] .caption {
+  line-height: 1.7;
+}
+
+html[lang='zh-CN'] .hero__support,
+html[lang='zh-CN'] .reach__lede {
+  line-height: 1.6;
+}
+
+html[lang='zh-CN'] .ptable td {
+  line-height: 1.6;
+}
+
+html[lang='zh-CN'] .site-foot__name {
+  letter-spacing: 0.02em;
 }
 
 /* ==========================================================================

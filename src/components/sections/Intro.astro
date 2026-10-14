@@ -25,7 +25,7 @@ const columns = [
       {
         columns.map((column) => (
           <p class="intro__col rise">
-            <strong>{t(column.title)}</strong> {t(column.body)}
+            <strong>{t(column.title)}</strong>{t('sep.inline')}{t(column.body)}
           </p>
         ))
       }

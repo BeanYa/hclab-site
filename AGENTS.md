@@ -70,6 +70,8 @@ Non-goals for the current scope: user accounts, CMS/admin UI, e-commerce checkou
 | Source of truth for copy | `src/i18n/ui.ts` — **all** user-visible strings live here, in both locales |
 | Hard rule | Never hard-code user-visible copy inside a component or page; always add a key to `ui.ts` |
 | Missing translation | A missing key must fail the build, not silently fall back to English |
+| Language purity | One language per page: running copy, labels, tables, captions and each locale's `<title>` never mix scripts. Deliberate exceptions: the two-script hero mark, the other language's own name in the switcher, and proper nouns (people, email addresses, licences, shell commands). Work titles in credit lines follow the reading language; the exact originals stay in `src/assets/credits.json` behind each Source link |
+| Inline join | Label-to-text and caption-to-credit joins go through `sep.inline` (en `' '`, zh `''`), never a hard-coded `{' '}` — a half-width space between two Han runs is the one format a Chinese page must not show |
 | Alternates | Every page emits `<link rel="alternate" hreflang="en|zh|x-default">` |
 | Language switcher | Present in the header on every page, links to the *same* page in the other locale |
 
@@ -153,6 +155,12 @@ Generated and git-ignored (recreated by `npm run build` and `npm run check`):
 - **Type:** one face — the system sans stack (fast, zero layout shift, renders CJK well). Seven steps:
   14 / 16 / 20 / clamp(28→48) / clamp(36→76) / clamp(60→168) / clamp(28→92). No monospace anywhere
   outside a real `<code>`/`<pre>`, no uppercase micro-labels, no index numbers.
+- **Chinese typography:** the negative tracking and tight leading above are Latin idioms. On
+  `html[lang='zh-CN']` the scoped block at the end of `global.css` undoes them — heading tracking
+  returns to 0, wrapping display lines get ≥ 1.12 leading, running text sits at 1.7 — and the Han
+  hero name (`.hero__name--han`, either language) carries no negative tracking. The hero's own seam
+  metrics are exempt: keep them in both languages. The other script inside the hero is marked with
+  its own `lang` attribute for screen-reader voices and Han glyph variants.
 - **Surfaces:** flat fields and space, never lines. Sections are separated by a full-bleed change of tone
   (`--paper-deep`, `--ink`, `--ink-2`), by scale, or by a photograph. No borders as dividers, no shadows
   at rest, no gradients (a neutral scrim under text on a photograph is the only exception), no glass.
@@ -270,6 +278,10 @@ npm run deploy              # build + deploy
 - [x] Front-end design rebuilt (2026-10): the tasteskill "type and nothing else" direction, the two-script
       hero, the no-JavaScript enquiry chooser, five credited photographs and one clip, a CSS-only motion
       layer. Gate: `inspect.mjs` reports 0 FAIL / 0 WARN on all eight content pages, `lint.mjs` 0 FAIL.
+- [x] Language-and-format purity pass (2026-10): each locale renders in exactly one language —
+      per-locale credit titles, single-script record tables, pure `<title>`s, `sep.inline` joins, a Han
+      typography block for the Chinese page. Gate: mixed-script audit clean on all eight content pages,
+      `check`/`test`/`verify`/`smoke` all green (smoke 56/56).
 - [ ] Cloudflare authentication and first production deploy — **blocked on account credentials**
 - [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
 - [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com

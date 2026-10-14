@@ -69,7 +69,7 @@ const pages = [routes.home, routes.about, routes.services, routes.contact].map((
         {
           photoCredits.map((credit) => (
             <li>
-              {t(credit.key)}{' '}
+              {t(credit.key)}{t('sep.inline')}
               <a href={credit.href} rel="noreferrer">{t('footer.credits.source')}</a>
             </li>
           ))
@@ -78,7 +78,7 @@ const pages = [routes.home, routes.about, routes.services, routes.contact].map((
     </div>
 
     <div class="site-foot__legal">
-      <p>© {year} {t('site.legalName')} {t('footer.rights')}</p>
+      <p>© {year} {t('site.legalName')}{t('sep.inline')}{t('footer.rights')}</p>
       <p class="site-foot__note">{t('footer.note')}</p>
       {icp && <p>{icp}</p>}
     </div>

@@ -21,7 +21,7 @@ const principles = commitmentIndexes.map((index) => ({
 }));
 
 const record: readonly DetailRow[] = [
-  { label: 'about.record.legal.label', value: 'about.record.legal.value', secondary: 'about.record.legal.valueZh' },
+  { label: 'about.record.legal.label', value: 'about.record.legal.value' },
   { label: 'about.record.business.label', value: 'about.record.business.value' },
   { label: 'about.record.base.label', value: 'about.record.base.value' },
   { label: 'about.record.languages.label', value: 'about.record.languages.value' },
@@ -99,10 +99,7 @@ const single = [
             record.map((row) => (
               <tr>
                 <td>{t(row.label)}</td>
-                <td>
-                  {t(row.value)}
-                  {row.secondary && <span class="muted"> {t(row.secondary)}</span>}
-                </td>
+                <td>{t(row.value)}</td>
               </tr>
             ))
           }

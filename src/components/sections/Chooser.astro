@@ -39,7 +39,7 @@ const source = 'https://commons.wikimedia.org/wiki/File:%E5%8D%8E%E5%BC%BA%E7%94
         sizes="(min-width: 62rem) 45vw, 100vw"
       />
       <figcaption class="caption">
-        {t('live.picture.caption')}{' '}
+        {t('live.picture.caption')}{t('sep.inline')}
         <a href={source} rel="noreferrer">{t('credit.market')}</a>
       </figcaption>
     </figure>
@@ -64,10 +64,10 @@ const source = 'https://commons.wikimedia.org/wiki/File:%E5%8D%8E%E5%BC%BA%E7%94
 
               <div class="live__panel">
                 <p class="live__answer">
-                  <b>{t('live.first.label')}</b> {option.first}
+                  <b>{t('live.first.label')}</b>{t('sep.inline')}{option.first}
                 </p>
                 <p class="live__answer">
-                  <b>{t('live.need.label')}</b> {option.need}
+                  <b>{t('live.need.label')}</b>{t('sep.inline')}{option.need}
                 </p>
                 <a class="btn live__action" href={option.href}>
                   {option.action}

@@ -33,7 +33,7 @@ const twoUp = pictures.length > 1;
           sizes={twoUp ? '(min-width: 62rem) 50vw, 100vw' : '100vw'}
         />
         <figcaption class="caption band__caption">
-          {picture.caption}{' '}
+          {picture.caption}{t('sep.inline')}
           <a href={creditHrefs[picture.credit]} rel="noreferrer">
             {t(`credit.${picture.credit}` as UIKey)}
           </a>

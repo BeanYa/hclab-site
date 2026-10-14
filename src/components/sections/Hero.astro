@@ -1,5 +1,5 @@
 ---
-import type { Locale, UIKey } from '../../i18n/ui';
+import { localeTags, type Locale, type UIKey } from '../../i18n/ui';
 import { useTranslations } from '../../i18n/utils';
 
 interface Props {
@@ -12,10 +12,13 @@ const t = useTranslations(locale);
 /**
  * The local script leads: the Chinese name comes first on the Chinese page.
  * Two Han glyphs carry far less mass than eight Latin letters, so whichever
- * line shows 宅迅 is set larger and the two names read as equals.
+ * line shows 宅迅 is set larger and the two names read as equals. The other
+ * script is marked with its own lang so screen readers switch voices and the
+ * browser picks the right Han glyph variants.
  */
 const localFirst = locale === 'zh';
 const hanIsFirst = localFirst;
+const otherLocale = locale === 'zh' ? 'en' : 'zh';
 
 const facts = [
   { label: 'hero.facts.work.label', value: 'hero.facts.work.value' },
@@ -29,7 +32,7 @@ const facts = [
   <div class="hero__field hero__field--paper">
     <div class="wrap hero__inner">
       <h1 class:list={['hero__name', 'hero__name--a', { 'hero__name--han': hanIsFirst }]}>
-        {t('hero.nameA')}<span class="visually-hidden"> {t('hero.nameB')}</span>
+        {t('hero.nameA')}<span class="visually-hidden" lang={localeTags[otherLocale]}> {t('hero.nameB')}</span>
       </h1>
     </div>
   </div>
@@ -39,6 +42,7 @@ const facts = [
       <p
         class:list={['hero__name', 'hero__name--b', { 'hero__name--han': !hanIsFirst }]}
         aria-hidden="true"
+        lang={localeTags[otherLocale]}
       >
         {t('hero.nameB')}
       </p>
