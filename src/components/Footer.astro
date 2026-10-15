@@ -63,8 +63,8 @@ const pages = [routes.home, routes.about, routes.services, routes.contact].map((
       </div>
     </div>
 
-    <div class="site-foot__credits">
-      <p>{t('footer.credits.label')}</p>
+    <details class="site-foot__credits">
+      <summary>{t('footer.credits.label')}</summary>
       <ul>
         {
           photoCredits.map((credit) => (
@@ -75,7 +75,7 @@ const pages = [routes.home, routes.about, routes.services, routes.contact].map((
           ))
         }
       </ul>
-    </div>
+    </details>
 
     <div class="site-foot__legal">
       <p>© {year} {t('site.legalName')}{t('sep.inline')}{t('footer.rights')}</p>

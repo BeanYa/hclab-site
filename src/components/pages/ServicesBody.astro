@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { Locale } from '../../i18n/ui';
+import Icon, { type IconName } from '../Icon.astro';
 import ReachField from '../ReachField.astro';
 import ClipBand from '../sections/ClipBand.astro';
 import PhotoBand from '../sections/PhotoBand.astro';
@@ -17,18 +18,7 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const services = getServices(locale);
 
-/**
- * One chop per service: the six kinds of work as six printed marks, cycling
- * the three inks. Geometry only.
- */
-const chops = [
-  '<circle cx="12" cy="12" r="10" class="ink-pink" />',
-  '<polygon points="12,2 22,22 2,22" class="ink-blue" />',
-  '<path d="M2 12 A10 10 0 0 1 22 12 Z" class="ink-sunflower" />',
-  '<rect x="4.5" y="4.5" width="15" height="15" class="ink-line-pink" transform="rotate(45 12 12)" />',
-  '<circle cx="12" cy="12" r="9.5" class="ink-line-blue" />',
-  '<polygon points="12,3 21.5,21 2.5,21" class="ink-line-sunflower" />',
-] as const;
+const icons: IconName[] = ['code', 'window', 'workflow', 'support', 'cloud', 'review'];
 
 const duo = [
   { src: market, alt: t('live.picture.alt'), caption: t('live.picture.caption'), credit: 'market' as const },
@@ -47,9 +37,9 @@ const duo = [
   <div class="wrap">
     {
       services.map((service, index) => (
-        <article class="svc rise">
+        <article class="svc rise" id={service.slug}>
           <div class="svc__row">
-            <svg class="svc__chop" viewBox="0 0 24 24" aria-hidden="true" set:html={chops[index]} />
+            <span class="svc__chop"><Icon name={icons[index]!} /></span>
             <h2 class="svc__title">{service.title}</h2>
             <p class="svc__summary">{service.summary}</p>
             <ul class="svc__terms">

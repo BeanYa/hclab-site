@@ -4,28 +4,21 @@ slug: "src-pages-index-astro"
 primary_target: "src/pages/index.astro"
 related_targets: ["src/pages/zh/index.astro"]
 ---
+# Home surface — Connected engineering
 
-# Surface brief — home (/ and /zh/)
+Client brief, 2026-10-15: retain repository information; replace the previous art
+style with a contemporary, readable technology-company design.
 
-Scope: the home surface of hcentlab.com, both locales. Visitor mode: **Persuade** —
-the visitor decides whether this Shenzhen software company can be trusted with a
-build, and acts by writing email.
+Audience: enterprise software buyers evaluating a Shenzhen development partner.
+Conversion: a clear path to an enquiry to ribin.ding@hcentlab.com.
 
-- Audience: overseas enterprise software buyers evaluating a China-based partner;
-  skeptical, quick to judge, assisted by engineers who read the spec tables.
-- Job: recognise a real, precise, bilingual company within one viewport.
-- Action: start an email to ribin.ding@hcentlab.com (hero CTA, chooser mailto,
-  reach field).
-- Proof: the two checkable tables (commitments; this site as built), the credited
-  photography, the zero-JS claim itself.
-- Chosen direction: risograph overprint (impeccable seed 894b03be; challenger card
-  risograph-web-system chosen by the client over the assigned direction on the
-  decision page). Signature moment: the locale's name printed in blue with a
-  misregistered ghost that settles into register on hover.
-- Memorable composition: sunflower disc bleeding off the top right; the locale's
-  name in federal blue with the pink pass behind it; spec facts as a job-ticket strip.
-- Constraints: zero client JavaScript (chooser is radios + :has()); all copy from
-  src/i18n/ui.ts; one language per page; zh page mirrors the composition with the
-  local script leading.
-- Unresolved: none blocking; client may later supply verifiable differentiators
-  (address, phone, cases) that extend the proof tables.
+Composition: large service proposition + layered architecture illustration;
+varied service modules; inspectable engineering evidence; delivery timeline;
+native enquiry chooser; credited Shenzhen imagery; email invitation.
+
+Palette: light neutral surfaces, forest green and a restrained lime accent in
+technical diagrams. Inter Variable and Chinese system typography.
+The illustration is conceptual, not an invented company product or client case.
+
+Constraints: truthful facts, EN/ZH parity, centralized copy, zero production
+client JavaScript, native keyboard interaction and reduced-motion support.

@@ -1,22 +1,10 @@
 ---
-import { localeTags, type Locale, type UIKey } from '../../i18n/ui';
+import type { Locale, UIKey } from '../../i18n/ui';
 import { localizePath, routes, useTranslations } from '../../i18n/utils';
-
-interface Props {
-  locale: Locale;
-}
-
+import Icon from '../Icon.astro';
+interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-
-/**
- * The hero prints only the reading locale's name (client decision
- * 2026-10-15); the other script's name stays in the DOM for screen readers
- * and search engines, marked with its own lang. The visible name carries a
- * ghost of itself — the second print pass, missed by a hair.
- */
-const otherLocale = locale === 'zh' ? 'en' : 'zh';
-
 const facts = [
   { label: 'hero.facts.work.label', value: 'hero.facts.work.value' },
   { label: 'hero.facts.support.label', value: 'hero.facts.support.value' },
@@ -24,36 +12,54 @@ const facts = [
   { label: 'hero.facts.languages.label', value: 'hero.facts.languages.value' },
 ] as const satisfies readonly { label: UIKey; value: UIKey }[];
 ---
-
 <section class="hero">
-  <div class="hero__spot" aria-hidden="true"></div>
-
-  <div class="wrap hero__inner">
-    <div class="hero__mark">
-      <h1 class:list={['hero__name', { 'hero__name--han': locale === 'zh' }]}>
-        <span class="misprint">
-          <span class="misprint__ghost" aria-hidden="true">{t('hero.nameA')}</span>
-          {t('hero.nameA')}
-        </span>
-        <span class="visually-hidden" lang={localeTags[otherLocale]}> {t('hero.nameB')}</span>
-      </h1>
+  <div class="wrap">
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow"><span class="status-dot"></span>{t('hero.kicker')}</p>
+        <h1 class="hero__title"><span>{t('hero.title.a')}</span>{t('sep.inline')}<span>{t('hero.title.b')}</span></h1>
+        <p class="hero__support">{t('hero.support')}</p>
+        <div class="hero__actions">
+          <a class="btn" href={localizePath(routes.contact, locale)}>{t('hero.action')}<Icon name="arrow" /></a>
+          <a class="text-link" href="#expertise">{t('hero.secondary')}<Icon name="arrow" /></a>
+        </div>
+        <p class="hero__note"><span class="small-check"><Icon name="check" /></span>{t('hero.note')}</p>
+      </div>
+      <figure class="system-scene">
+        <div class="system-scene__top"><span><span class="status-dot"></span>{t('hero.visual.label')}</span><Icon name="layers" /></div>
+        <div class="system-scene__canvas" role="img" aria-label={t('hero.visual.alt')}>
+          <svg class="system-scene__drawing" viewBox="0 0 600 450" fill="none" aria-hidden="true">
+            <g class="scene-wires">
+              <path d="M40 110h82q20 0 20 20v23l52 29" /><path d="M406 182h48q20 0 20-20v-17h80" />
+              <path d="M40 324h80q20 0 20-20v-4l54-30" /><path d="m406 326 40 22h107" />
+            </g>
+            <g class="scene-layer scene-layer--bottom">
+              <path class="scene-side" d="m152 305 148 83 148-83v22l-148 83-148-83z" />
+              <path class="scene-plate" d="m300 222 148 83-148 83-148-83z" />
+              <path class="scene-detail" d="m222 305 78-44 78 44-78 44z" />
+            </g>
+            <g class="scene-layer scene-layer--middle">
+              <path class="scene-side" d="m152 229 148 83 148-83v22l-148 83-148-83z" />
+              <path class="scene-plate" d="m300 146 148 83-148 83-148-83z" />
+              <path class="scene-detail" d="m240 229 60-34 60 34-60 34z" />
+              <path class="scene-circuit" d="m182 229 42 24m152-48 42 24m-118 56v-22" />
+            </g>
+            <g class="scene-layer scene-layer--top">
+              <path class="scene-side scene-side--top" d="m152 153 148 83 148-83v22l-148 83-148-83z" />
+              <path class="scene-plate scene-plate--top" d="m300 70 148 83-148 83-148-83z" />
+              <path class="scene-monogram" d="m258 136 18-10 24 14 24-14-24-14 18-10 60 34-18 10-24-14-24 14 24 14-18 10z" />
+              <path class="scene-detail" d="m177 153 123 69 123-69" />
+            </g>
+            <g class="scene-points"><circle cx="142" cy="151" r="4" /><circle cx="474" cy="145" r="4" /><circle cx="140" cy="300" r="4" /><circle cx="446" cy="348" r="4" /></g>
+          </svg>
+          <div class="system-node system-node--product"><span><Icon name="window" /></span>{t('hero.visual.product')}</div>
+          <div class="system-node system-node--services"><span><Icon name="workflow" /></span>{t('hero.visual.services')}</div>
+          <div class="system-node system-node--cloud"><span><Icon name="cloud" /></span>{t('hero.visual.cloud')}</div>
+          <div class="system-node system-node--support"><span><Icon name="support" /></span>{t('hero.visual.support')}</div>
+        </div>
+        <figcaption class="system-scene__foot"><span><Icon name="check" />{t('hero.visual.badge')}</span>{t('sep.inline')}<span>{t('hero.visual.foot')}</span></figcaption>
+      </figure>
     </div>
-
-    <div class="hero__foot">
-      <p class="hero__support">{t('hero.support')}</p>
-
-      <dl class="hero__facts">
-        {
-          facts.map((fact) => (
-            <div>
-              <dt>{t(fact.label)}</dt>
-              <dd>{t(fact.value)}</dd>
-            </div>
-          ))
-        }
-      </dl>
-
-      <a class="btn press" href={localizePath(routes.contact, locale)}>{t('hero.action')}</a>
-    </div>
+    <dl class="hero__facts">{facts.map((fact) => <div><dt>{t(fact.label)}</dt><dd>{t(fact.value)}</dd></div>)}</dl>
   </div>
 </section>

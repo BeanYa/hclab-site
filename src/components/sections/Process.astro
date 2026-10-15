@@ -1,58 +1,15 @@
 ---
 import type { Locale } from '../../i18n/ui';
 import { processLines, useTranslations } from '../../i18n/utils';
-
-interface Props {
-  locale: Locale;
-}
-
+import Icon, { type IconName } from '../Icon.astro';
+interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-
-/**
- * One chop per pass of the press: the four stages as four marks, alternating
- * inks like a print run. Geometry only — no icon system, no pictures.
- */
-const chops = [
-  '<circle cx="12" cy="12" r="10" class="ink-pink" />',
-  '<polygon points="12,2 22,22 2,22" class="ink-blue" />',
-  '<path d="M2 12 A10 10 0 0 1 22 12 Z" class="ink-sunflower" />',
-  '<rect x="4.5" y="4.5" width="15" height="15" class="ink-line-pink" />',
-] as const;
+const icons: IconName[] = ['review', 'layers', 'code', 'support'];
 ---
-
-<section class="section" aria-labelledby="process-heading">
+<section class="section process-section" aria-labelledby="process-heading">
   <div class="wrap">
-    <div class="process">
-      {
-        processLines.map((n) =>
-          n === 1 ? (
-            <article class="process__step rise">
-              <svg
-                class="process__chop"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                set:html={chops[n - 1]}
-              />
-              <h2 class="process__line" id="process-heading">
-                {t(`process.line${n}`)}
-              </h2>
-              <p class="process__note">{t(`process.line${n}.body`)}</p>
-            </article>
-          ) : (
-            <article class="process__step rise">
-              <svg
-                class:list={['process__chop', `process__chop--${n}`]}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                set:html={chops[n - 1]}
-              />
-              <h3 class="process__line">{t(`process.line${n}`)}</h3>
-              <p class="process__note">{t(`process.line${n}.body`)}</p>
-            </article>
-          ),
-        )
-      }
-    </div>
+    <div class="section-head"><div><p class="eyebrow">{t('section.process.label')}</p><h2 id="process-heading"><span>{t('section.process.title.a')}</span>{t('sep.inline')}<span class="muted-heading">{t('section.process.title.b')}</span></h2></div><p class="section-head__aside">{t('section.process.lede')}</p></div>
+    <div class="process">{processLines.map((n) => <article class="process__step"><span class="process__icon"><Icon name={icons[n - 1]!} /></span><h3>{t(`process.line${n}`)}</h3><p>{t(`process.line${n}.body`)}</p></article>)}</div>
   </div>
 </section>

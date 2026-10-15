@@ -1,0 +1,62 @@
+HOMECENT — CONNECTED ENGINEERING REDESIGN
+Date: 2026-10-15 (Australia/Perth)
+
+This is the redesigned version requested by the client. It replaces the
+previous risograph visual style while retaining confirmed repository facts.
+
+CHANGES
+- Light editorial layout, forest-green accents, self-hosted Inter Variable.
+- Custom layered system architecture illustration, explicitly conceptual.
+- Responsive service modules linking to six service-page anchors.
+- Inspectable engineering evidence and a clear delivery timeline.
+- Refreshed typography, navigation, tables, footer and email invitations.
+- Updated EN/ZH social cards, favicon and touch icon.
+- English and Chinese pages share the new system; all copy remains in ui.ts.
+- Original company names, contact person, email, domain and business preserved.
+- No invented customers, testimonials, performance statistics or certifications.
+- Native menus, radio chooser and disclosure elements; no production client JS.
+- DESIGN.md, AGENTS.md, PRODUCT.md and design sidecars updated.
+- Inter's SIL Open Font License included in public/licenses and dist/licenses.
+
+VALIDATION
+npm run check: PASS — 36 Astro files; 0 errors, 0 warnings, 0 hints.
+npm test: PASS — 7/7 redirect tests.
+npm run build: PASS — English and Chinese static pages generated.
+npm run verify: PASS — 112 checks passed, 0 failed.
+npm run cf:dev + npm run smoke: PASS — 56 checks passed, 0 failed locally.
+
+Browser inspection:
+- Desktop homepage visually inspected.
+- English and Chinese mobile homepages visually inspected at 390 x 844.
+- All 8 content routes: one H1, correct language, no horizontal page overflow.
+- Six service anchors present in both service-page locales.
+- Mobile native navigation opens through keyboard Enter.
+- Choosing the existing-system situation selects its radio and shows one panel.
+- Engineering disclosure opens both evidence tables without page overflow.
+- Responsive viewport override reset after inspection.
+
+The local Worker used for testing was stopped. No production deployment
+or remote repository write was performed.
+
+PACKAGE
+Contains project source, the verified dist/ build, generated CSP hashes,
+this report and font licensing.
+Excludes node_modules, .astro, .wrangler, caches, logs, credentials and Git
+metadata. This is a source snapshot, not a Git checkout.
+
+RUN
+Use Node.js 24 or another Node version supported by Astro 7.
+In the extracted hclab-site directory:
+  npm ci
+  npm run dev
+
+For the included static build after dependency installation:
+  npm run preview
+
+For the actual local Worker:
+  npm run cf:dev
+Then, in another terminal:
+  npm run smoke
+
+The included README.md describes the existing Cloudflare deployment process.
+A deployment requires the user's explicit instruction and Cloudflare access.

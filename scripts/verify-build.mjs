@@ -102,6 +102,8 @@ for (const page of pages) {
 
   check(html.includes('application/ld+json'), `${page.file}: missing JSON-LD structured data`);
   check(!/<style[\s>]/.test(html), `${page.file}: inline <style> would be blocked by the CSP`);
+  check(html.includes('connected-engineering'), `${page.file}: current design contract is missing`);
+  check(!/<script(?![^>]*type="application\/ld\+json")/.test(html), `${page.file}: executable client JavaScript is not allowed`);
 
   // Internal links must resolve to something in dist.
   for (const href of new Set(list(html, /href="(\/[^"#?]*)"/g))) {

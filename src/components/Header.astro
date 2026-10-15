@@ -1,6 +1,7 @@
 ---
 import { locales, type Locale } from '../i18n/ui';
 import { localizePath, navItems, routes, useTranslations } from '../i18n/utils';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
@@ -25,7 +26,7 @@ const links = navItems.map((item) => ({
 
 <header class="site-head">
   <div class="wrap site-head__row">
-    <a class="site-head__brand" href={homeHref}>{t('site.name')}</a>
+    <a class="site-head__brand" href={homeHref}><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 4h7v9h8V4h7v24h-7v-9h-8v9H5z" fill="currentColor" /></svg>{t('site.name')}</a>
 
     <nav class="site-head__nav" aria-label={t('nav.primary')}>
       <ul class="site-head__list">
@@ -56,7 +57,7 @@ const links = navItems.map((item) => ({
       }
     </nav>
 
-    <a class="btn site-head__action" href={actionHref}>{t('hero.action')}</a>
+    <a class="btn site-head__action" href={actionHref}>{t('hero.action')}<Icon name="arrow" /></a>
 
     <details class="site-head__menu">
       <summary>{t('nav.openMenu')}</summary>

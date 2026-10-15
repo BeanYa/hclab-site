@@ -1,144 +1,36 @@
 {
-  "schemaVersion": 2,
   "generatedAt": "2026-10-15",
-  "title": "Design System: Homecent（宅迅）",
-  "extensions": {
-    "colorMeta": {
-      "blue": { "role": "primary", "displayName": "联邦蓝 Federal Blue", "canonical": "#1d3fd8", "tonalRamp": ["#0a1670", "#12249f", "#1d3fd8", "#3a58df", "#5c76e6", "#8394ed", "#a9b4f3", "#d0d7f9"] },
-      "blue-deep": { "role": "primary", "displayName": "深蓝 Blue Deep（hover）", "canonical": "#142c9c", "tonalRamp": ["#08104d", "#0e1a73", "#142c9c", "#2440b5", "#3a56c9", "#6177d6", "#8b9be3", "#b6c1f0"] },
-      "ink": { "role": "neutral", "displayName": "蓝黑墨 Riso Black", "canonical": "#1b2145", "tonalRamp": ["#0b0e20", "#121631", "#1b2145", "#2b3263", "#40488a", "#5a61a8", "#7f85c0", "#a9add8"] },
-      "pink": { "role": "secondary", "displayName": "荧光粉 Fluoro Pink", "canonical": "#f23f9e", "tonalRamp": ["#6b0e3d", "#951657", "#bf2377", "#d93189", "#f23f9e", "#f56cb5", "#f798cb", "#fac4e0"] },
-      "pink-ink": { "role": "secondary", "displayName": "印粉 Pink Ink（小字档）", "canonical": "#bf2377", "tonalRamp": ["#5c0a32", "#8b1450", "#bf2377", "#cf3a88", "#e0599e", "#ea7fb4", "#f2a6ca", "#f9cde0"] },
-      "sunflower": { "role": "tertiary", "displayName": "葵黄 Sunflower", "canonical": "#fbc925", "tonalRamp": ["#5e470a", "#876710", "#af8815", "#d2a81c", "#fbc925", "#fcd45b", "#fddf90", "#feebc4"] },
-      "violet": { "role": "tertiary", "displayName": "套印紫 Overprint Violet（仅 ::selection）", "canonical": "#5b34d4", "tonalRamp": ["#221057", "#331b8b", "#4527b4", "#5b34d4", "#7a55de", "#9b79e7", "#bb9ff0", "#dbc7f6"] },
-      "paper": { "role": "neutral", "displayName": "暖纸 Warm Paper", "canonical": "#f8f1de", "tonalRamp": ["#4d452a", "#6d6340", "#8d8358", "#aca473", "#c9c191", "#e0d8ae", "#efe4c8", "#f8f1de"] },
-      "paper-deep": { "role": "neutral", "displayName": "纸阶 Paper Deep", "canonical": "#efe4c8", "tonalRamp": ["#4d452a", "#6d6340", "#8d8358", "#aca473", "#c9c191", "#ddd3a4", "#e8ddb6", "#efe4c8"] },
-      "on-blue": { "role": "neutral", "displayName": "蓝上纸白 On-Blue", "canonical": "#fdf6e3", "tonalRamp": ["#57503a", "#7d7454", "#a39a72", "#c6bd93", "#e0d9b6", "#f0e9cd", "#f8f1de", "#fdf6e3"] },
-      "on-blue-soft": { "role": "neutral", "displayName": "蓝上次白 On-Blue Soft", "canonical": "#ccd6f6", "tonalRamp": ["#3d4668", "#556089", "#727dad", "#939ec5", "#b3bde0", "#ccd6f6", "#dde4f9", "#eef1fc"] },
-      "line": { "role": "neutral", "displayName": "行线 Line（仅表格行间）", "canonical": "rgb(27 20 69 / 22%)", "tonalRamp": ["#0b0e20", "#121631", "#1b2145", "#2b3263", "#40488a", "#5a61a8", "#7f85c0", "#a9add8"] }
+  "tokens": {
+    "fontFamily": {
+      "sans": "Inter Variable, system-ui, sans-serif"
     },
-    "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "只给两个名字：Homecent 与 宅迅。Archivo Black 400，全大写，multiply 压色场。" },
-      "headline": { "displayName": "Headline", "purpose": "区段标题、页题（--t-xl）、表题头、页脚品牌名与邮箱。两行式标题第二行换墨（蓝或粉）。" },
-      "title": { "displayName": "Title", "purpose": "工单 tab、服务条目标题、承诺印章标题。" },
-      "lede": { "displayName": "Lede", "purpose": "段首导语与立场句，19px/1.6，max 62ch（hero 34ch、Reach 26ch）。" },
-      "body": { "displayName": "Body", "purpose": "全部运行文本、表格、链接。16px/1.6（zh 1.7），prose/caption 68ch。" },
-      "label": { "displayName": "Label", "purpose": "工单微标签：hero 事实项、legend、表头、页脚栏目题。700/14px/全大写/+0.08em。" }
+    "colors": {
+      "muted": "#627067",
+      "accent": "#256b48",
+      "line": "#dee6df",
+      "ink": "#18251e",
+      "paper": "#fbfcfb",
+      "lime": "#cef286",
+      "dark": "#14251c"
     },
-    "shadows": [
-      { "name": "mis-pass", "value": "0.375rem 0.375rem 0 0 #f23f9e", "purpose": "规格表与承诺章的第二印；hover 时向套准滑动（.press 语义）。" },
-      { "name": "panel-pink", "value": "6px 6px 0 #f23f9e", "purpose": "移动端 <details> 菜单面板的实心错位投影。" },
-      { "name": "panel-blue", "value": "5px 5px 0 #1d3fd8", "purpose": "选择器展开面板（葵黄底）的实心错位投影。" }
-    ],
-    "motion": [
-      { "name": "ease-settle", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "全部动效的默认缓动（落位、合准）。" },
-      { "name": "mis", "value": "0.375rem", "purpose": "块级第二印的静息错位量；hover 减至 1/2.5，active 归零。" },
-      { "name": "mis-em", "value": "0.04em", "purpose": "文字重影（.misprint）的静息错位量；hover 合准。" },
-      { "name": "press-settle", "value": "180ms var(--ease-settle)", "purpose": ".press 边框滑向套准的时长。" },
-      { "name": "ghost-settle", "value": "260ms var(--ease-settle)", "purpose": "hero 名字重影合准的时长。" },
-      { "name": "panel-open", "value": "grid-template-rows 300ms + opacity 200ms", "purpose": "选择器面板展开；transform/opacity/grid-rows only。" },
-      { "name": "rise", "value": "animation: rise linear both; animation-timeline: var(--timeline-view); animation-range: entry 6% cover 24%", "purpose": "区段入场（view-timeline，逐子项错档）。勿把 animation-timeline 并回 animation 简写。" }
-    ],
-    "breakpoints": [
-      { "name": "sm", "value": "48rem" },
-      { "name": "md", "value": "62rem" },
-      { "name": "lg", "value": "75rem" }
+    "rounded": {
+      "card": "12px",
+      "control": "7px",
+      "scene": "18px"
+    }
+  },
+  "components": [],
+  "schemaVersion": 2,
+  "narrative": {
+    "overview": "Client-directed contemporary redesign. Readable light surfaces, forest-green accents, layered architecture, varied service modules and inspectable engineering evidence.",
+    "northStar": "Connected engineering",
+    "keyCharacteristics": [
+      "Truthful repository facts",
+      "EN/ZH parity",
+      "Zero production client JavaScript",
+      "Native accessible interactions",
+      "Conceptual architecture illustration"
     ]
   },
-  "components": [
-    {
-      "name": "Primary Button（错位第二印）",
-      "kind": "button",
-      "refersTo": "button-primary",
-      "description": "蓝底纸白字，身后 2px 粉框错位 --mis；hover 加深并滑向套准，active 完全合准。全站唯一转化钮（mailto）。",
-      "html": "<a class=\"ds-btn\" href=\"#contact\">Start a project</a>",
-      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 2.875rem; padding: 0.75rem 1.25rem; background: var(--blue, #1d3fd8); color: var(--on-blue, #fdf6e3); font: 700 1rem/1.2 var(--font-sans, system-ui, sans-serif); letter-spacing: 0.01em; text-decoration: none; position: relative; z-index: 0; transition: background-color 140ms ease, transform 120ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn::after { content: ''; position: absolute; inset: 0; z-index: -1; border: 2px solid var(--pink, #f23f9e); transform: translate(0.375rem, 0.375rem); transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; } .ds-btn:hover { background: var(--blue-deep, #142c9c); } .ds-btn:hover::after, .ds-btn:focus-visible::after { transform: translate(0.15rem, 0.15rem); } .ds-btn:active { transform: translate(2px, 2px); } .ds-btn:active::after { transform: translate(0, 0); } .ds-btn:focus-visible { outline: 3px solid var(--blue, #1d3fd8); outline-offset: 3px; }"
-    },
-    {
-      "name": "Ghost Button（葵黄第二印）",
-      "kind": "button",
-      "refersTo": "button-ghost",
-      "description": "透明底 + inset 2px 蓝描边，第二印换葵黄；hover 纸阶底加深蓝字。",
-      "html": "<a class=\"ds-btn-ghost\" href=\"#services\">See the services</a>",
-      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 2.875rem; padding: 0.75rem 1.25rem; background: transparent; color: var(--blue, #1d3fd8); font: 700 1rem/1.2 var(--font-sans, system-ui, sans-serif); letter-spacing: 0.01em; text-decoration: none; box-shadow: inset 0 0 0 2px var(--blue, #1d3fd8); position: relative; z-index: 0; transition: background-color 140ms ease, color 140ms ease, transform 120ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-ghost::after { content: ''; position: absolute; inset: 0; z-index: -1; border: 2px solid var(--sunflower, #fbc925); transform: translate(0.375rem, 0.375rem); transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; } .ds-btn-ghost:hover { background: var(--paper-deep, #efe4c8); color: var(--blue-deep, #142c9c); } .ds-btn-ghost:hover::after, .ds-btn-ghost:focus-visible::after { transform: translate(0.15rem, 0.15rem); } .ds-btn-ghost:active::after { transform: translate(0, 0); } .ds-btn-ghost:focus-visible { outline: 3px solid var(--blue, #1d3fd8); outline-offset: 3px; }"
-    },
-    {
-      "name": "Text Link（蓝字粉线）",
-      "kind": "custom",
-      "refersTo": "link-text",
-      "description": "蓝字 500 weight + 2px 粉色下划线；hover 加深加粗。当前页以粉线标记。",
-      "html": "<a class=\"ds-link\" href=\"#about\">About the company</a>",
-      "css": ".ds-link { color: var(--blue, #1d3fd8); font: 500 1rem/1.6 var(--font-sans, system-ui, sans-serif); text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: var(--pink, #f23f9e); text-underline-offset: 0.24em; transition: color 140ms ease, text-decoration-color 140ms ease; } .ds-link:hover { color: var(--blue-deep, #142c9c); text-decoration-thickness: 3px; } .ds-link:focus-visible { outline: 3px solid var(--blue, #1d3fd8); outline-offset: 3px; }"
-    },
-    {
-      "name": "Spec Table（规格表）",
-      "kind": "card",
-      "refersTo": "spec-table",
-      "description": "纸底、2px 蓝边框、粉色错位投影；葵黄题头条，大写蓝表头，行间 1px 行线。全站可核对事实的载体。",
-      "html": "<table class=\"ds-ptable\"><caption>What we commit to</caption><thead><tr><th>Commitment</th><th>How to check it</th></tr></thead><tbody><tr><td>Scope in writing</td><td>Ask for the scope document before any work starts.</td></tr><tr><td>Working software</td><td>Every iteration ends in a build you can open yourself.</td></tr></tbody></table>",
-      "css": ".ds-ptable { width: 100%; background: var(--paper, #f8f1de); color: var(--ink, #1b2145); font: 400 1rem/1.5 var(--font-sans, system-ui, sans-serif); border: 2px solid var(--blue, #1d3fd8); border-collapse: collapse; box-shadow: 0.375rem 0.375rem 0 0 var(--pink, #f23f9e); } .ds-ptable caption { text-align: left; font-family: 'Archivo Black', 'Arial Black', system-ui, sans-serif; font-weight: 400; font-size: 1.15rem; padding: 0.9rem 1.1rem; background: var(--sunflower, #fbc925); color: var(--ink, #1b2145); border-bottom: 2px solid var(--blue, #1d3fd8); } .ds-ptable th { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--blue, #1d3fd8); text-align: left; padding: 0.7rem 1.1rem; border-bottom: 2px solid var(--ink, #1b2145); } .ds-ptable td { padding: 0.85rem 1.1rem; border-top: 1px solid rgb(27 20 69 / 22%); vertical-align: top; } .ds-ptable tbody tr:first-child td { border-top: 0; }"
-    },
-    {
-      "name": "Chooser Ticket（工单票根，选中态）",
-      "kind": "custom",
-      "description": "radio + :has() 的三联工单：display 面票根行线排列，选中蓝底反白，展开面板葵黄底 + 5px 蓝色错位投影。无 :has() 时全部展开即回退。",
-      "html": "<div class=\"ds-ticket\"><button class=\"ds-tab ds-tab--active\" aria-pressed=\"true\">We have an idea</button><div class=\"ds-panel\"><p><b>First step.</b> We write down what the product has to do.</p><a class=\"ds-btn\" href=\"#mail\">Send this as an email</a></div><button class=\"ds-tab\" aria-pressed=\"false\">We run an existing system</button></div>",
-      "css": ".ds-ticket { font: 400 1rem/1.6 var(--font-sans, system-ui, sans-serif); color: var(--ink, #1b2145); } .ds-tab { display: block; width: 100%; text-align: left; padding: 1.05rem 1.25rem; font-family: 'Archivo Black', 'Arial Black', system-ui, sans-serif; font-size: 1.4rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--ink, #1b2145); background: transparent; border: 0; border-top: 2px solid var(--ink, #1b2145); cursor: pointer; transition: background-color 140ms ease, color 140ms ease; } .ds-ticket .ds-tab:last-child { border-bottom: 2px solid var(--ink, #1b2145); } .ds-tab:hover { background: var(--paper-deep, #efe4c8); } .ds-tab:focus-visible { outline: 3px solid var(--blue, #1d3fd8); outline-offset: -3px; } .ds-tab--active, .ds-tab[aria-pressed='true'] { background: var(--blue, #1d3fd8); color: var(--on-blue, #fdf6e3); } .ds-panel { display: grid; gap: 0.9rem; justify-items: start; margin-bottom: 1.25rem; padding: 1.25rem; background: var(--sunflower, #fbc925); color: var(--ink, #1b2145); box-shadow: 5px 5px 0 var(--blue, #1d3fd8); } .ds-panel b { color: var(--blue, #1d3fd8); } .ds-btn { display: inline-flex; align-items: center; min-height: 2.875rem; padding: 0.75rem 1.25rem; background: var(--blue, #1d3fd8); color: var(--on-blue, #fdf6e3); font: 700 1rem/1.2 var(--font-sans, system-ui, sans-serif); text-decoration: none; }"
-    },
-    {
-      "name": "Misprint Heading（双墨重影标题）",
-      "kind": "custom",
-      "description": "display 面标题背后藏一层粉色重影（--mis-em 错位，z-index -1 在文字之下）；hover 合准。404 标题用 0.14em/0.1em 宽幅且永不合准。",
-      "html": "<h2 class=\"ds-misprint\" data-text=\"This page is the sample\">This page is the sample</h2>",
-      "css": ".ds-misprint { position: relative; display: inline-block; z-index: 0; margin: 0; font-family: 'Archivo Black', 'Arial Black', system-ui, sans-serif; font-weight: 400; text-transform: uppercase; font-size: 2.6rem; line-height: 1.02; letter-spacing: -0.015em; color: var(--blue, #1d3fd8); } .ds-misprint::before { content: attr(data-text); position: absolute; inset: 0; z-index: -1; color: var(--pink, #f23f9e); transform: translate(0.04em, 0.028em); transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; } .ds-misprint:hover::before { transform: translate(0, 0); }"
-    },
-    {
-      "name": "Commitment Stamp（承诺印章）",
-      "kind": "card",
-      "description": "纸底 + 2px 蓝边框 + 粉色错位投影的小印章卡，铺在纸阶色场上；display 面标题。",
-      "html": "<article class=\"ds-stamp\"><h3>No lock-in</h3><p>Code, documentation and infrastructure access belong to you.</p></article>",
-      "css": ".ds-stamp { display: grid; gap: 0.5rem; padding: 1.4rem 1.4rem 1.5rem; background: var(--paper, #f8f1de); color: var(--ink, #1b2145); font: 400 1rem/1.6 var(--font-sans, system-ui, sans-serif); border: 2px solid var(--blue, #1d3fd8); box-shadow: 0.375rem 0.375rem 0 0 var(--pink, #f23f9e); } .ds-stamp h3 { margin: 0; font-family: 'Archivo Black', 'Arial Black', system-ui, sans-serif; font-weight: 400; text-transform: uppercase; font-size: 1.3rem; line-height: 1.02; letter-spacing: -0.015em; } .ds-stamp p { margin: 0; max-width: 44ch; }"
-    }
-  ],
-  "narrative": {
-    "northStar": "Risograph Overprint —— 一份第二印永远差半档套印的 riso 印刷文件",
-    "overview": "整个网站被构建为一套 riso 孔版印刷的文件组：暖纸底、两色专墨（联邦蓝印结构与本地文字，荧光粉印\"另一种文字\"与信号）、葵黄色场、几何印张，以及一层 5.5% 的全局纸纹。世界的核心机制是套印失准：每个关键元素背后都有一次没对准的第二印 —— 边框错位、文字重影、硬边错位投影 —— 访客一触碰，第二印就向套准滑动；按下即完全合准。密度克制（约 4/10）、动效一次性（约 3/10）、形式语言全部来自\"印刷工单 / 规格表 / 印章\"这套车间隐喻。硬约束：零客户端 JS、文案单源 ui.ts、每语言单脚本、mailto 唯一转化、照片必须署名。",
-    "keyCharacteristics": [
-      "双墨分工：蓝印结构，粉印他者，葵黄印色场，violet 只活在两墨交叠处（::selection）",
-      "签名语法：.press 错位边框第二印、.misprint 双墨文字重影 —— 触碰合准，是全站唯一的\"深度\"语言",
-      "展示字体为自托管 Archivo Black（非系统展示字），正文系统 sans；ZH 页 display 以系统 900 weight 回退",
-      "照片双色调：蓝底 + lighten 混合 + 灰度滤镜 + 粉色错位框",
-      "深度即错位：无模糊阴影、无渐变表面，只有实心错位印",
-      "全局纸纹：feTurbulence 噪点瓷砖，0.055 透明度 multiply，是\"主题世界的纹理\"",
-      "动效只动 transform/opacity，prefers-reduced-motion 下全降级且内容全可见"
-    ],
-    "rules": [
-      { "name": "两墨守恒规则", "body": "蓝印一切结构性元素；粉只印\"他者\"——另一种文字、信号、错位第二印。粉永远不做正文色；小字用 --pink-ink，原色粉只出现在大字与大标记上。", "section": "colors" },
-      { "name": "紫在交叠处规则", "body": "--violet 只用于 ::selection（套印交叠的隐喻），禁止作为表面、边框或文字色出现。", "section": "colors" },
-      { "name": "墨位分节规则", "body": "区段之间靠换墨分隔（纸 → 纸阶 → 全蓝墨段 → 蓝黑墨段）或靠 --band 大留白，不靠发丝分隔线。--line 只许印在表格行间。", "section": "colors" },
-      { "name": "一文字一墨色规则", "body": "Hero 处本地文字印蓝、另一文字印粉；哪个文字排第二，哪个就带错位重影。第二名字的字号按文字质量校平（拉丁第二印 0.82×，汉字第二印 1.06×）。", "section": "typography" },
-      { "name": "大写只塑造拉丁规则", "body": "text-transform: uppercase 只作用于拉丁展示位；汉字展示位显式关闭。负字距与紧行高是拉丁习语，ZH 页全部撤回（正文行高 1.7，折行展示行高 1.12–1.15，display 槽位系统 900 weight 回退）。", "section": "typography" },
-      { "name": "Band 分节规则", "body": "垂直留白只有一个刻度 --band；需要更重的分隔时换墨，不发明第二个间距刻度。", "section": "layout" },
-      { "name": "错位即深度规则", "body": "禁止 blur 阴影、禁止渐变表面（网点场与纸纹是印刷工艺，不是渐变装饰）。任何\"浮起\"都应表达为一次没对准的第二印。", "section": "elevation" },
-      { "name": "直角承印规则", "body": "新表面不加圆角；需要柔和时用纸阶色场，不用 radius。radius 只有两个合法值：0 与 50%。", "section": "shapes" }
-    ],
-    "dos": [
-      "Do 只用 src/styles/global.css 顶部 token 块里的颜色与字号；token 块之下不许出现裸 hex。",
-      "Do 给关键元素配错位第二印：边框平移 --mis 或实心投影 var(--mis) var(--mis) 0 0 var(--pink)，hover 时滑向套准。",
-      "Do 动效只动 transform/opacity，缓动用 --ease-settle，一次性，prefers-reduced-motion 下全部关停且内容全可见。",
-      "Do 保持 --timeline-view 自定义属性传递 view()：不要把 animation-timeline 并回 animation 简写。",
-      "Do 新页面走既有区段语法：.wrap + --band 分节 + 墨位换底 + .ptable 承载可核对的事实 + Reach 墨段收尾。",
-      "Do 照片一律过双色调配方（蓝底 + lighten + grayscale + 粉错位框）并就地署名。",
-      "Do 中文页走 zh-CN 排版块：display 槽 900 weight、去负字距、行高放宽（正文 1.7）。"
-    ],
-    "donts": [
-      "Don't 使用模糊阴影、渐变表面、玻璃拟态、圆角（0 与 50% 之外没有 radius）；深度只能来自错位第二印。",
-      "Don't 用原色粉 --pink 排小字——小字用 --pink-ink；葵黄不做正文色；violet 只许出现在 ::selection。",
-      "Don't 用发丝线分隔区段；区段靠换墨或 --band，--line 只许印在表格行间。",
-      "Don't 引入客户端 JS、monospace、图标库或 emoji 图标——菜单用 <details>，选择器用 radio + :has()，图形只有几何 chop SVG。",
-      "Don't 把 animation-timeline: var(--timeline-view) 合并回 animation 简写，也不要\"清理\"该自定义属性。",
-      "Don't 在运行文案里混排两种文字（每语言单脚本），也不要发明未确认的公司事实。",
-      "Don't 把图库照片呈现为客户自己的产品、房间、人物或团队。"
-    ]
-  }
+  "title": "Homecent — Connected engineering"
 }

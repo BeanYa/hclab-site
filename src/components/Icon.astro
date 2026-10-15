@@ -1,0 +1,18 @@
+---
+export type IconName = 'arrow' | 'code' | 'window' | 'workflow' | 'support' | 'cloud' | 'review' | 'check' | 'globe' | 'layers';
+interface Props { name: IconName; class?: string; }
+const { name, class: className } = Astro.props;
+const paths: Record<IconName, string> = {
+  arrow: 'M5 12h14m-6-6 6 6-6 6',
+  code: 'm8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16',
+  window: 'M3 8h18M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2M6 6h.01M9 6h.01M7 12h4m-4 4h8',
+  workflow: 'M8 4H4v4h4V4Zm12 12h-4v4h4v-4ZM6 8v6a4 4 0 0 0 4 4h6M8 6h6a4 4 0 0 1 4 4v6',
+  support: 'M4 13v-1a8 8 0 0 1 16 0v1M4 12h3v7H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Zm16 0h-3v7h3a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1Zm-2 7v1a2 2 0 0 1-2 2h-3',
+  cloud: 'M7 18H6a4 4 0 0 1-.7-7.94A7 7 0 0 1 19 9a4.5 4.5 0 0 1 0 9h-2m-5 3V11m-4 4 4-4 4 4',
+  review: 'M9 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4M8 8h4m-4 4h3m4-7 4 4m-7 7 3-1 7-7a2.12 2.12 0 0 0-3-3l-7 7-1 4Z',
+  check: 'm5 12 4 4L19 6',
+  globe: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z',
+  layers: 'm12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5',
+};
+---
+<svg class:list={['icon', className]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>

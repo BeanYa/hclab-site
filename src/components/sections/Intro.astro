@@ -1,34 +1,14 @@
 ---
+import { Image } from 'astro:assets';
+import panorama from '../../assets/shenzhen-panorama.jpg';
 import type { Locale } from '../../i18n/ui';
-import { useTranslations } from '../../i18n/utils';
-
-interface Props {
-  locale: Locale;
-}
-
+import { creditHrefs, localizePath, routes, useTranslations } from '../../i18n/utils';
+import Icon from '../Icon.astro';
+interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-
-const columns = [
-  { title: 'intro.work.title', body: 'intro.work.body' },
-  { title: 'intro.support.title', body: 'intro.support.body' },
-  { title: 'intro.languages.title', body: 'intro.languages.body' },
-  { title: 'intro.contact.title', body: 'intro.contact.body' },
-] as const;
 ---
-
-<section class="section" aria-label={t('about.profile.title')}>
-  <div class="wrap grid">
-    <p class="intro__lead">{t('intro.lead')}</p>
-
-    <div class="intro__cols">
-      {
-        columns.map((column) => (
-          <p class="intro__col rise">
-            <strong>{t(column.title)}</strong>{t('sep.inline')}{t(column.body)}
-          </p>
-        ))
-      }
-    </div>
-  </div>
-</section>
+<section class="section home-company" aria-labelledby="company-heading"><div class="wrap home-company__grid">
+  <div class="home-company__copy"><p class="eyebrow">{t('nav.about')}</p><h2 id="company-heading"><span>{t('section.intro.title.a')}</span>{t('sep.inline')}<span class="muted-heading">{t('section.intro.title.b')}</span></h2><p>{t('intro.lead')}</p><a class="text-link" href={localizePath(routes.about, locale)}>{t('section.intro.action')}<Icon name="arrow" /></a></div>
+  <figure class="home-company__figure"><div class="band__cell"><Image src={panorama} alt={t('band.panorama.alt')} widths={[600, 1000, 1400]} sizes="(min-width: 62rem) 48vw, 100vw" /></div><figcaption class="caption">{t('band.panorama.caption')}{t('sep.inline')}<a href={creditHrefs.panorama} rel="noreferrer">{t('credit.panorama')}</a></figcaption></figure>
+</div></section>

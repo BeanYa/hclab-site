@@ -70,7 +70,7 @@ Non-goals for the current scope: user accounts, CMS/admin UI, e-commerce checkou
 | Source of truth for copy | `src/i18n/ui.ts` — **all** user-visible strings live here, in both locales |
 | Hard rule | Never hard-code user-visible copy inside a component or page; always add a key to `ui.ts` |
 | Missing translation | A missing key must fail the build, not silently fall back to English |
-| Language purity | One language per page: running copy, labels, tables, captions and each locale's `<title>` never mix scripts. Deliberate exceptions: the other language's own name in the switcher (and the hero's hidden, non-displayed name), and proper nouns (people, email addresses, licences, shell commands). Work titles in credit lines follow the reading language; the exact originals stay in `src/assets/credits.json` behind each Source link |
+| Language purity | One language per page: running copy, labels, tables, captions and each locale's `<title>` never mix scripts. Deliberate exceptions: the other language's own name in the switcher , and proper nouns (people, email addresses, licences, shell commands). Work titles in credit lines follow the reading language; the exact originals stay in `src/assets/credits.json` behind each Source link |
 | Inline join | Label-to-text and caption-to-credit joins go through `sep.inline` (en `' '`, zh `''`), never a hard-coded `{' '}` — a half-width space between two Han runs is the one format a Chinese page must not show |
 | Alternates | Every page emits `<link rel="alternate" hreflang="en|zh|x-default">` |
 | Language switcher | Present in the header on every page, links to the *same* page in the other locale |
@@ -86,14 +86,14 @@ same path shape (`/about` ↔ `/zh/about`). Adding one without the other is an i
 | --- | --- | --- |
 | Site framework | **Astro 7** (static output, zero client framework) | Ships HTML by default, ideal for a marketing site |
 | Styling | Hand-written CSS with design tokens in `src/styles/global.css` | No CSS framework weight; full control of the visual language |
-| Display type | Self-hosted `@fontsource/archivo-black` (bundled by Astro) | Poster-weight Latin display with no font CDN and no layout-shift risk; Han display falls back to the system 900 weight |
+| Display type | Self-hosted `@fontsource-variable/inter` | Readable variable Latin typography; Chinese uses the system sans stack |
 | Language | TypeScript (strict) | Type-safe content and i18n dictionaries |
 | SEO | `@astrojs/sitemap` + hand-written `robots.txt` + JSON-LD | Correct hreflang and crawl signals |
 | Hosting | **Cloudflare Workers Static Assets** | One deploy target for HTML/CSS/JS + edge logic |
 | Edge logic | `worker/index.ts` (runs first, `assets.run_worker_first: true`) | Canonical-host redirect, security headers, asset serving |
 | Package manager | npm | Present on every machine; lockfile committed |
 | VCS | **git** (repo root = project root, default branch `main`; GitHub remote
-      `BeanYa/hclab-site`, **private**) | Project management is git-based |
+      `BeanYa/hclab-site`, **public**, verified 2026-10-15) | Project management is git-based |
 
 Deliberate non-choices: no Tailwind, no React/Vue islands, no external font CDN, no analytics vendor.
 Revisit only with a written reason.
@@ -139,57 +139,34 @@ Generated and git-ignored (recreated by `npm run build` and `npm run check`):
 
 ---
 
-## 6. Design language (keep it consistent)
+## 6. Design language — Connected engineering
 
-- **Reading:** trust-first B2B corporate site for enterprise software buyers.
-- **Dials:** design variance ≈ 7/10, motion ≈ 3/10, density ≈ 4/10. Committed print energy, quiet pacing.
-- **Direction:** *risograph overprint* (impeccable direction roll, seed 894b03be; the `risograph-web-system`
-  card, chosen by the client over the assigned direction). The site is a riso-printed document set: two
-  spot inks on warm paper, and the misregistered second pass is the world's only depth language — the
-  ink of the other market, printed just under the surface. The hero shows only the reading locale's name
-  (client decision, 2026-10-15); the other script lives in the switcher, hreflang and the hero's hidden
-  mark. The previous world (bone paper / ink / jade, "type and nothing else") was fully replaced in
-  2026-10. The design contract lives as the first HTML comment inside `<body>` in `BaseLayout.astro` and
-  must survive the build (grep `dist/` for `894b03be`).
-- **Palette (every value is a token in `global.css`; never a raw hex below the token block):** paper
-  `#f8f1de`, tone step `#efe4c8`, ink `#1b2145` (blue-black running text), federal blue `#1d3fd8`
-  (structure, links, rules), fluoro pink `#f23f9e` (signal, the other script; large marks only),
-  pink-ink `#bf2377` (small pink text, ≥ 4.5:1), sunflower `#fbc925` (fields), violet `#5b34d4` (the
-  overprint — `::selection`), on-blue `#fdf6e3`, on-blue-soft `#ccd6f6`.
-- **Type:** Latin display is self-hosted Archivo Black, uppercase; Han display falls back to the system
-  stack at weight 900 (see the `html[lang='zh-CN']` block). Running text is the system sans. No
-  monospace anywhere. Type steps are tokens (`--t-xs` … `--t-hero`).
-- **Chinese typography:** the `html[lang='zh-CN']` scoped block at the end of `global.css` undoes the
-  Latin idioms — display tracking returns to 0, wrapping display lines get ≥ 1.12 leading, running text
-  sits at 1.7. The hero's own seam metrics are exempt. The other script inside the hero carries its own
-  `lang` attribute for screen-reader voices and Han glyph variants.
-- **The second print pass:** `.press` (controls and boxes) and `.misprint` (text ghosts) offset ink
-  layers are the world's only depth device — no blur, no shadows. Passes rest at `--mis` and settle
-  toward register on hover/active. Primary in-flow CTAs carry the pass; masthead controls print flat.
-- **Surfaces:** flat ink fields and paper, separated by full-bleed ink runs (the `.reach` blue field,
-  the ink footer) or tone steps — never hairline web dividers. `.halftone` lays a 7px dot screen under a
-  field's content (it self-stacks via `z-index: -1`). Printed rules *inside* the print grammar (table
-  rules, the masthead rule) are in-world, not web hairlines.
-- **Pictures:** the five photographs and one clip print as two-ink duotones — blue field, `lighten`
-  blend, grayscale filter, pink offset frame — credited in place under each and listed in the footer
-  with a link to the source. Never present a found picture as the client's own product, room, person or
-  team. `src/assets/credits.json` records title, creator, licence and source page.
-- **Conversion:** email only, durably. The chooser ("Where are you now?") is radios + `:has()` with a
-  sunflower job-ticket panel; without `:has()` every panel stays open (plain fallback).
-- **Motion:** opt-in and once-only — the hero's two-ink settle, `.rise` view-timeline entrances (passed
-  through the `--timeline-view` custom property; see §7), hover shudders toward register. Transform and
-  opacity only; `prefers-reduced-motion` swaps the clip for its poster and stops everything, with all
-  content visible.
-- **Accessibility floor:** semantic landmarks, visible focus rings, ≥ 4.5:1 body contrast (large text
-  ≥ 3:1), keyboard-operable nav, chooser and language switcher, `lang` attribute correct per locale,
-  nothing over 13px that is meant to be read.
-- **Banned defaults:** purple/indigo AI gradients, dark mesh hero, three identical feature cards, eyebrow
-  labels above headings, monospace labels, 01/02/03 numbering, glassmorphism, emoji as icons.
-- **Design gates:** `npm run check`, `npm test`, `npm run build && npm run verify`, `npm run smoke` all
-  green, the impeccable design detector clean on changed UI files, and the seed key present in `dist/`.
+The client explicitly superseded the original art direction on 2026-10-15:
+retain repository information, replace the visual style with a contemporary,
+readable technology-company website. The earlier risograph style is historical.
+The current design system is documented in DESIGN.md.
+
+- Light editorial surfaces, forest-green accents, self-hosted Inter Variable,
+  generous spacing, precise borders, restrained shadows and 7–18px radii.
+- The hero combines a service proposition and a custom layered system diagram.
+  It is explicitly an architecture illustration, not a client product screenshot.
+- The service grid uses varied modules; each links to a service-page anchor.
+- A dark engineering section presents verifiable implementation facts. Detailed
+  evidence tables expand through a native details element.
+- Photographs remain naturally colored, with their existing source credits.
+- English and Chinese share the system, with Chinese-specific typography.
+- All visible copy remains in ui.ts. Do not invent company facts or metrics.
+- Zero production client JavaScript. Menus and disclosure panels use details;
+  the enquiry chooser uses radios and CSS :has(), with all panels readable in
+  browsers without :has().
+- Semantic landmarks, visible focus, body contrast at least 4.5:1, readable text
+  at least 13px, responsive layouts and reduced-motion support are mandatory.
+- The current HTML design marker is connected-engineering. The former seed
+  894b03be, misprint effects, inks and poster typography are not current gates.
+- Gates: npm run check, npm test, npm run build, npm run verify, local Worker
+  smoke checks, desktop/mobile browser inspection, EN/ZH route parity.
 
 ---
-
 ## 7. Commands
 
 ```bash
@@ -244,14 +221,6 @@ Run, in this order, and report the results:
   there pulls Astro's own tooling (magicast, postcss, css-tree) into the config graph as inlined
   CommonJS, which fails on Node 26 with `require is not defined` before the build starts. The locale
   registry therefore lives in plain-JS `src/i18n/locales.mjs`, which `ui.ts` re-exports.
-- **Never let the minifier merge `animation-timeline` into the `animation` shorthand.** Lightning CSS
-  rewrites `.rise { animation: rise linear both; animation-timeline: view() }` into
-  `animation: linear both rise view()`, which Chrome rejects — the whole declaration is dropped and the
-  page goes still with no error anywhere. The timeline is passed through the `--timeline-view` custom
-  property in `global.css` to keep the minifier out of it. Do not "tidy" that up.
-- **The first screen's two fields must be ancestors of the text on them.** Contrast and the hit-testing
-  the inspector uses are decided by what really paints behind a word: a name placed over an absolutely
-  positioned colour field reads as 1:1 contrast. Each hero field is a real element wrapping its own name.
 - **Direct git access to `github.com` can be connection-reset from the dev machine** (`api.github.com`
   and the Cloudflare API work directly; the git endpoint may not). When a push fails to connect, route
   it through the local proxy: `git -c http.proxy=http://127.0.0.1:7890 push`. Pass it per-command —
@@ -310,6 +279,7 @@ npm run deploy              # build + deploy
 - [x] Cloudflare authentication and first production deploy — shipped 2026-10-15
       (version c70c4b9d; apex + www custom domains attached, http→https and www→apex redirects
       verified live, smoke 56/56 against https://hcentlab.com)
+- [x] Contemporary visual redesign (2026-10-15): light editorial surfaces, forest-green accents, self-hosted Inter, custom architecture diagram and responsive service modules. Supersedes the prior risograph direction. EN/ZH parity retained; check/test/build/verify/smoke passed; mobile routes and native interactions inspected.
 - [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
 - [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com
 - [ ] Optional follow-ups: full favicon set refresh at production deploy, analytics decision,

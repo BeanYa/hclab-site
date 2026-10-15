@@ -1,181 +1,73 @@
+"""Generate the code-drawn Homecent social cards and touch icon.
+Requires Pillow and a CJK-capable system font. Run from any directory.
+Site copy is read from src/i18n/ui.ts rather than duplicated here.
 """
-Generates the raster brand assets that live in public/:
-
-    public/og/en.png            1200x630  English social card
-    public/og/zh.png            1200x630  Chinese social card
-    public/apple-touch-icon.png 180x180  iOS home-screen icon
-
-The outputs are committed, so a normal build never needs Python. Re-run this
-script only when the wordmark, the tagline or the palette changes:
-
-    python scripts/generate-images.py
-
-Requires Pillow (bundled with the DSH runtime) and a CJK-capable font.
-"""
-
 from pathlib import Path
-
+import re
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
+INK = (24, 37, 30)
+GREEN = (37, 107, 72)
+LIME = (206, 242, 134)
+PAPER = (251, 252, 251)
+LINE = (222, 230, 223)
+MUTED = (98, 112, 103)
+WASH = (242, 246, 243)
 
-# Design tokens — keep in sync with src/styles/global.css
-INK = (27, 33, 69)        # blue-black running text
-BLUE = (29, 63, 216)      # federal blue: structure
-PINK = (242, 63, 158)     # fluoro pink: the second pass
-PINK_INK = (191, 35, 119) # pink darkened for small text on paper
-SUNFLOWER = (251, 201, 37)
-PAPER = (248, 241, 222)
-MUTED = (122, 116, 106)
+def font(size, chinese=False):
+    candidates = (["C:/Windows/Fonts/msyhbd.ttc", "C:/Windows/Fonts/simhei.ttf"] if chinese else
+                  ["C:/Windows/Fonts/segoisb.ttf", "C:/Windows/Fonts/arialbd.ttf"])
+    for name in candidates:
+        if Path(name).exists():
+            return ImageFont.truetype(name, size)
+    raise SystemExit("A matching system font is required.")
 
-FONT_CANDIDATES = {
-    "latin": ["C:/Windows/Fonts/segoisb.ttf", "C:/Windows/Fonts/arialbd.ttf"],
-    "display": ["C:/Windows/Fonts/ariblk.ttf", "C:/Windows/Fonts/arialbd.ttf"],
-    "cjk": ["C:/Windows/Fonts/msyhbd.ttc", "C:/Windows/Fonts/simhei.ttf"],
-}
+def copy(locale, key):
+    source = (ROOT / "src/i18n/ui.ts").read_text(encoding="utf-8")
+    source = source.split("const en = {", 1)[1].split("/** The key union", 1)[0] if locale == "en" else source.split("const zh: Record<UIKey, string> = {", 1)[1]
+    match = re.search(r"'" + re.escape(key) + r"':\s*'([^']*)'", source)
+    if not match:
+        raise SystemExit("Missing copy: " + key)
+    return match.group(1)
 
+def draw_h(draw, x, y, size, color):
+    unit = size / 64
+    for a, b, w, h in [(17, 15, 8, 34), (39, 15, 8, 34), (17, 28, 30, 8)]:
+        draw.rectangle((x+a*unit, y+b*unit, x+(a+w)*unit, y+(b+h)*unit), fill=color)
 
-def load_font(kind: str, size: int) -> ImageFont.FreeTypeFont:
-    for candidate in FONT_CANDIDATES[kind]:
-        if Path(candidate).exists():
-            return ImageFont.truetype(candidate, size)
-    raise SystemExit(f"No usable {kind} font found in {FONT_CANDIDATES[kind]}")
-
-
-def draw_h(draw: ImageDraw.ImageDraw, x: int, y: int, size: int) -> None:
-    """The H monogram: the pink pass missed, the blue pass on top."""
-    scale = size / 64
-
-    def rect(vx, vy, vw, vh, fill, dx=0.0, dy=0.0):
-        draw.rectangle(
-            [
-                x + (vx + dx) * scale,
-                y + (vy + dy) * scale,
-                x + (vx + vw + dx) * scale,
-                y + (vy + vh + dy) * scale,
-            ],
-            fill=fill,
-        )
-
-    for fill, dx, dy in ((PINK, 2.5, 2.5), (BLUE, 0, 0)):
-        rect(18, 18, 6.5, 28, fill, dx, dy)      # left stem
-        rect(39.5, 18, 6.5, 28, fill, dx, dy)    # right stem
-        rect(18, 28.6, 28, 5.8, fill, dx, dy)    # crossbar
-
-
-def wrap(draw: ImageDraw.ImageDraw, text: str, font, max_width: int) -> list[str]:
-    """Greedy wrap that works for both space-separated and CJK text."""
-    lines: list[str] = []
-    current = ""
-
-    for char in text:
-        trial = current + char
-        if draw.textlength(trial, font=font) <= max_width or not current:
-            current = trial
-        else:
-            lines.append(current)
-            current = char
-    if current:
-        lines.append(current)
-    return lines
-
-
-def make_og(locale: str, eyebrow: str, headline: str, legal_name: str) -> Image.Image:
-    width, height = 1200, 630
-    image = Image.new("RGB", (width, height), PAPER)
-    draw = ImageDraw.Draw(image)
-
-    # The sunflower disc, bleeding off the top right, ring missed in pink.
-    disc_box = (880, -230, 1330, 220)
-    draw.ellipse(disc_box, fill=SUNFLOWER)
-    draw.ellipse(
-        (disc_box[0] + 12, disc_box[1] + 14, disc_box[2] + 12, disc_box[3] + 14),
-        outline=PINK,
-        width=5,
-    )
-
-    margin = 80
-    font_eyebrow = load_font("cjk" if locale == "zh" else "latin", 24)
-    font_wordmark = load_font("latin", 34)
-    font_headline = load_font("cjk" if locale == "zh" else "display", 66)
-    font_small = load_font("latin", 26)
-    font_meta = load_font("cjk", 24)
-
-    # Wordmark row
-    mark_size = 64
-    draw_h(draw, margin, margin, mark_size)
-    draw.text((margin + mark_size + 26, margin + 10), "Homecent", font=font_wordmark, fill=INK)
-
-    # Eyebrow + headline block; the headline prints twice, out of register.
-    draw.text((margin, 258), eyebrow, font=font_eyebrow, fill=PINK_INK)
-
-    lines = wrap(draw, headline, font_headline, width - margin * 2)
-    y = 312
-    for line in lines:
-        draw.text((margin + 6, y + 5), line, font=font_headline, fill=PINK)
-        draw.text((margin, y), line, font=font_headline, fill=BLUE)
-        y += 82
-
-    # Footer rule and meta row
-    draw.rectangle([margin, 514, width - margin, 517], fill=BLUE)
-    draw.text((margin, 540), "hcentlab.com", font=font_small, fill=BLUE)
-
-    legal_width = draw.textlength(legal_name, font=font_meta)
-    draw.text((width - margin - legal_width, 542), legal_name, font=font_meta, fill=MUTED)
-
+def make_og(locale):
+    zh = locale == "zh"
+    image = Image.new("RGB", (1200, 630), PAPER)
+    d = ImageDraw.Draw(image)
+    for x in range(750, 1200, 24):
+        for y in range(30, 630, 24):
+            d.ellipse((x,y,x+2,y+2), fill=LINE)
+    d.rounded_rectangle((75, 65, 133, 123), 14, fill=GREEN)
+    draw_h(d, 75, 65, 58, LIME)
+    d.text((150, 70), copy(locale, "site.name"), font=font(35, zh), fill=INK)
+    d.text((80, 208), copy(locale, "hero.kicker"), font=font(20, zh), fill=GREEN)
+    d.text((75, 263), copy(locale, "hero.title.a"), font=font(65, zh), fill=INK)
+    d.text((75, 345), copy(locale, "hero.title.b"), font=font(65, zh), fill=GREEN)
+    for y, color in [(380, WASH), (300, PAPER), (220, GREEN)]:
+        d.polygon([(980,y-60),(1120,y),(980,y+60),(840,y)], fill=color, outline=LINE if color != GREEN else GREEN, width=2)
+        d.line([(840,y),(980,y+60),(1120,y)], fill=LINE, width=2)
+    d.line((80, 520, 1120, 520), fill=LINE, width=2)
+    d.text((80, 550), "hcentlab.com", font=font(22), fill=GREEN)
+    legal = copy(locale, "site.legalName")
+    legal_font = font(19, zh)
+    d.text((1120-d.textlength(legal,font=legal_font), 553), legal, font=legal_font, fill=MUTED)
     return image
 
-
-def make_touch_icon() -> Image.Image:
-    """A full blue ink tile; the paper H lands with its pink pass behind."""
-    size = 180
-    image = Image.new("RGB", (size, size), BLUE)
-    draw = ImageDraw.Draw(image)
-    scale = size / 64
-    offset = 2.5 * scale
-
-    def rect(vx, vy, vw, vh, fill, dx=0.0, dy=0.0):
-        draw.rectangle(
-            [
-                vx * scale + dx,
-                vy * scale + dy,
-                (vx + vw) * scale + dx,
-                (vy + vh) * scale + dy,
-            ],
-            fill=fill,
-        )
-
-    for fill, dx, dy in ((PINK, offset, offset), (PAPER, 0, 0)):
-        rect(18, 18, 6.5, 28, fill, dx, dy)
-        rect(39.5, 18, 6.5, 28, fill, dx, dy)
-        rect(18, 28.6, 28, 5.8, fill, dx, dy)
-
-    return image
-
-
-def main() -> None:
-    (PUBLIC / "og").mkdir(parents=True, exist_ok=True)
-
-    make_og(
-        "en",
-        eyebrow="SHENZHEN · SOFTWARE PRODUCT DEVELOPMENT & TECHNICAL SUPPORT",
-        headline="Software products, engineered and supported.",
-        legal_name="Shenzhen Homecent Trading Co., Ltd.",
-    ).save(PUBLIC / "og" / "en.png", optimize=True)
-
-    make_og(
-        "zh",
-        eyebrow="深圳 · 软件产品开发与技术支持",
-        headline="软件产品，从研发到长期支持。",
-        legal_name="深圳市宅迅贸易有限公司",
-    ).save(PUBLIC / "og" / "zh.png", optimize=True)
-
-    make_touch_icon().save(PUBLIC / "apple-touch-icon.png", optimize=True)
-
-    for name in ["og/en.png", "og/zh.png", "apple-touch-icon.png"]:
-        print(f"wrote public/{name}")
-
+def main():
+    (PUBLIC / "og").mkdir(exist_ok=True)
+    for locale in ("en", "zh"):
+        make_og(locale).save(PUBLIC / "og" / (locale + ".png"), optimize=True)
+    icon = Image.new("RGB", (180,180), GREEN)
+    draw_h(ImageDraw.Draw(icon), 0, 0, 180, LIME)
+    icon.save(PUBLIC / "apple-touch-icon.png", optimize=True)
+    print("Generated EN/ZH social cards and touch icon.")
 
 if __name__ == "__main__":
     main()

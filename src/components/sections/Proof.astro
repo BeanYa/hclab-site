@@ -1,93 +1,18 @@
 ---
-import { Image } from 'astro:assets';
-import futian from '../../assets/shenzhen-futian.jpg';
 import type { Locale, UIKey } from '../../i18n/ui';
 import { numberedRows, siteFactIndexes, useTranslations } from '../../i18n/utils';
-
-interface Props {
-  locale: Locale;
-}
-
+import Icon from '../Icon.astro';
+interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-
-const commitmentRows = numberedRows('proof.commit', [1, 2, 3, 4]);
-const siteRows = numberedRows('proof.site', siteFactIndexes);
-
-const source = 'https://commons.wikimedia.org/wiki/File:Commercial_area_of_futian_to_east2020.jpg';
-
-const columns = ['col1', 'col2', 'col3'] as const;
+const groups = [
+  { prefix: 'proof.commit', rows: numberedRows('proof.commit', [1, 2, 3, 4]) },
+  { prefix: 'proof.site', rows: numberedRows('proof.site', siteFactIndexes) },
+];
+const metrics = [1, 2, 3] as const;
 ---
-
-<section class="section" aria-labelledby="proof-heading">
-  <div class="wrap grid">
-    <div class="proof__head">
-      <h2 class="proof__heading" id="proof-heading">
-        <span>{t('proof.heading.a')}</span>
-        <span>{t('proof.heading.b')}</span>
-      </h2>
-      <p class="proof__lede">{t('proof.lede')}</p>
-    </div>
-
-    <div class="proof__tables">
-      <table class="ptable">
-        <caption>
-          {t('proof.commit.group')}
-        </caption>
-        <thead>
-          <tr>
-            {columns.map((column) => <th scope="col">{t(`proof.commit.${column}` as UIKey)}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {
-            commitmentRows.map((row) => (
-              <tr>
-                <td>{t(row.title)}</td>
-                <td>{t(row.what)}</td>
-                <td>{t(row.check)}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-
-      <table class="ptable">
-        <caption>
-          {t('proof.site.group')}
-        </caption>
-        <thead>
-          <tr>
-            {columns.map((column) => <th scope="col">{t(`proof.site.${column}` as UIKey)}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {
-            siteRows.map((row) => (
-              <tr>
-                <td>{t(row.title)}</td>
-                <td>{t(row.what)}</td>
-                <td>{t(row.check)}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-
-    <figure class="proof__figure">
-      <div class="band__cell">
-        <Image
-          src={futian}
-          alt={t('proof.picture.alt')}
-          widths={[420, 700, 1100]}
-          sizes="(min-width: 62rem) 30vw, 100vw"
-        />
-      </div>
-      <figcaption class="caption">
-        {t('proof.picture.caption')}{t('sep.inline')}
-        <a href={source} rel="noreferrer">{t('credit.futian')}</a>
-      </figcaption>
-    </figure>
-  </div>
-</section>
+<section class="engineering section" aria-labelledby="proof-heading"><div class="wrap">
+  <div class="section-head"><div><p class="eyebrow"><span class="status-dot"></span>{t('section.proof.label')}</p><h2 id="proof-heading"><span>{t('proof.heading.a')}</span>{t('sep.inline')}<span class="muted-heading">{t('proof.heading.b')}</span></h2></div><p class="section-head__aside">{t('proof.lede')}</p></div>
+  <div class="engineering__metrics">{metrics.map(n => <article class="engineering__metric"><p class="engineering__value">{t(`proof.metric${n}.value`)}</p><h3>{t(`proof.metric${n}.label`)}</h3><p>{t(`proof.metric${n}.body`)}</p></article>)}</div>
+  <details class="engineering__details"><summary>{t('section.proof.more')}<Icon name="arrow" /></summary><div class="proof__tables">{groups.map(group => <div class="table-scroll"><table class="ptable"><caption>{t((group.prefix + '.group') as UIKey)}</caption><thead><tr>{['col1', 'col2', 'col3'].map(col => <th scope="col">{t((group.prefix + '.' + col) as UIKey)}</th>)}</tr></thead><tbody>{group.rows.map(row => <tr><td>{t(row.title)}</td><td>{t(row.what)}</td><td>{t(row.check)}</td></tr>)}</tbody></table></div>)}</div></details>
+</div></section>
