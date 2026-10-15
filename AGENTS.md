@@ -86,6 +86,7 @@ same path shape (`/about` ↔ `/zh/about`). Adding one without the other is an i
 | --- | --- | --- |
 | Site framework | **Astro 7** (static output, zero client framework) | Ships HTML by default, ideal for a marketing site |
 | Styling | Hand-written CSS with design tokens in `src/styles/global.css` | No CSS framework weight; full control of the visual language |
+| Display type | Self-hosted `@fontsource/archivo-black` (bundled by Astro) | Poster-weight Latin display with no font CDN and no layout-shift risk; Han display falls back to the system 900 weight |
 | Language | TypeScript (strict) | Type-safe content and i18n dictionaries |
 | SEO | `@astrojs/sitemap` + hand-written `robots.txt` + JSON-LD | Correct hreflang and crawl signals |
 | Hosting | **Cloudflare Workers Static Assets** | One deploy target for HTML/CSS/JS + edge logic |
@@ -140,47 +141,49 @@ Generated and git-ignored (recreated by `npm run build` and `npm run check`):
 ## 6. Design language (keep it consistent)
 
 - **Reading:** trust-first B2B corporate site for enterprise software buyers.
-- **Dials:** design variance ≈ 5/10, motion ≈ 3/10, density ≈ 4/10. Restrained, technical, editorial.
-- **Direction:** *type and nothing else* (tasteskill v2, seed 358432087). The page is words, colour and
-  space; photographs arrive later, large and few. The idea is the company's own: **the name in its two
-  working scripts is the hero** — `Homecent` on paper above the seam, `宅迅` on ink below it (mirrored on
-  the Chinese page), and every claim on the page is paired with something a visitor can check.
-- **The live thing:** the "Where are you now?" chooser (`components/sections/Chooser.astro`) — three
-  situations, each revealing what happens first, what we need from the visitor, and a real `mailto:` with
-  that situation's subject and body written in. Radios + `:has()`, no JavaScript; with `:has()`
-  unsupported every panel stays open, which is the plain fallback.
-- **Palette:** paper `#f1f2ef` (bone, deliberately low-chroma so it is not a yellow cream), one tone step
-  `#e3e7e2`, ink `#101418` with two dark steps, on-ink `#eef0ec`, accent jade `#0f6b52` on paper and
-  `#86d6b4` on ink. All are tokens in `global.css`; never introduce a raw hex below the token block.
-- **Type:** one face — the system sans stack (fast, zero layout shift, renders CJK well). Seven steps:
-  14 / 16 / 20 / clamp(28→48) / clamp(36→76) / clamp(60→168) / clamp(28→92). No monospace anywhere
-  outside a real `<code>`/`<pre>`, no uppercase micro-labels, no index numbers.
-- **Chinese typography:** the negative tracking and tight leading above are Latin idioms. On
-  `html[lang='zh-CN']` the scoped block at the end of `global.css` undoes them — heading tracking
-  returns to 0, wrapping display lines get ≥ 1.12 leading, running text sits at 1.7 — and the Han
-  hero name (`.hero__name--han`, either language) carries no negative tracking. The hero's own seam
-  metrics are exempt: keep them in both languages. The other script inside the hero is marked with
-  its own `lang` attribute for screen-reader voices and Han glyph variants.
-- **Surfaces:** flat fields and space, never lines. Sections are separated by a full-bleed change of tone
-  (`--paper-deep`, `--ink`, `--ink-2`), by scale, or by a photograph. No borders as dividers, no shadows
-  at rest, no gradients (a neutral scrim under text on a photograph is the only exception), no glass.
-- **Layout:** one pair of margins (16–32px) and one 12-column grid for the whole page; two anchor lines
-  (left, and the right half from column 6). Section padding is `--band` (80–152px) so the gap between
-  sections is always larger than any gap inside one.
-- **Pictures:** five photographs and one clip, all found in the open collections (Wikimedia Commons),
-  downloaded into `src/assets/` and `public/media/`, credited in place under each picture and listed in
-  the footer with a link to the source. Never present a found picture as the client's own product, room,
-  person or team. `src/assets/credits.json` records title, creator, licence and source page.
-- **Banned defaults:** purple/indigo AI gradients, dark mesh hero, three identical feature cards,
-  eyebrow labels above headings, monospace labels, 01/02/03 numbering, hairline rules, drop shadows,
-  glassmorphism, infinite decorative animation, emoji as icons.
-- **Motion:** opt-in and once-only. A load choreography on the hero (the ink field rises to the seam),
-  a staggered entrance for the parts of every section (`animation-timeline: view()`, transform and
-  opacity only), feedback on every control, and one moving picture (the clip, replaced by its poster
-  frame under `prefers-reduced-motion`). All content is visible with every animation switched off.
-- **Accessibility floor:** semantic landmarks, visible focus rings, ≥ 4.5:1 body contrast (running text in
-  the full ink), keyboard-operable nav, chooser and language switcher, `lang` attribute correct per
-  locale, and nothing over 13px that is meant to be read.
+- **Dials:** design variance ≈ 7/10, motion ≈ 3/10, density ≈ 4/10. Committed print energy, quiet pacing.
+- **Direction:** *risograph overprint* (impeccable direction roll, seed 894b03be; the `risograph-web-system`
+  card, chosen by the client over the assigned direction). The site is a riso-printed document set: two
+  spot inks meet where the two working languages meet, and the misregistered second pass IS the other
+  language. The previous world (bone paper / ink / jade, "type and nothing else") was fully replaced in
+  2026-10. The design contract lives as the first HTML comment inside `<body>` in `BaseLayout.astro` and
+  must survive the build (grep `dist/` for `894b03be`).
+- **Palette (every value is a token in `global.css`; never a raw hex below the token block):** paper
+  `#f8f1de`, tone step `#efe4c8`, ink `#1b2145` (blue-black running text), federal blue `#1d3fd8`
+  (structure, links, rules), fluoro pink `#f23f9e` (signal, the other script; large marks only),
+  pink-ink `#bf2377` (small pink text, ≥ 4.5:1), sunflower `#fbc925` (fields), violet `#5b34d4` (the
+  overprint — `::selection`), on-blue `#fdf6e3`, on-blue-soft `#ccd6f6`.
+- **Type:** Latin display is self-hosted Archivo Black, uppercase; Han display falls back to the system
+  stack at weight 900 (see the `html[lang='zh-CN']` block). Running text is the system sans. No
+  monospace anywhere. Type steps are tokens (`--t-xs` … `--t-hero`).
+- **Chinese typography:** the `html[lang='zh-CN']` scoped block at the end of `global.css` undoes the
+  Latin idioms — display tracking returns to 0, wrapping display lines get ≥ 1.12 leading, running text
+  sits at 1.7. The hero's own seam metrics are exempt. The other script inside the hero carries its own
+  `lang` attribute for screen-reader voices and Han glyph variants.
+- **The second print pass:** `.press` (controls and boxes) and `.misprint` (text ghosts) offset ink
+  layers are the world's only depth device — no blur, no shadows. Passes rest at `--mis` and settle
+  toward register on hover/active. Primary in-flow CTAs carry the pass; masthead controls print flat.
+- **Surfaces:** flat ink fields and paper, separated by full-bleed ink runs (the `.reach` blue field,
+  the ink footer) or tone steps — never hairline web dividers. `.halftone` lays a 7px dot screen under a
+  field's content (it self-stacks via `z-index: -1`). Printed rules *inside* the print grammar (table
+  rules, the masthead rule) are in-world, not web hairlines.
+- **Pictures:** the five photographs and one clip print as two-ink duotones — blue field, `lighten`
+  blend, grayscale filter, pink offset frame — credited in place under each and listed in the footer
+  with a link to the source. Never present a found picture as the client's own product, room, person or
+  team. `src/assets/credits.json` records title, creator, licence and source page.
+- **Conversion:** email only, durably. The chooser ("Where are you now?") is radios + `:has()` with a
+  sunflower job-ticket panel; without `:has()` every panel stays open (plain fallback).
+- **Motion:** opt-in and once-only — the hero's two-ink settle, `.rise` view-timeline entrances (passed
+  through the `--timeline-view` custom property; see §7), hover shudders toward register. Transform and
+  opacity only; `prefers-reduced-motion` swaps the clip for its poster and stops everything, with all
+  content visible.
+- **Accessibility floor:** semantic landmarks, visible focus rings, ≥ 4.5:1 body contrast (large text
+  ≥ 3:1), keyboard-operable nav, chooser and language switcher, `lang` attribute correct per locale,
+  nothing over 13px that is meant to be read.
+- **Banned defaults:** purple/indigo AI gradients, dark mesh hero, three identical feature cards, eyebrow
+  labels above headings, monospace labels, 01/02/03 numbering, glassmorphism, emoji as icons.
+- **Design gates:** `npm run check`, `npm test`, `npm run build && npm run verify`, `npm run smoke` all
+  green, the impeccable design detector clean on changed UI files, and the seed key present in `dist/`.
 
 ---
 
@@ -216,6 +219,18 @@ Run, in this order, and report the results:
   `http://hcentlab.com/...` no matter which URL you open. Never branch on `url.protocol` in the
   Worker: use the edge's `x-forwarded-proto` header, which is absent in local development.
   This exact mistake caused an infinite redirect loop during initial development.
+- **`wrangler dev` must be restarted after a `dist/` rebuild.** Its asset manifest desyncs when the
+  build output is regenerated underneath the running server and `GET /` starts returning 404.
+  Stop the background `npm run cf:dev` and start it again.
+- **Run only ONE `wrangler dev` per checkout.** All instances share the local state database in
+  `.wrangler/state/v3`, and the second one dies at startup with
+  `kj::Exception: sqlite.c++: database is locked: SQLITE_BUSY`. Two instances started during the
+  first review session killed each other three times, which looked superficially like a broken 404
+  page and a broken stylesheet. Give a second instance its own store instead:
+  `wrangler dev --port 8788 --persist-to .wrangler/state-8788`.
+- **A rebuild invalidates a running `wrangler dev`.** The asset manifest is captured at startup, so
+  `npm run build` mid-session makes the new hashed `/_astro/*` files 404 until the server restarts.
+  Stop the server before rebuilding, or reload after it.
 - **CSP has no `unsafe-inline`.** The inline JSON-LD block is allowed by hash only, and the hashes
   are generated from the built HTML. Adding any inline script or style would be blocked — `npm run
   verify` catches the script case.
@@ -275,9 +290,12 @@ npm run deploy              # build + deploy
 - [x] Bilingual site (EN default / ZH) implemented — 4 pages per locale + 404s
 - [x] Cloudflare Worker + static assets configuration authored and validated
       (`build`, `verify`, `test`, `smoke` and `deploy:dry` all pass)
-- [x] Front-end design rebuilt (2026-10): the tasteskill "type and nothing else" direction, the two-script
-      hero, the no-JavaScript enquiry chooser, five credited photographs and one clip, a CSS-only motion
-      layer. Gate: `inspect.mjs` reports 0 FAIL / 0 WARN on all eight content pages, `lint.mjs` 0 FAIL.
+- [x] Front-end design rebuilt (2026-10, first pass): the tasteskill "type and nothing else" direction.
+      Superseded the same month by the risograph rebuild below.
+- [x] Front-end re-rebuilt (2026-10): the risograph-overprint world (impeccable seed 894b03be; the client
+      picked the risograph-web-system card over the assigned direction). Self-hosted Archivo Black display,
+      two-ink duotone photography, offset print passes, CSS-only motion. Gate: check/test/verify/smoke green
+      (smoke 56/56), design detector clean, finish review disposition "ship"; DESIGN.md records the system.
 - [x] Language-and-format purity pass (2026-10): each locale renders in exactly one language —
       per-locale credit titles, single-script record tables, pure `<title>`s, `sep.inline` joins, a Han
       typography block for the Chinese page. Gate: mixed-script audit clean on all eight content pages,
@@ -285,6 +303,7 @@ npm run deploy              # build + deploy
 - [ ] Cloudflare authentication and first production deploy — **blocked on account credentials**
 - [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
 - [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com
-- [ ] Optional follow-ups: full favicon set, analytics decision, contact form (needs a backend)
+- [ ] Optional follow-ups: full favicon set refresh at production deploy, analytics decision,
+      the §6 "deliberately unused" print artefacts (crop/registration marks, ink-field texture tiers)
 
 > Update the checkboxes above in the same commit that changes the underlying state.

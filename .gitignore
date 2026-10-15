@@ -35,6 +35,20 @@ npm-debug.log*
 # Local agent-skill installs (tooling, not part of the website)
 .agents/
 skills-lock.json
+.claude/
 
 # Design-review working files (screenshots, dealt direction, scratch scripts)
 .taste-skill/
+
+# Impeccable design-tooling state. The kept artifacts are DESIGN.md's sidecar
+# (.impeccable/design.json), live-mode config (.impeccable/live/config.json) and
+# surface briefs (.impeccable/surfaces/); everything else is session scratch.
+.impeccable/shots/
+.impeccable/refs/
+.impeccable/sketches/
+.impeccable/questions/
+.impeccable/home-brief.md
+.impeccable/decision-payload.json
+.impeccable/live/sessions/
+.impeccable/live/roots.json
+.impeccable/live/inject-journal.json
