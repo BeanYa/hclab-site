@@ -1,6 +1,6 @@
 ---
 import { localeTags, type Locale, type UIKey } from '../../i18n/ui';
-import { useTranslations } from '../../i18n/utils';
+import { localizePath, routes, useTranslations } from '../../i18n/utils';
 
 interface Props {
   locale: Locale;
@@ -14,7 +14,8 @@ const t = useTranslations(locale);
  * Two Han glyphs carry far less mass than eight Latin letters, so whichever
  * line shows 宅迅 is set larger and the two names read as equals. The other
  * script is marked with its own lang so screen readers switch voices and the
- * browser picks the right Han glyph variants.
+ * browser picks the right Han glyph variants. Each visible name carries a
+ * ghost of itself — the second print pass, missed by a hair.
  */
 const localFirst = locale === 'zh';
 const hanIsFirst = localFirst;
@@ -29,38 +30,47 @@ const facts = [
 ---
 
 <section class="hero">
-  <div class="hero__field hero__field--paper">
-    <div class="wrap hero__inner">
-      <h1 class:list={['hero__name', 'hero__name--a', { 'hero__name--han': hanIsFirst }]}>
-        {t('hero.nameA')}<span class="visually-hidden" lang={localeTags[otherLocale]}> {t('hero.nameB')}</span>
-      </h1>
-    </div>
-  </div>
+  <div class="hero__spot" aria-hidden="true"></div>
 
-  <div class="hero__field hero__field--ink">
-    <div class="wrap hero__inner hero__inner--ink">
+  <div class="wrap hero__inner">
+    <div class="hero__mark">
+      <h1 class:list={['hero__name', 'hero__name--a', { 'hero__name--han': hanIsFirst }]}>
+        <span class="misprint">
+          <span class="misprint__ghost" aria-hidden="true">{t('hero.nameA')}</span>
+          {t('hero.nameA')}
+        </span>
+        <span class="visually-hidden" lang={localeTags[otherLocale]}> {t('hero.nameB')}</span>
+      </h1>
+
       <p
         class:list={['hero__name', 'hero__name--b', { 'hero__name--han': !hanIsFirst }]}
         aria-hidden="true"
         lang={localeTags[otherLocale]}
       >
-        {t('hero.nameB')}
+        <span class="misprint">
+          <span class="misprint__ghost misprint__ghost--pink" aria-hidden="true">
+            {t('hero.nameB')}
+          </span>
+          {t('hero.nameB')}
+        </span>
       </p>
+    </div>
 
-      <div class="hero__foot">
-        <p class="hero__support">{t('hero.support')}</p>
+    <div class="hero__foot">
+      <p class="hero__support">{t('hero.support')}</p>
 
-        <dl class="hero__facts">
-          {
-            facts.map((fact) => (
-              <div>
-                <dt>{t(fact.label)}</dt>
-                <dd>{t(fact.value)}</dd>
-              </div>
-            ))
-          }
-        </dl>
-      </div>
+      <dl class="hero__facts">
+        {
+          facts.map((fact) => (
+            <div>
+              <dt>{t(fact.label)}</dt>
+              <dd>{t(fact.value)}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <a class="btn press" href={localizePath(routes.contact, locale)}>{t('hero.action')}</a>
     </div>
   </div>
 </section>

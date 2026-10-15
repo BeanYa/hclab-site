@@ -8,26 +8,51 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+
+/**
+ * One chop per pass of the press: the four stages as four marks, alternating
+ * inks like a print run. Geometry only — no icon system, no pictures.
+ */
+const chops = [
+  '<circle cx="12" cy="12" r="10" class="ink-pink" />',
+  '<polygon points="12,2 22,22 2,22" class="ink-blue" />',
+  '<path d="M2 12 A10 10 0 0 1 22 12 Z" class="ink-sunflower" />',
+  '<rect x="4.5" y="4.5" width="15" height="15" class="ink-line-pink" />',
+] as const;
 ---
 
 <section class="section" aria-labelledby="process-heading">
-  <div class="wrap grid">
-    {
-      processLines.map((n) =>
-        n === 1 ? (
-          <article class="process__step rise">
-            <h2 class="process__line" id="process-heading">
-              {t(`process.line${n}`)}
-            </h2>
-            <p class="process__note">{t(`process.line${n}.body`)}</p>
-          </article>
-        ) : (
-          <article class="process__step rise">
-            <h3 class="process__line">{t(`process.line${n}`)}</h3>
-            <p class="process__note">{t(`process.line${n}.body`)}</p>
-          </article>
-        ),
-      )
-    }
+  <div class="wrap">
+    <div class="process">
+      {
+        processLines.map((n) =>
+          n === 1 ? (
+            <article class="process__step rise">
+              <svg
+                class="process__chop"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                set:html={chops[n - 1]}
+              />
+              <h2 class="process__line" id="process-heading">
+                {t(`process.line${n}`)}
+              </h2>
+              <p class="process__note">{t(`process.line${n}.body`)}</p>
+            </article>
+          ) : (
+            <article class="process__step rise">
+              <svg
+                class:list={['process__chop', `process__chop--${n}`]}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                set:html={chops[n - 1]}
+              />
+              <h3 class="process__line">{t(`process.line${n}`)}</h3>
+              <p class="process__note">{t(`process.line${n}.body`)}</p>
+            </article>
+          ),
+        )
+      }
+    </div>
   </div>
 </section>

@@ -24,25 +24,29 @@ const options = liveOptions.map((n) => ({
 const source = 'https://commons.wikimedia.org/wiki/File:%E5%8D%8E%E5%BC%BA%E7%94%B5%E5%AD%90%E4%B8%96%E7%95%8C_1.jpg';
 ---
 
-<section class="section live" aria-labelledby="live-heading">
-  <div class="wrap grid live__grid">
-    <div class="live__head rise">
-      <h2 class="live__heading" id="live-heading">{t('live.heading')}</h2>
-      <p class="lede">{t('live.lede')}</p>
-    </div>
+<section class="section" aria-labelledby="live-heading">
+  <div class="wrap live__grid">
+    <div class="live__side">
+      <div class="live__head rise">
+        <h2 class="live__heading" id="live-heading">{t('live.heading')}</h2>
+        <p class="lede">{t('live.lede')}</p>
+      </div>
 
-    <figure class="live__figure">
-      <Image
-        src={market}
-        alt={t('live.picture.alt')}
-        widths={[560, 900, 1400]}
-        sizes="(min-width: 62rem) 45vw, 100vw"
-      />
-      <figcaption class="caption">
-        {t('live.picture.caption')}{t('sep.inline')}
-        <a href={source} rel="noreferrer">{t('credit.market')}</a>
-      </figcaption>
-    </figure>
+      <figure class="live__figure">
+        <div class="band__cell">
+          <Image
+            src={market}
+            alt={t('live.picture.alt')}
+            widths={[560, 900, 1400]}
+            sizes="(min-width: 62rem) 42vw, 100vw"
+          />
+        </div>
+        <figcaption class="caption">
+          {t('live.picture.caption')}{t('sep.inline')}
+          <a href={source} rel="noreferrer">{t('credit.market')}</a>
+        </figcaption>
+      </figure>
+    </div>
 
     <form class="live__form">
       <fieldset class="live__options">
@@ -63,15 +67,17 @@ const source = 'https://commons.wikimedia.org/wiki/File:%E5%8D%8E%E5%BC%BA%E7%94
               </label>
 
               <div class="live__panel">
-                <p class="live__answer">
-                  <b>{t('live.first.label')}</b>{t('sep.inline')}{option.first}
-                </p>
-                <p class="live__answer">
-                  <b>{t('live.need.label')}</b>{t('sep.inline')}{option.need}
-                </p>
-                <a class="btn live__action" href={option.href}>
-                  {option.action}
-                </a>
+                <div class="live__panel-body">
+                  <p class="live__answer">
+                    <b>{t('live.first.label')}</b>{t('sep.inline')}{option.first}
+                  </p>
+                  <p class="live__answer">
+                    <b>{t('live.need.label')}</b>{t('sep.inline')}{option.need}
+                  </p>
+                  <a class="btn press live__action" href={option.href}>
+                    {option.action}
+                  </a>
+                </div>
               </div>
             </div>
           ))

@@ -76,12 +76,14 @@ const columns = ['col1', 'col2', 'col3'] as const;
     </div>
 
     <figure class="proof__figure">
-      <Image
-        src={futian}
-        alt={t('proof.picture.alt')}
-        widths={[420, 700, 1100]}
-        sizes="(min-width: 62rem) 30vw, 100vw"
-      />
+      <div class="band__cell">
+        <Image
+          src={futian}
+          alt={t('proof.picture.alt')}
+          widths={[420, 700, 1100]}
+          sizes="(min-width: 62rem) 30vw, 100vw"
+        />
+      </div>
       <figcaption class="caption">
         {t('proof.picture.caption')}{t('sep.inline')}
         <a href={source} rel="noreferrer">{t('credit.futian')}</a>

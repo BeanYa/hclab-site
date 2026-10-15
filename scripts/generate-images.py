@@ -3,7 +3,7 @@ Generates the raster brand assets that live in public/:
 
     public/og/en.png            1200x630  English social card
     public/og/zh.png            1200x630  Chinese social card
-    public/apple-touch-icon.png  180x180  iOS home-screen icon
+    public/apple-touch-icon.png 180x180  iOS home-screen icon
 
 The outputs are committed, so a normal build never needs Python. Re-run this
 script only when the wordmark, the tagline or the palette changes:
@@ -21,14 +21,17 @@ ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 
 # Design tokens — keep in sync with src/styles/global.css
-INK = (14, 17, 22)
-PAPER = (247, 245, 241)
-JADE = (31, 122, 92)
-MUTED = (150, 158, 168)
-RULE = (44, 50, 59)
+INK = (27, 33, 69)        # blue-black running text
+BLUE = (29, 63, 216)      # federal blue: structure
+PINK = (242, 63, 158)     # fluoro pink: the second pass
+PINK_INK = (191, 35, 119) # pink darkened for small text on paper
+SUNFLOWER = (251, 201, 37)
+PAPER = (248, 241, 222)
+MUTED = (122, 116, 106)
 
 FONT_CANDIDATES = {
     "latin": ["C:/Windows/Fonts/segoisb.ttf", "C:/Windows/Fonts/arialbd.ttf"],
+    "display": ["C:/Windows/Fonts/ariblk.ttf", "C:/Windows/Fonts/arialbd.ttf"],
     "cjk": ["C:/Windows/Fonts/msyhbd.ttc", "C:/Windows/Fonts/simhei.ttf"],
 }
 
@@ -40,21 +43,25 @@ def load_font(kind: str, size: int) -> ImageFont.FreeTypeFont:
     raise SystemExit(f"No usable {kind} font found in {FONT_CANDIDATES[kind]}")
 
 
-def draw_mark(draw: ImageDraw.ImageDraw, x: int, y: int, size: int) -> None:
-    """The H monogram, scaled from public/favicon.svg (64x64 viewBox)."""
+def draw_h(draw: ImageDraw.ImageDraw, x: int, y: int, size: int) -> None:
+    """The H monogram: the pink pass missed, the blue pass on top."""
     scale = size / 64
-    draw.rounded_rectangle([x, y, x + size, y + size], radius=12 * scale, fill=PAPER)
 
-    def rect(vx, vy, vw, vh, fill):
+    def rect(vx, vy, vw, vh, fill, dx=0.0, dy=0.0):
         draw.rectangle(
-            [x + vx * scale, y + vy * scale, x + (vx + vw) * scale, y + (vy + vh) * scale],
+            [
+                x + (vx + dx) * scale,
+                y + (vy + dy) * scale,
+                x + (vx + vw + dx) * scale,
+                y + (vy + vh + dy) * scale,
+            ],
             fill=fill,
         )
 
-    rect(18, 18, 6.5, 28, INK)          # left stem
-    rect(39.5, 18, 6.5, 28, INK)        # right stem
-    rect(18, 28.6, 28, 5.8, INK)        # crossbar
-    rect(18, 49.5, 28, 3, JADE)         # accent rule
+    for fill, dx, dy in ((PINK, 2.5, 2.5), (BLUE, 0, 0)):
+        rect(18, 18, 6.5, 28, fill, dx, dy)      # left stem
+        rect(39.5, 18, 6.5, 28, fill, dx, dy)    # right stem
+        rect(18, 28.6, 28, 5.8, fill, dx, dy)    # crossbar
 
 
 def wrap(draw: ImageDraw.ImageDraw, text: str, font, max_width: int) -> list[str]:
@@ -76,33 +83,43 @@ def wrap(draw: ImageDraw.ImageDraw, text: str, font, max_width: int) -> list[str
 
 def make_og(locale: str, eyebrow: str, headline: str, legal_name: str) -> Image.Image:
     width, height = 1200, 630
-    image = Image.new("RGB", (width, height), INK)
+    image = Image.new("RGB", (width, height), PAPER)
     draw = ImageDraw.Draw(image)
+
+    # The sunflower disc, bleeding off the top right, ring missed in pink.
+    disc_box = (880, -230, 1330, 220)
+    draw.ellipse(disc_box, fill=SUNFLOWER)
+    draw.ellipse(
+        (disc_box[0] + 12, disc_box[1] + 14, disc_box[2] + 12, disc_box[3] + 14),
+        outline=PINK,
+        width=5,
+    )
 
     margin = 80
     font_eyebrow = load_font("cjk" if locale == "zh" else "latin", 24)
-    font_wordmark = load_font("latin", 36)
-    font_headline = load_font("cjk" if locale == "zh" else "latin", 68)
+    font_wordmark = load_font("latin", 34)
+    font_headline = load_font("cjk" if locale == "zh" else "display", 66)
     font_small = load_font("latin", 26)
     font_meta = load_font("cjk", 24)
 
     # Wordmark row
     mark_size = 64
-    draw_mark(draw, margin, margin, mark_size)
-    draw.text((margin + mark_size + 26, margin + 12), "Homecent", font=font_wordmark, fill=PAPER)
+    draw_h(draw, margin, margin, mark_size)
+    draw.text((margin + mark_size + 26, margin + 10), "Homecent", font=font_wordmark, fill=INK)
 
-    # Eyebrow + headline block, optically centred in the lower two thirds
-    draw.text((margin, 268), eyebrow, font=font_eyebrow, fill=JADE)
+    # Eyebrow + headline block; the headline prints twice, out of register.
+    draw.text((margin, 258), eyebrow, font=font_eyebrow, fill=PINK_INK)
 
     lines = wrap(draw, headline, font_headline, width - margin * 2)
-    y = 320
+    y = 312
     for line in lines:
-        draw.text((margin, y), line, font=font_headline, fill=PAPER)
-        y += 84
+        draw.text((margin + 6, y + 5), line, font=font_headline, fill=PINK)
+        draw.text((margin, y), line, font=font_headline, fill=BLUE)
+        y += 82
 
     # Footer rule and meta row
-    draw.rectangle([margin, 512, width - margin, 513], fill=RULE)
-    draw.text((margin, 540), "hcentlab.com", font=font_small, fill=JADE)
+    draw.rectangle([margin, 514, width - margin, 517], fill=BLUE)
+    draw.text((margin, 540), "hcentlab.com", font=font_small, fill=BLUE)
 
     legal_width = draw.textlength(legal_name, font=font_meta)
     draw.text((width - margin - legal_width, 542), legal_name, font=font_meta, fill=MUTED)
@@ -111,13 +128,30 @@ def make_og(locale: str, eyebrow: str, headline: str, legal_name: str) -> Image.
 
 
 def make_touch_icon() -> Image.Image:
+    """A full blue ink tile; the paper H lands with its pink pass behind."""
     size = 180
-    image = Image.new("RGB", (size, size), INK)
-    draw_mark(draw=ImageDraw.Draw(image), x=0, y=0, size=size)
-    # Full-bleed ink tile with the paper mark centred, iOS masks the corners.
-    tile = Image.new("RGB", (size, size), INK)
-    tile.paste(image, (0, 0))
-    return tile
+    image = Image.new("RGB", (size, size), BLUE)
+    draw = ImageDraw.Draw(image)
+    scale = size / 64
+    offset = 2.5 * scale
+
+    def rect(vx, vy, vw, vh, fill, dx=0.0, dy=0.0):
+        draw.rectangle(
+            [
+                vx * scale + dx,
+                vy * scale + dy,
+                (vx + vw) * scale + dx,
+                (vy + vh) * scale + dy,
+            ],
+            fill=fill,
+        )
+
+    for fill, dx, dy in ((PINK, offset, offset), (PAPER, 0, 0)):
+        rect(18, 18, 6.5, 28, fill, dx, dy)
+        rect(39.5, 18, 6.5, 28, fill, dx, dy)
+        rect(18, 28.6, 28, 5.8, fill, dx, dy)
+
+    return image
 
 
 def main() -> None:

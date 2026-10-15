@@ -1,4 +1,5 @@
 ---
+import '@fontsource/archivo-black';
 import { localeTags, ui, type Locale, type UIKey } from '../i18n/ui';
 import { absoluteUrl, alternatesFor, useTranslations } from '../i18n/utils';
 import Header from '../components/Header.astro';
@@ -74,7 +75,7 @@ const organization = {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#101418" />
+    <meta name="theme-color" content="#f8f1de" />
     <meta name="generator" content={Astro.generator} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
@@ -101,6 +102,27 @@ const organization = {
     <script type="application/ld+json" is:inline set:html={JSON.stringify(organization)} />
   </head>
   <body>
+    <Fragment set:html={`<!--
+  DESIGN CONTRACT — risograph overprint (impeccable seed 894b03be)
+  THESIS: the site is a riso-printed document set; two spot inks meet where
+  the two working languages meet, and the misregistered second pass IS the
+  other language, the other market. It refuses the type-only page it replaces
+  and every corporate-hero template.
+  OWN-WORLD: warm paper #f8f1de; federal blue #1d3fd8 (structure); fluoro pink
+  #f23f9e (signal / the other script); sunflower #fbc925 (fields); overprint
+  violet where inks cross; self-hosted Archivo Black display + system sans;
+  offset print passes, halftone dot fields, two-ink duotone photography.
+  STORY: a skeptical overseas buyer recognises a precise, bilingual Shenzhen
+  company in one viewport, checks the claims in the spec-sheet tables, and
+  writes to Ribin by mail.
+  FIRST VIEWPORT: a sunflower disc bleeding off the top right; the local name
+  in blue with a missed pink ghost; the other script in pink beneath; the
+  support line, four spec facts, and the blue start-project button.
+  FORM: challenger card risograph-web-system, chosen by the client over the
+  assigned direction.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the
+  finish review, the verdict, and DESIGN.md.
+-->`} />
     <a class="skip-link" href="#main">{t('nav.skip')}</a>
     <Header locale={locale} currentPath={pathname} />
     <main id="main">

@@ -11,9 +11,9 @@ const t = useTranslations(locale);
 ---
 
 <section class="wrap notfound">
-  <h1 class="notfound__title">{t('notFound.title')}</h1>
+  <h1 class="notfound__title" data-text={t('notFound.title')}>{t('notFound.title')}</h1>
   <p class="lede">{t('notFound.body')}</p>
   <p>
-    <a class="btn" href={localizePath(routes.home, locale)}>{t('notFound.action')}</a>
+    <a class="btn press" href={localizePath(routes.home, locale)}>{t('notFound.action')}</a>
   </p>
 </section>
