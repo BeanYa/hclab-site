@@ -302,7 +302,9 @@ npm run deploy              # build + deploy
       per-locale credit titles, single-script record tables, pure `<title>`s, `sep.inline` joins, a Han
       typography block for the Chinese page. Gate: mixed-script audit clean on all eight content pages,
       `check`/`test`/`verify`/`smoke` all green (smoke 56/56).
-- [ ] Cloudflare authentication and first production deploy — **blocked on account credentials**
+- [x] Cloudflare authentication and first production deploy — shipped 2026-10-15
+      (version c70c4b9d; apex + www custom domains attached, http→https and www→apex redirects
+      verified live, smoke 56/56 against https://hcentlab.com)
 - [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
 - [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com
 - [ ] Optional follow-ups: full favicon set refresh at production deploy, analytics decision,
