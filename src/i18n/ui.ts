@@ -7,10 +7,10 @@
  *    string is a TypeScript error and fails the build. Never loosen this type.
  *  - Components and pages must never contain hard-coded user-visible copy.
  *  - One language per locale: a page reads entirely in its own language. The
- *    only deliberate exceptions are the two-script hero mark, the other
- *    language's own name in the switcher, and proper nouns (people, works,
- *    licences, commands). Everything else — including how a work title is
- *    rendered in a credit line — follows the reading language.
+ *    only deliberate exceptions are the other language's own name in the
+ *    switcher (and the hero's hidden, non-displayed name) and proper nouns
+ *    (people, works, licences, commands). Everything else — including how a
+ *    work title is rendered in a credit line — follows the reading language.
  *
  * The strings here are also the page's argument (see the design direction in
  * AGENTS.md §6): every claim on the page is paired with something a visitor can

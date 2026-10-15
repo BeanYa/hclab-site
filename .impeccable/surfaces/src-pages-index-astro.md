@@ -20,10 +20,10 @@ build, and acts by writing email.
   photography, the zero-JS claim itself.
 - Chosen direction: risograph overprint (impeccable seed 894b03be; challenger card
   risograph-web-system chosen by the client over the assigned direction on the
-  decision page). Signature moment: the two-script name printed in two inks with a
+  decision page). Signature moment: the locale's name printed in blue with a
   misregistered ghost that settles into register on hover.
-- Memorable composition: sunflower disc bleeding off the top right; local name in
-  federal blue, the other script in fluoro pink; spec facts as a job-ticket strip.
+- Memorable composition: sunflower disc bleeding off the top right; the locale's
+  name in federal blue with the pink pass behind it; spec facts as a job-ticket strip.
 - Constraints: zero client JavaScript (chooser is radios + :has()); all copy from
   src/i18n/ui.ts; one language per page; zh page mirrors the composition with the
   local script leading.

@@ -57,9 +57,11 @@ copy stays qualitative — no invented numbers, logos, or certifications.
 
 ## Brand Commitments
 
-- Name and wordmark: **Homecent** / **宅迅** (深圳市宅迅贸易有限公司). The two-script name as the
-  hero — `Homecent` and `宅迅` each given first-class treatment — is the company's own idea and
-  binding.
+- Name and wordmark: **Homecent** / **宅迅** (深圳市宅迅贸易有限公司). The two-script
+  identity is binding. Site hero shows only the reading locale's name — EN pages
+  print `Homecent`, ZH pages print `宅迅` (client decision, 2026-10-15); the other
+  script's name stays in the language switcher, hreflang and the hero's hidden
+  mark.
 - Voice: trust-first, restrained, technical, editorial. Qualitative claims welcome; verifiable
   claims (numbers, logos, certifications, addresses) only when true and supplied.
 - Language commitment: English default, Simplified Chinese secondary — binding.

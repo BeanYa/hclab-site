@@ -70,7 +70,7 @@ Non-goals for the current scope: user accounts, CMS/admin UI, e-commerce checkou
 | Source of truth for copy | `src/i18n/ui.ts` — **all** user-visible strings live here, in both locales |
 | Hard rule | Never hard-code user-visible copy inside a component or page; always add a key to `ui.ts` |
 | Missing translation | A missing key must fail the build, not silently fall back to English |
-| Language purity | One language per page: running copy, labels, tables, captions and each locale's `<title>` never mix scripts. Deliberate exceptions: the two-script hero mark, the other language's own name in the switcher, and proper nouns (people, email addresses, licences, shell commands). Work titles in credit lines follow the reading language; the exact originals stay in `src/assets/credits.json` behind each Source link |
+| Language purity | One language per page: running copy, labels, tables, captions and each locale's `<title>` never mix scripts. Deliberate exceptions: the other language's own name in the switcher (and the hero's hidden, non-displayed name), and proper nouns (people, email addresses, licences, shell commands). Work titles in credit lines follow the reading language; the exact originals stay in `src/assets/credits.json` behind each Source link |
 | Inline join | Label-to-text and caption-to-credit joins go through `sep.inline` (en `' '`, zh `''`), never a hard-coded `{' '}` — a half-width space between two Han runs is the one format a Chinese page must not show |
 | Alternates | Every page emits `<link rel="alternate" hreflang="en|zh|x-default">` |
 | Language switcher | Present in the header on every page, links to the *same* page in the other locale |
@@ -144,8 +144,10 @@ Generated and git-ignored (recreated by `npm run build` and `npm run check`):
 - **Dials:** design variance ≈ 7/10, motion ≈ 3/10, density ≈ 4/10. Committed print energy, quiet pacing.
 - **Direction:** *risograph overprint* (impeccable direction roll, seed 894b03be; the `risograph-web-system`
   card, chosen by the client over the assigned direction). The site is a riso-printed document set: two
-  spot inks meet where the two working languages meet, and the misregistered second pass IS the other
-  language. The previous world (bone paper / ink / jade, "type and nothing else") was fully replaced in
+  spot inks on warm paper, and the misregistered second pass is the world's only depth language — the
+  ink of the other market, printed just under the surface. The hero shows only the reading locale's name
+  (client decision, 2026-10-15); the other script lives in the switcher, hreflang and the hero's hidden
+  mark. The previous world (bone paper / ink / jade, "type and nothing else") was fully replaced in
   2026-10. The design contract lives as the first HTML comment inside `<body>` in `BaseLayout.astro` and
   must survive the build (grep `dist/` for `894b03be`).
 - **Palette (every value is a token in `global.css`; never a raw hex below the token block):** paper

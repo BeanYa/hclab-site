@@ -702,18 +702,6 @@ fieldset {
   letter-spacing: 0;
 }
 
-/* The second name prints smaller than the local one only because Han carries
-   more mass per glyph; the sizes below read the two scripts as equals. */
-.hero__name--b {
-  font-size: calc(var(--t-hero) * 0.82);
-  color: var(--pink);
-  margin-top: clamp(0.5rem, 0.2rem + 1.5vw, 1.5rem);
-}
-
-.hero__name--b.hero__name--han {
-  font-size: calc(var(--t-hero) * 1.06);
-}
-
 /* A ghost of the same text, missed by --mis-em. Touching the name snaps the
    pass into register — the signature interaction. The ghost sits one layer
    behind its own text, never on top of it. */
@@ -1854,16 +1842,12 @@ html[lang='zh-CN'] .ptable td {
     animation: spot-in 700ms var(--ease-settle) both;
   }
 
-  .hero__name--a {
+  .hero__name {
     animation: press-settle 640ms var(--ease-settle) 120ms both;
   }
 
-  .hero__name--b {
-    animation: press-settle 640ms var(--ease-settle) 300ms both;
-  }
-
   .hero__foot {
-    animation: name-in 700ms var(--ease-settle) 460ms both;
+    animation: name-in 700ms var(--ease-settle) 300ms both;
   }
 }
 

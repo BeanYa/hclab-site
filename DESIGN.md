@@ -94,9 +94,9 @@ components:
 
 **Creative North Star: "Risograph Overprint —— 一份第二印永远差半档套印的 riso 印刷文件"**
 
-整个网站被构建为一套 riso 孔版印刷的文件组：暖纸底、两色专墨（联邦蓝印结构与本地文字，荧光粉印"另一种文字"与信号）、葵黄色场、几何印张，以及一层 5.5% 的全局纸纹。世界的核心机制是**套印失准**：每个关键元素背后都有一次没对准的第二印 —— 边框错位、文字重影、硬边错位投影 —— 访客一触碰（hover / focus），第二印就向套准滑动；按下即完全合准。密度克制（约 4/10）、动效一次性（约 3/10）、形式语言全部来自"印刷工单 / 规格表 / 印章"这套车间隐喻。
+整个网站被构建为一套 riso 孔版印刷的文件组：暖纸底、两色专墨（联邦蓝印结构与本地文字，荧光粉印信号与错位第二印）、葵黄色场、几何印张，以及一层 5.5% 的全局纸纹。世界的核心机制是**套印失准**：每个关键元素背后都有一次没对准的第二印 —— 边框错位、文字重影、硬边错位投影 —— 访客一触碰（hover / focus），第二印就向套准滑动；按下即完全合准。密度克制（约 4/10）、动效一次性（约 3/10）、形式语言全部来自"印刷工单 / 规格表 / 印章"这套车间隐喻。
 
-本方向是 challenger 卡"risograph-web-system"（impeccable 方向骰 seed `894b03be`），由客户在定向下亲自选中，替换了此前的"type and nothing else"旧世界（骨白 `#f1f2ef` / 墨 `#101418` / 玉绿 `#0f6b52`）。**注意：AGENTS.md §6 仍描述旧世界，其调色板、字号阶梯与部分禁令（如"无 uppercase 微标签"）已被本系统推翻；本世界的规范性规则以 `src/styles/global.css` 顶部横幅为准。**
+本方向是 challenger 卡"risograph-web-system"（impeccable 方向骰 seed `894b03be`），由客户在定向下亲自选中，替换了此前的"type and nothing else"旧世界（骨白 `#f1f2ef` / 墨 `#101418` / 玉绿 `#0f6b52`）。AGENTS.md §6 与本文件同步描述本世界；规范性规则以 `src/styles/global.css` 顶部横幅为准。
 
 硬约束（仍然生效，来自 PRODUCT.md / AGENTS.md）：零客户端 JS（菜单是 `<details>`，选择器是 radio + `:has()`，动效是 CSS view-timeline）；所有文案单源 `src/i18n/ui.ts`，每语言单脚本；唯一转化通道是 `mailto:`；找到的照片永不冒充客户资产，必须就地署名。
 
@@ -121,7 +121,7 @@ components:
 
 ### Secondary
 
-- **荧光粉 Fluoro Pink** (`#f23f9e`)：信号墨与"另一种文字"。Hero 第二语言的名字、`.press`/`.misprint` 的全部错位第二印、错位投影、照片错位框、说明文字里的署名链接、caption 链接 hover。**原色粉不可用于小字**（对比度不足）——小字用下一档。
+- **荧光粉 Fluoro Pink** (`#f23f9e`)：信号墨。`.press`/`.misprint` 的全部错位第二印（含 Hero 名字的重影 —— 它是"另一个市场的墨"，印在可见文字之下）、错位投影、照片错位框、说明文字里的署名链接、caption 链接 hover。**原色粉不可用于小字**（对比度不足）——小字用下一档。
 - **印粉 Pink Ink** (`#bf2377`)：粉压深一档，纸面上 ≥ 4.5:1，用于小号文字（服务条款的破折号前缀、caption 链接常态色）。这是对比度校准的产物，不是新色相。
 
 ### Tertiary
@@ -139,7 +139,7 @@ components:
 
 ### Named Rules
 
-**两墨守恒规则。** 蓝印一切结构性元素；粉只印"他者"——另一种文字、信号、错位第二印。粉永远不做正文色；小字用 `--pink-ink`，原色粉只出现在大字与大标记上。
+**两墨守恒规则。** 蓝印一切结构性元素；粉只印"他者"——信号、错位第二印、名字重影。粉永远不做正文色；小字用 `--pink-ink`，原色粉只出现在大字与大标记上。
 
 **紫在交叠处规则。** `--violet` 只用于 `::selection`（套印交叠的隐喻），禁止作为表面、边框或文字色出现。
 
@@ -155,7 +155,7 @@ components:
 
 ### Hierarchy
 
-- **Display** (Archivo Black 400，`clamp(2.9rem→9.75rem)`，行高 0.94)：只给两个名字 —— `Homecent` 与 `宅迅`。全大写、-0.015em、`mix-blend-mode: multiply`（压过葵黄圆盘时蓝变绿、粉变橙，交叠图在替品牌干活）。
+- **Display** (Archivo Black 400，`clamp(2.9rem→9.75rem)`，行高 0.94)：只给当前语言的一个名字 —— EN 页 `HOMECENT`、ZH 页 `宅迅`（客户决定，2026-10-15；另一文字的名字只存在于语言开关、hreflang 与 Hero 的隐藏标注）。全大写、-0.015em、`mix-blend-mode: multiply`（压过葵黄圆盘时蓝变绿，交叠图在替品牌干活）。
 - **Headline** (Archivo Black 400，`clamp(1.8rem→3.1rem)`，行高 1.02，全大写，-0.015em)：区段标题、页题（`--t-xl` `clamp(2.3rem→4.5rem)` 同声音）、服务行标题、规格表题头、页脚品牌名与邮箱。两行式标题第二行换墨（服务段第二行蓝、proof 段第二行粉）。
 - **Title** (Archivo Black 400，`clamp(1.3rem→1.8rem)`，行高 1.1)：工单 tab、服务页条目标题、承诺印章标题。
 - **Lede** (系统 sans 400，19px，行高 1.6，max 62ch；hero 支句 34ch；Reach 导语 `clamp(1.6rem→2.7rem)` 26ch)：段首导语与立场句。
@@ -164,7 +164,7 @@ components:
 
 ### Named Rules
 
-**一文字一墨色规则。** Hero 处本地文字印蓝、另一文字印粉；哪个文字排第二，哪个就带错位重影。第二名字的字号按文字质量校平（拉丁第二印 0.82×，汉字第二印 1.06×），让两种文字读起来体量相等。
+**一文字一名字规则。** Hero 只印阅读语言的名字（客户决定，2026-10-15）：EN 页蓝印 `Homecent`、ZH 页 `宅迅`（`.hero__name--han` 关大写、零字距）。名字之下是自身的粉墨重影 —— 另一个市场的墨，错过半档；hover / focus-within 时合准。另一文字的名字不进视觉，只留在 `<span class="visually-hidden" lang>`、语言开关与 hreflang 里。
 
 **大写只塑造拉丁规则。** `text-transform: uppercase` 只作用于拉丁展示位；汉字展示位显式关闭（`.hero__name--han`、zh 块中 `letter-spacing: 0`），负字距与紧行高是拉丁习语，ZH 页全部撤回（正文行高 1.7，折行展示行高 1.12–1.15，display 槽位系统 900 weight 回退，`font-synthesis-weight: none` 禁止假粗体）。
 
@@ -219,9 +219,9 @@ components:
 
 吸顶纸底条，2px 蓝黑底线 + 底下错位 6px 的粉色第二印。品牌字用 display 面（hover 变蓝）。语言开关是 2px 蓝框小方钮，当前语言蓝底反白。移动端 `<details>` 菜单（零 JS）：面板纸底 2px 蓝黑边 + `6px 6px 0` 粉色实心错位投影，绝对定位在摘要钮下方。
 
-### Hero —— 双墨套印名
+### Hero —— 单名套印
 
-右上葵黄圆盘出血（`clamp(16rem→40rem)`，自身带错位 0.5rem/0.625rem 的 3px 粉环）。两个名字纵向排：本地文字蓝、另一文字粉（带自身蓝/粉重影），均 `mix-blend-mode: multiply` 压盘变色。名字 hover/focus-within 时重影合准 —— 全站签名交互。脚部：支句、四项工单事实（葵黄方块 + 大写蓝微标签 + dd 500 weight）、`.btn.press`。载入编排：圆盘 `spot-in`，两名字先后 `press-settle`（从 0.35em 错位落位），脚部 `name-in`。
+右上葵黄圆盘出血（`clamp(16rem→40rem)`，自身带错位 0.5rem/0.625rem 的 3px 粉环）。只印一个名字：本地文字蓝、带自身粉墨重影，`mix-blend-mode: multiply` 压盘变色；另一文字的名字不进视觉（隐藏标注带 `lang`）。名字 hover/focus-within 时重影合准 —— 全站签名交互。脚部：支句、四项工单事实（葵黄方块 + 大写蓝微标签 + dd 500 weight）、`.btn.press`。载入编排：圆盘 `spot-in`，名字 `press-settle`（从 0.35em 错位落位），脚部 `name-in`。
 
 ### 选择器（"Where are you now?" 工单）
 

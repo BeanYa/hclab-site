@@ -10,15 +10,11 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 /**
- * The local script leads: the Chinese name comes first on the Chinese page.
- * Two Han glyphs carry far less mass than eight Latin letters, so whichever
- * line shows 宅迅 is set larger and the two names read as equals. The other
- * script is marked with its own lang so screen readers switch voices and the
- * browser picks the right Han glyph variants. Each visible name carries a
+ * The hero prints only the reading locale's name (client decision
+ * 2026-10-15); the other script's name stays in the DOM for screen readers
+ * and search engines, marked with its own lang. The visible name carries a
  * ghost of itself — the second print pass, missed by a hair.
  */
-const localFirst = locale === 'zh';
-const hanIsFirst = localFirst;
 const otherLocale = locale === 'zh' ? 'en' : 'zh';
 
 const facts = [
@@ -34,26 +30,13 @@ const facts = [
 
   <div class="wrap hero__inner">
     <div class="hero__mark">
-      <h1 class:list={['hero__name', 'hero__name--a', { 'hero__name--han': hanIsFirst }]}>
+      <h1 class:list={['hero__name', { 'hero__name--han': locale === 'zh' }]}>
         <span class="misprint">
           <span class="misprint__ghost" aria-hidden="true">{t('hero.nameA')}</span>
           {t('hero.nameA')}
         </span>
         <span class="visually-hidden" lang={localeTags[otherLocale]}> {t('hero.nameB')}</span>
       </h1>
-
-      <p
-        class:list={['hero__name', 'hero__name--b', { 'hero__name--han': !hanIsFirst }]}
-        aria-hidden="true"
-        lang={localeTags[otherLocale]}
-      >
-        <span class="misprint">
-          <span class="misprint__ghost misprint__ghost--pink" aria-hidden="true">
-            {t('hero.nameB')}
-          </span>
-          {t('hero.nameB')}
-        </span>
-      </p>
     </div>
 
     <div class="hero__foot">
