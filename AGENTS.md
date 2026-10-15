@@ -92,7 +92,8 @@ same path shape (`/about` ↔ `/zh/about`). Adding one without the other is an i
 | Hosting | **Cloudflare Workers Static Assets** | One deploy target for HTML/CSS/JS + edge logic |
 | Edge logic | `worker/index.ts` (runs first, `assets.run_worker_first: true`) | Canonical-host redirect, security headers, asset serving |
 | Package manager | npm | Present on every machine; lockfile committed |
-| VCS | **git** (repo root = project root, default branch `main`) | Project management is git-based |
+| VCS | **git** (repo root = project root, default branch `main`; GitHub remote
+      `BeanYa/hclab-site`, **private**) | Project management is git-based |
 
 Deliberate non-choices: no Tailwind, no React/Vue islands, no external font CDN, no analytics vendor.
 Revisit only with a written reason.
@@ -251,6 +252,10 @@ Run, in this order, and report the results:
 - **The first screen's two fields must be ancestors of the text on them.** Contrast and the hit-testing
   the inspector uses are decided by what really paints behind a word: a name placed over an absolutely
   positioned colour field reads as 1:1 contrast. Each hero field is a real element wrapping its own name.
+- **Direct git access to `github.com` can be connection-reset from the dev machine** (`api.github.com`
+  and the Cloudflare API work directly; the git endpoint may not). When a push fails to connect, route
+  it through the local proxy: `git -c http.proxy=http://127.0.0.1:7890 push`. Pass it per-command —
+  the proxy is not always running, so don't write it into git config.
 
 ## 8. Deployment
 
