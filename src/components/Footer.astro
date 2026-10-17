@@ -1,6 +1,6 @@
 ---
 import { locales, type Locale } from '../i18n/ui';
-import { localizePath, photoCredits, routes, useTranslations } from '../i18n/utils';
+import { localizePath, navItems, photoCredits, routes, useTranslations } from '../i18n/utils';
 
 interface Props {
   locale: Locale;
@@ -13,17 +13,9 @@ const year = new Date().getFullYear();
 const email = t('contact.email.value');
 const icp = t('footer.icp');
 
-const pages = [routes.home, routes.about, routes.services, routes.contact].map((path) => ({
+const pages = [{ key: 'nav.home' as const, path: routes.home }, ...navItems].map(({ key, path }) => ({
   href: localizePath(path, locale),
-  label: t(
-    path === routes.home
-      ? 'nav.home'
-      : path === routes.about
-        ? 'nav.about'
-        : path === routes.services
-          ? 'nav.services'
-          : 'nav.contact',
-  ),
+  label: t(key),
 }));
 ---
 

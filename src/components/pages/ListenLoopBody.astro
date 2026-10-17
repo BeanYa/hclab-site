@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import symbol from '../../assets/listenloop-symbol.png';
+import type { Locale } from '../../i18n/ui';
+import { mailto, useTranslations } from '../../i18n/utils';
+import Icon, { type IconName } from '../Icon.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const enquiry = mailto(t('contact.email.value'), t('product.email.subject'), t('product.email.body'));
+const steps = [1, 2, 3] as const;
+const features = [1, 2, 3, 4, 5, 6] as const;
+const featureIcons: IconName[] = ['window', 'layers', 'support', 'review', 'workflow', 'arrow'];
+---
+<section class="section listenloop-hero" aria-labelledby="product-heading">
+  <div class="wrap listenloop-hero__grid">
+    <div>
+      <p class="eyebrow">{t('product.category')}{t('sep.inline')}<span class="product-name">{t('product.name')}</span></p>
+      <h1 id="product-heading"><span>{t('product.hero.title.a')}</span>{t('sep.inline')}<span>{t('product.hero.title.b')}</span></h1>
+      <p class="lede">{t('product.summary')}</p>
+      <ul class="product-tags"><li>{t('product.preview')}</li><li>{t('product.platforms')}</li></ul>
+      <a class="btn" href={enquiry}>{t('product.contact')}<Icon name="arrow" /></a>
+    </div>
+    <figure class="listening-map">
+      <div class="listening-map__brand"><Image src={symbol} alt={t('product.logo.alt')} width={160} height={160} loading="eager" /><p>{t('product.tagline')}</p></div>
+      <div class="listening-map__steps">
+        <p class="eyebrow">{t('product.visual.label')}</p>
+        <ol>{steps.map(index => <li><h2>{t(`product.step.${index}.title`)}</h2><p>{t(`product.step.${index}.body`)}</p></li>)}</ol>
+      </div>
+      <figcaption>{t('product.visual.note')}</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="section field-tone" aria-labelledby="product-features-heading">
+  <div class="wrap">
+    <div class="section-head"><div><p class="eyebrow">{t('product.features.label')}</p><h2 id="product-features-heading">{t('product.features.title')}</h2></div></div>
+    <div class="product-features">{features.map((index, position) => <article><span class="service-card__icon"><Icon name={featureIcons[position]!} /></span><h3>{t(`product.feature.${index}.title`)}</h3><p>{t(`product.feature.${index}.body`)}</p></article>)}</div>
+  </div>
+</section>
+<section class="section" aria-labelledby="product-availability-heading">
+  <div class="wrap">
+    <div class="section-head"><div><p class="eyebrow">{t('product.availability.label')}</p><h2 id="product-availability-heading">{t('product.availability.title')}</h2></div><p class="section-head__aside">{t('product.availability.body')}</p></div>
+    <div class="product-platforms">{(['windows', 'mac'] as const).map(platform => <article><Icon name="window" /><h3>{t(`product.${platform}.title`)}</h3><p>{t(`product.${platform}.body`)}</p></article>)}</div>
+    <div class="product-faq"><h2>{t('product.faq.title')}</h2><div>{steps.map(index => <details><summary>{t(`product.faq.${index}.q`)}</summary><p>{t(`product.faq.${index}.a`)}</p></details>)}</div></div>
+  </div>
+</section>
+<section class="reach" aria-labelledby="product-reach-heading"><div class="wrap reach__inner">
+  <div><p class="eyebrow">{t('product.name')}</p><h2 id="product-reach-heading">{t('product.reach.title')}</h2><p class="reach__note">{t('product.reach.body')}</p></div>
+  <div class="reach__action"><a class="btn" href={enquiry}>{t('product.contact')}<Icon name="arrow" /></a><a class="reach__email" href={`mailto:${t('contact.email.value')}`}>{t('contact.email.value')}</a></div>
+</div></section>

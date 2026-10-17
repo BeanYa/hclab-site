@@ -50,10 +50,12 @@ const pages = [
   { file: 'index.html', lang: 'en', canonical: 'https://hcentlab.com/' },
   { file: 'about/index.html', lang: 'en', canonical: 'https://hcentlab.com/about/' },
   { file: 'services/index.html', lang: 'en', canonical: 'https://hcentlab.com/services/' },
+  { file: 'products/listenloop/index.html', lang: 'en', canonical: 'https://hcentlab.com/products/listenloop/' },
   { file: 'contact/index.html', lang: 'en', canonical: 'https://hcentlab.com/contact/' },
   { file: 'zh/index.html', lang: 'zh-CN', canonical: 'https://hcentlab.com/zh/' },
   { file: 'zh/about/index.html', lang: 'zh-CN', canonical: 'https://hcentlab.com/zh/about/' },
   { file: 'zh/services/index.html', lang: 'zh-CN', canonical: 'https://hcentlab.com/zh/services/' },
+  { file: 'zh/products/listenloop/index.html', lang: 'zh-CN', canonical: 'https://hcentlab.com/zh/products/listenloop/' },
   { file: 'zh/contact/index.html', lang: 'zh-CN', canonical: 'https://hcentlab.com/zh/contact/' },
 ];
 

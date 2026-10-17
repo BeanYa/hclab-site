@@ -73,6 +73,7 @@ export const routes = {
   about: '/about/',
   services: '/services/',
   contact: '/contact/',
+  listenloop: '/products/listenloop/',
 } as const;
 
 export interface NavItem {
@@ -83,6 +84,7 @@ export interface NavItem {
 export const navItems: readonly NavItem[] = [
   { key: 'nav.about', path: routes.about },
   { key: 'nav.services', path: routes.services },
+  { key: 'nav.products', path: routes.listenloop },
   { key: 'nav.contact', path: routes.contact },
 ];
 

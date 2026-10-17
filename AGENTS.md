@@ -43,6 +43,19 @@ Confirmed since first draft: the company contact is **Ribin Ding** and the publi
 `contact.email.value`) and must be edited there only — the footer, the contact card, the company
 record on `/about/` and the JSON-LD `ContactPoint` all read from those two keys.
 
+### 1.2 Product — ListenLoop / 听刻
+
+- A company product, confirmed by the client on 2026-10-17.
+- Local English listening practice desktop app: media import/capture, transcription,
+  sentence segmentation, Chinese translation, looping, vocabulary and review/export.
+- Current stage: development preview. Targets Windows 10/11 x64 and Apple Silicon
+  macOS 14+. Do not advertise a public download, price, signed/notarized Mac release,
+  or universal hardware compatibility without confirmation.
+- Product facts checked against `../ListenLoop/README.md`, `docs/MACOS.md` and source
+  at commit `20de979` on 2026-10-17. The existing mascot is copied from that project.
+- Introduction: homepage spotlight + `/products/listenloop/` and its `/zh/` counterpart.
+  Product enquiries use the existing contact mailbox; all copy remains in `ui.ts`.
+
 ---
 
 ## 2. Project goal
@@ -128,7 +141,7 @@ Revisit only with a written reason.
     ├── layouts/BaseLayout.astro   # <head>, SEO, hreflang, JSON-LD
     ├── components/Header.astro, Footer.astro, ReachField.astro
     ├── components/sections/       # Hero, Intro, ServicesSplit, Chooser, Process, Proof,
-    │                              # PhotoBand, ClipBand — composed by the page bodies
+    │                              # PhotoBand, ClipBand, ProductSpotlight — composed by the page bodies
     ├── components/pages/  # one <Name>Body.astro per page, shared by both locales
     ├── styles/global.css  # design tokens, layouts, sections, motion (see §6)
     └── pages/             # routes; zh/ mirrors the English tree
@@ -263,7 +276,7 @@ npm run deploy              # build + deploy
 ## 10. Status
 
 - [x] Project initialised, git repository created, base information recorded
-- [x] Bilingual site (EN default / ZH) implemented — 4 pages per locale + 404s
+- [x] Bilingual site (EN default / ZH) implemented — 5 pages per locale + 404s
 - [x] Cloudflare Worker + static assets configuration authored and validated
       (`build`, `verify`, `test`, `smoke` and `deploy:dry` all pass)
 - [x] Front-end design rebuilt (2026-10, first pass): the tasteskill "type and nothing else" direction.
@@ -280,6 +293,10 @@ npm run deploy              # build + deploy
       (version c70c4b9d; apex + www custom domains attached, http→https and www→apex redirects
       verified live, smoke 56/56 against https://hcentlab.com)
 - [x] Contemporary visual redesign (2026-10-15): light editorial surfaces, forest-green accents, self-hosted Inter, custom architecture diagram and responsive service modules. Supersedes the prior risograph direction. EN/ZH parity retained; check/test/build/verify/smoke passed; mobile routes and native interactions inspected.
+- [x] ListenLoop product introduction (2026-10-17): homepage spotlight, bilingual detail
+      pages, product navigation and email enquiry; development-preview status retained.
+      check: 0 errors; test: 7/7; build/verify: 136/136; local Worker smoke: 60/60;
+      desktop/mobile EN/ZH layouts, language switching, menu and FAQ inspected.
 - [ ] Confirm remaining §1.1 open facts (street address, phone, ICP, legal-name punctuation)
 - [x] Company contact recorded: Ribin Ding — ribin.ding@hcentlab.com
 - [ ] Optional follow-ups: full favicon set refresh at production deploy, analytics decision,

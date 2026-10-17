@@ -48,6 +48,8 @@ await expectOk('/about/', 'A Shenzhen software team');
 await expectOk('/zh/about/', '一支扎根深圳');
 await expectOk('/services/', 'Software development and technical support');
 await expectOk('/zh/services/', '软件开发与技术支持');
+await expectOk('/products/listenloop/', 'Listen closely.');
+await expectOk('/zh/products/listenloop/', '听清每一句。');
 await expectOk('/contact/', 'ribin.ding@hcentlab.com');
 await expectOk('/zh/contact/', 'ribin.ding@hcentlab.com');
 await expectOk('/contact/', 'Ribin Ding');

@@ -26,12 +26,12 @@ The first viewport pairs a direct software-services proposition with a custom la
 illustration. Product experience, services, cloud and support are conceptual labels, not a client product.
 The four company facts immediately below retain their repository source.
 
-The home page progresses through expertise, inspectable engineering evidence, delivery process,
+The home page progresses through expertise, a ListenLoop product spotlight, inspectable engineering evidence, delivery process,
 a native enquiry chooser, a credited Shenzhen image, and an email invitation.
 Service cards link to matching service-page anchors. Large implementation details use a native
 details element, allowing visitors to choose their reading depth.
 
-All eight content pages and the localized 404s share navigation, typography, image treatment,
+All ten content pages and the localized 404s share navigation, typography, image treatment,
 tables, contact invitation and footer. Found imagery remains naturally colored and credited.
 
 ## Interaction and accessibility
@@ -47,3 +47,11 @@ Responsive layouts cover narrow phones, tablets and desktop. Text remains at lea
 The prior spot inks, misregistration, Archivo Black display face, duotone images, paper texture and
 seed 894b03be are historical design choices. They are not constraints on this version.
 The current HTML design marker is connected-engineering.
+
+## Product introduction (2026-10-17)
+
+ListenLoop adds a homepage spotlight and bilingual product detail pages. The existing
+cassette mascot and a warm neutral art field sit within the company typography and
+green accents. The detail page illustrates the workflow (not an app screenshot),
+explains verified features, labels development-preview availability and offers
+product-specific email enquiries. No download or pricing is implied.

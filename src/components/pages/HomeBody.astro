@@ -6,12 +6,14 @@ import Hero from '../sections/Hero.astro';
 import Intro from '../sections/Intro.astro';
 import Process from '../sections/Process.astro';
 import Proof from '../sections/Proof.astro';
+import ProductSpotlight from '../sections/ProductSpotlight.astro';
 import ServicesSplit from '../sections/ServicesSplit.astro';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 ---
 <Hero locale={locale} />
 <ServicesSplit locale={locale} />
+<ProductSpotlight locale={locale} />
 <Proof locale={locale} />
 <Process locale={locale} />
 <Chooser locale={locale} />
